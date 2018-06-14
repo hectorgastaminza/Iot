@@ -1,0 +1,18 @@
+@startuml
+
+actor User
+component FrontEnd
+component BackEnd
+database DataBase
+cloud Cloud as C1
+cloud Cloud as C2
+agent SmartDevices
+
+User -right- C1
+C1 -- FrontEnd
+FrontEnd -- BackEnd
+BackEnd -- DataBase
+BackEnd -- C2
+C2 -left- SmartDevices
+
+@enduml
