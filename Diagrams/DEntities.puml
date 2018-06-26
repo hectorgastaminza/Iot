@@ -1,0 +1,18 @@
+@startuml
+
+class User {
+  LoginName
+  Password
+}
+class Device {
+  MsgTopic
+}
+class Place {
+  Description
+}
+User -down- Place
+Place - Place
+User -down- Device
+Place -left- Device
+
+@enduml
