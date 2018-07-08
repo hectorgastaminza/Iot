@@ -10,6 +10,16 @@ class Device {
 class Place {
   Description
 }
+class MqttConnectionConfiguration{
+  String brokerHost; // mqtt.dioty.co
+  Int brokerPort; // 1883
+  Int brokerWebSocketsPort; // (Optional) 8080
+  String userId; // (Optional) hectorgastaminza@gmail.com
+  String password; // (Optional) 67b9ee69
+  String rootTopic; // (Optional) "/hectorgastaminza@gmail.com/"
+}
+
+User -right- MqttConnectionConfiguration
 User -down- Place
 Place - Place
 User -down- Device
