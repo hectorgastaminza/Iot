@@ -27,6 +27,10 @@ information
 received from the
 remote devices"
 
+usecase UC009 as "Sign up 
+in the
+application"
+
 User -up-> (UC001)
 User -left-> (UC002)
 User -down-> (UC003)
@@ -34,6 +38,7 @@ User -down-> (UC004)
 User -left-> (UC005)
 User -down-> (UC006)
 User -down-> (UC007)
+User -up-> (UC009)
 
 Application -down-> (UC008) : have to
 
