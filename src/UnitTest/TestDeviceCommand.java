@@ -1,20 +1,20 @@
-package UnitTest;
+package unitTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import Application.*;
-import Device.Device;
-import Device.DeviceCommand;
-import Device.eDeviceCommands;
+import application.*;
+import device.Device;
+import device.DeviceCommand;
+import device.eDeviceCommands;
 
 class TestDeviceCommand {
 	
 	@Test
 	void test() {
-		DeviceCommand cmd1 = new DeviceCommand(eDeviceCommands.ON, 10);
-		String test1 = "C0004X000A";		
+		DeviceCommand cmd1 = new DeviceCommand(0x55, eDeviceCommands.ON, 0x0A);
+		String test1 = "I55T04V000A";		
 		
 		assertEquals(cmd1.toString(), test1);
 		

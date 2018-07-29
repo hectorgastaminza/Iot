@@ -34,18 +34,20 @@ Because MQTT uses strings to send and receive messages, in order to avoid the pr
 ## DEVICE COMMAND
 A command is string compound by an ID and a value [ID + Value]
 
-Command ID: 	CJJJJ 		where J is a number (hexadecimal) from 0 to F.
-Command Value:	XLLLL		where L is a number (hexadecimal) from 0 to F.
+Device ID: 		IXX 		where X is a number (hexadecimal) from 0 to F.
+Command ID: 	TXX 		where X is a number (hexadecimal) from 0 to F.
+Command Value:	VXXXX		where X is a number (hexadecimal) from 0 to F.
 
-Example : [C001BX1B3F] where C001B is the command ID and X1B3F is the command value.
+Example : [I0AT1BV1B3F] where I0A is the device ID, T1B is the command ID and V1B3F is the command value.
 
 List of available commands are defined in enum DeviceCommands.
 
 ## DEVICE COMMANDS LIST 
-#### * NONE (C0000)
-#### * STATUS (C0001)
-#### * SET (C0002)
-#### * OFF (C0003)
-#### * ON (C0004)
-#### * UP (C0005)
-#### * DOWN (C0006)
+#### * NONE (C00)
+#### * RESET(0xFF)
+#### * GET_STATUS (C01)
+#### * SET_VALUE (C02)
+#### * OFF (C03)
+#### * ON (C04)
+#### * UP (C05)
+#### * DOWN (C06)
