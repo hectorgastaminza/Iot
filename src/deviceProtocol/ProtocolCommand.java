@@ -1,5 +1,7 @@
 package deviceProtocol;
 
+import java.util.ArrayList;
+
 public class ProtocolCommand {
 	private String description;
 	private String localError;
@@ -58,7 +60,6 @@ public class ProtocolCommand {
 		return retval;
 	}
 	
-	
 	public boolean isContained(String data) {
 		boolean retval = false;
 		localError = null;
@@ -104,5 +105,17 @@ public class ProtocolCommand {
 		return retval;
 	}
 	
+	
+	public static String[] extractCommands(ProtocolCommand command, String data) {
+		ArrayList<String> retval = new ArrayList<>();
+		
+		while(command.isContained(data))
+		{
+			retval.add(data.substring(command.posStart, command.posEnd));
+			data = data.substring(command.posEnd, data.length());
+		}
+		
+		return retval.toArray(new String[retval.size()]);
+	}
 	
 }

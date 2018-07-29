@@ -5,6 +5,7 @@ public class ProtocolSegment {
 	private String localError;	
 	private String id;
 	private String value;
+	private String valueRegex = "^[a-fA-F0-9]+$";
 	private int valueLenght;
 	private int segmentLenght;
 	private int posStart;
@@ -16,16 +17,16 @@ public class ProtocolSegment {
 		this.valueLenght = valueLenght;
 		calculateLenght(id);
 	}
-
-	private void calculateLenght(String id) {
-		this.segmentLenght = id.length() + this.valueLenght;
-	}
 	
 	public ProtocolSegment(String id, int valueLenght, String description)
 	{
 		this(id,valueLenght);
 		this.description = description;
 	}
+	
+	private void calculateLenght(String id) {
+		this.segmentLenght = id.length() + this.valueLenght;
+	}	
 	
 	public String getError() {
 		return (description != null) ? description + " : " + localError : localError;
@@ -57,22 +58,28 @@ public class ProtocolSegment {
 	
 	public boolean isContained(String param) {
 		boolean retval = false;
-		localError = null;
+		localError = "ID not found.";
+		int previousIdx = 0;
 		
-		if((param != null) && (param.length() >= segmentLenght)) {
-			posStart = param.indexOf(id);
-			if(posStart > -1) {
-				posEnd = posStart + segmentLenght;
-				retval = true;
+		posStart = param.indexOf(id, previousIdx);
+		while(posStart >= 0)
+		{
+			posEnd = posStart + segmentLenght;
+			if(posEnd <= param.length())
+			{
+				String auxValue = param.substring(posStart+id.length(), posEnd);
+				if(auxValue.matches(valueRegex))
+				{
+					retval = true;
+					break;
+				}
 			}
 			else
 			{
-				localError = "ID not found.";
+				localError = "Wrong size.";
 			}
-		}
-		else
-		{
-			localError = "Wrong size.";
+			previousIdx = posStart + 1;
+			posStart = param.indexOf(id, previousIdx);
 		}
 			
 		return retval;

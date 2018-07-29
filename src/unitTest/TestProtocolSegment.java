@@ -14,6 +14,9 @@ class TestProtocolSegment {
 		String cmdTest = "I55T04V000A";
 		
 		assertTrue(segment.isContained("I55"));
+		assertFalse(segment.isContained("IGG"));
+		assertTrue(segment.isContained("II55"));
+		assertFalse(segment.isContained("55I5"));
 		assertTrue(segment.isContained(cmdTest));
 		assertFalse(segment.isContained("I5"));
 		assertFalse(segment.isContained("T04V000A"));

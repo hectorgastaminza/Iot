@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import application.*;
-import device.Device;
 import device.DeviceCommand;
 import device.eDeviceCommands;
 

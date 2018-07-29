@@ -1,20 +1,16 @@
 package device;
 
+import java.util.ArrayList;
+
+import deviceProtocol.ProtocolCommand;
+import deviceProtocol.ProtocolSegment;
+
 /**
  * Define Command structure
  * @author USER
  *
  */
 public class DeviceCommand {
-	private final char deviceID = 'I';
-	private final int deviceLength = 2;
-	private final char cmdID = 'T';
-	private final int cmdLength = 2;
-	private final char valueID = 'V';
-	private final int valueLenght = 4;
-	private final int cmdMinimumLenght = (1 + deviceLength) + (1 + cmdLength) + (1 + valueLenght);
-	private final String extractHexadecimal = "^[a-fA-F0-9]+$";
-	
 	private int device = 0;
 	private eDeviceCommands cmd = eDeviceCommands.NONE;
 	private int value = 0;	
@@ -36,85 +32,26 @@ public class DeviceCommand {
 	 */
 	public DeviceCommand(String command)
 	{
-		if(command.length() >= cmdMinimumLenght)
-		{
-			command = command.toUpperCase();
+		ProtocolCommand protocolCmd = getProtocolCommand();
+				
+		command = command.toUpperCase();
+		
+		if(protocolCmd.extractValue(command)) {
+			try {
+				this.device = Integer.parseInt(protocolCmd.getValue(0), 16);
 
-			int idxDeviceID = command.indexOf(deviceID);
-			int idxCmdID = command.indexOf(cmdID);
-			int idxValueID = command.indexOf(valueID);
-
-			if(idxDeviceID > -1)
-			{
-				if(idxCmdID > -1)
-				{
-					if(idxValueID > -1)
+				int id = Integer.parseInt(protocolCmd.getValue(1), 16);				
+				for (eDeviceCommands var : eDeviceCommands.values()) {
+					if(var.getValue() == id)
 					{
-						if((idxDeviceID + deviceLength) < idxCmdID)
-						{
-							String auxDevice = command.substring(idxDeviceID+1, idxDeviceID + deviceLength + 1);
-							if(auxDevice.matches(extractHexadecimal) && parseStringToCommandDevice(auxDevice))
-							{
-								if((idxCmdID + cmdLength) < idxValueID)
-								{
-									String auxCmd = command.substring(idxCmdID+1, idxCmdID + cmdLength + 1);
-									if(auxCmd.matches(extractHexadecimal) && parseStringToCommandID(auxCmd))
-									{
-										if((idxValueID + valueLenght) < command.length())
-										{
-											String auxValue = command.substring(idxValueID+1, idxValueID + valueLenght + 1);
-											if(auxValue.matches(extractHexadecimal) && parseStringToCommandValue(auxValue))
-											{
-												// Great!!!
-											}
-											else
-											{
-												throw new Error("DeviceCommand value wrong value.");
-											}
-										}
-										else
-										{
-											throw new Error("DeviceCommand value wrong format.");
-										}
-									}
-									else
-									{
-										throw new Error("DeviceCommand ID wrong value.");
-									}
-								}
-								else
-								{
-									throw new Error("DeviceCommand ID wrong format.");
-								}
-							}
-							else
-							{
-								throw new Error("DeviceCommand device wrong value.");
-							}
-						}
-						else
-						{
-							throw new Error("DeviceCommand device wrong format.");
-						}
-					}
-					else
-					{
-						throw new Error("DeviceCommand value ID is not present.");
+						this.cmd = var;
+						break;
 					}
 				}
-				else
-				{
-					throw new Error("DeviceCommand cmd ID is not present.");
-				}
-			}
-			else
-			{
-				throw new Error("DeviceCommand device ID is not present.");
-			}
-		}
-		else
-		{
-			throw new Error("DeviceCommand string is below the minimum.");
+				
+				this.value = Integer.parseInt(protocolCmd.getValue(2), 16);				
+			} catch (Exception e) {
+			}		
 		}
 	}
 
@@ -137,71 +74,6 @@ public class DeviceCommand {
 	}
 	
 	/**
-	 * Gets command ID from a string
-	 * @param strCommand
-	 * @return
-	 */
-	private boolean parseStringToCommandID(String strCommand)
-	{
-		boolean retval = false; 
-		
-		try {
-			int id = Integer.parseInt(strCommand, 16);
-			
-			for (eDeviceCommands var : eDeviceCommands.values()) {
-				if(var.getValue() == id)
-				{
-					this.cmd = var;
-					retval = true;
-					break;
-				}
-			}	
-		} catch (Exception e) {
-			throw new Error("DeviceCommand get command error.");
-		}
-		
-		return retval;
-	}
-
-	/**
-	 * Gets command value from a string
-	 * @param strCommand
-	 * @return
-	 */
-	private boolean parseStringToCommandValue(String strCommand)
-	{
-		boolean retval = false; 
-		
-		try {
-			this.value = Integer.parseInt(strCommand, 16);
-			retval = true;
-		} catch (Exception e) {
-			throw new Error("DeviceCommand get value error.");
-		}
-		
-		return retval;
-	}
-	
-	/**
-	 * Gets command value from a string
-	 * @param strCommand
-	 * @return
-	 */
-	private boolean parseStringToCommandDevice(String strCommand)
-	{
-		boolean retval = false; 
-		
-		try {
-			this.device = Integer.parseInt(strCommand, 16);
-			retval = true;
-		} catch (Exception e) {
-			throw new Error("DeviceCommand get id error.");
-		}
-		
-		return retval;
-	}
-
-	/**
 	 * Gets a command device in a string format
 	 */
 	public String toString(){
@@ -219,5 +91,32 @@ public class DeviceCommand {
 	 */
 	public Boolean equals(DeviceCommand deviceCommand) {
 		return ((device == 0) || (device == deviceCommand.device)) && (cmd == deviceCommand.cmd) && (value == deviceCommand.value);
+	}
+	
+	static private final String deviceID = "I";
+	static private final int deviceLength = 2;
+	static private final String cmdID = "T";
+	static private final int cmdLength = 2;
+	static private final String valueID = "V";
+	static private final int valueLenght = 4;
+		
+	static private ProtocolCommand getProtocolCommand() {
+		ProtocolCommand protocolCmd = new ProtocolCommand(new ProtocolSegment[] {
+						new ProtocolSegment(deviceID, deviceLength, "Device ID"),
+						new ProtocolSegment(cmdID, cmdLength, "Command ID"),
+						new ProtocolSegment(valueID, valueLenght, "Value"),
+				});
+		return protocolCmd;
+	}
+	
+	public static DeviceCommand[] createDeviceCommand(String data) {
+		ArrayList<DeviceCommand> retval = new ArrayList<>();
+		String[] commands = ProtocolCommand.extractCommands(getProtocolCommand(), data);	
+		
+		for (String value : commands) {
+			retval.add(new DeviceCommand(value));
+		}
+		
+		return retval.toArray(new DeviceCommand[retval.size()]);
 	}
 }
