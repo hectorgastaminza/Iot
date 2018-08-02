@@ -25,6 +25,8 @@ My idea is an website/application where users could see a list of their remote d
 
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DGeneralDescription.puml)
 
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DProtocol.puml)
+
 MQTT: http://mqtt.org/
 
 Devices send and receive commands in order to inform or perform actions.
@@ -34,9 +36,9 @@ Because MQTT uses strings to send and receive messages, in order to avoid the pr
 ## DEVICE COMMAND
 A command is string compound by an ID and a value [ID + Value]
 
-Device ID: 		IXX 		where X is a number (hexadecimal) from 0 to F.
-Command ID: 	TXX 		where X is a number (hexadecimal) from 0 to F.
-Command Value:	VXXXX		where X is a number (hexadecimal) from 0 to F.
+- Device ID: 		IXX 		where X is a number (hexadecimal) from 0 to F.
+- Command ID: 	    TXX 		where X is a number (hexadecimal) from 0 to F.
+- Command Value:	VXXXX		where X is a number (hexadecimal) from 0 to F.
 
 Example : [I0AT1BV1B3F] where I0A is the device ID, T1B is the command ID and V1B3F is the command value.
 

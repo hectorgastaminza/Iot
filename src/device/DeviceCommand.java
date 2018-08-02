@@ -99,13 +99,17 @@ public class DeviceCommand {
 	static private final int cmdLength = 2;
 	static private final String valueID = "V";
 	static private final int valueLenght = 4;
+	static private ProtocolCommand protocolCmd;
 		
 	static private ProtocolCommand getProtocolCommand() {
-		ProtocolCommand protocolCmd = new ProtocolCommand(new ProtocolSegment[] {
+		if(protocolCmd == null) {
+			protocolCmd = new ProtocolCommand(new ProtocolSegment[] {
 						new ProtocolSegment(deviceID, deviceLength, "Device ID"),
 						new ProtocolSegment(cmdID, cmdLength, "Command ID"),
 						new ProtocolSegment(valueID, valueLenght, "Value"),
 				});
+		}
+		
 		return protocolCmd;
 	}
 	

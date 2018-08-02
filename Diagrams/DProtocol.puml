@@ -1,0 +1,39 @@
+@startuml
+class Device {
+	private int id;
+	private eDeviceStates state;
+	private int value;
+	void setState(eDeviceStates)
+	boolean setValue(int value)
+	public void setId(int id)
+}
+class DeviceCommand {
+private int device;
+private eDeviceCommands cmd;
+private int value;
+DeviceCommand[] createDeviceCommand(String)
+}
+class ProtocolCommand {
+private ProtocolSegment[] segments;
+String[] extractCommands(ProtocolCommand, String)
+}
+class ProtocolSegment {
+private String id;
+private String value;
+boolean isContained(String)
+boolean extractValue(String)
+}
+class DeviceCommandDispatcher{
+boolean processCommand(Device, DeviceCommand)
+}
+enum eDeviceCommands{
+}
+
+DeviceCommandDispatcher -down- Device
+DeviceCommand -left- DeviceCommandDispatcher
+DeviceCommand o-right- ProtocolCommand
+DeviceCommand o-down- eDeviceCommands
+ProtocolCommand *-right- ProtocolSegment
+
+
+@enduml
