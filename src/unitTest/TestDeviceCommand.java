@@ -11,8 +11,8 @@ class TestDeviceCommand {
 	
 	@Test
 	void test() {
-		DeviceCommand cmd1 = new DeviceCommand(0x55, eDeviceCommands.ON, 0x0A);
-		String test1 = "I55T04V000A";		
+		DeviceCommand cmd1 = new DeviceCommand(0x22, 0x55, eDeviceCommands.ON, 0x0A);
+		String test1 = "P22I55T04V000A";		
 		
 		assertEquals(cmd1.toString(), test1);
 		

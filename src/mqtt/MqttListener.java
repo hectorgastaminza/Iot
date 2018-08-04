@@ -63,4 +63,13 @@ public class MqttListener {
 			System.out.println("Mqtt excep " + me);
 		}
 	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		
+		if((mqttClient != null) && (mqttClient.isConnected())) {
+			mqttClient.disconnect();
+		}
+	}
 }

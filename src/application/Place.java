@@ -3,19 +3,25 @@ package application;
 import java.util.ArrayList;
 
 import device.Device;
+import device.IDeviceRefreshState;
 
 public class Place {
-	private String mqttTopic;
+	private int id;
 	private String description;
 	private ArrayList<Device> devices;
+	private IDeviceRefreshState callbackRefreshState = null;
 	
-	public Place(String mqttTopic) {
-		this.mqttTopic = mqttTopic;
+	public Place(int id) {
+		this.id = id;
 		devices = new ArrayList<>();
 	}
 	
-	public String getTopic() {
-		return mqttTopic;
+	public void setCallbackRefreshState(IDeviceRefreshState callbackRefreshState) {
+		this.callbackRefreshState = callbackRefreshState;
+		
+		for (Device device : devices) {
+			device.setCallbackRefreshState(callbackRefreshState);
+		}
 	}
 	
 	public String getDescription() {
@@ -57,11 +63,11 @@ public class Place {
 		return retval;
 	}
 	
-	public boolean addDevice(Device device) {
+	public boolean addDevice(int id) {
 		boolean retval = false;
-
-		if(containsDeviceId(device.getId()) >= 0) {
-			devices.add(device);
+		
+		if(containsDeviceId(id) >= 0) {
+			devices.add(new Device(this.id, id));
 			retval = true;
 		}
 		

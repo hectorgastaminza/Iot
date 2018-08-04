@@ -41,11 +41,14 @@ public class MqttPublisher {
 		mqttClient.connect(connOpts);
 	}
 	
-	public void publish(String topic, String content) {
+	public boolean publish(String topic, String content) {
+		boolean retval = false;
+		
 		try {
 			if(mqttClient.isConnected())
 			{
 				mqttClient.publish(myConfiguration.getRootTopic() + topic, content.getBytes(), myConfiguration.getQOS(), true);
+				retval = true;
 			}
 			else
 			{
@@ -58,6 +61,17 @@ public class MqttPublisher {
 			System.out.println("cause " + me.getCause());
 			System.out.println("excep " + me);
 			me.printStackTrace();
+		}
+		
+		return retval;
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		
+		if((mqttClient != null) && (mqttClient.isConnected())) {
+			mqttClient.disconnect();
 		}
 	}
 }

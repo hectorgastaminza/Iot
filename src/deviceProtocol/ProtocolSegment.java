@@ -52,6 +52,10 @@ public class ProtocolSegment {
 		return posEnd;
 	}
 	
+	public int getValueLenght() {
+		return valueLenght;
+	}
+	
 	public int getSegmentLenght() {
 		return segmentLenght;
 	}

@@ -50,6 +50,10 @@ public class ProtocolCommand {
 		return segment;
 	}
 	
+	public int getSegmentQuantity() {
+		return (segments == null) ? 0 : segments.length;
+	}
+	
 	public String toString() {
 		String retval = "";
 		

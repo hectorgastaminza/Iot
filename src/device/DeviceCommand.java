@@ -11,6 +11,7 @@ import deviceProtocol.ProtocolSegment;
  *
  */
 public class DeviceCommand {
+	private int place = 0;
 	private int device = 0;
 	private eDeviceCommands cmd = eDeviceCommands.NONE;
 	private int value = 0;	
@@ -20,7 +21,8 @@ public class DeviceCommand {
 	 * @param cmd : eDeviceCommands
 	 * @param value : int
 	 */
-	public DeviceCommand(int device, eDeviceCommands cmd, int value){
+	public DeviceCommand(int place, int device, eDeviceCommands cmd, int value){
+		this.place = place;
 		this.device = device;
 		this.cmd = cmd;
 		this.value = value;
@@ -38,23 +40,38 @@ public class DeviceCommand {
 		
 		if(protocolCmd.extractValue(command)) {
 			try {
-				this.device = Integer.parseInt(protocolCmd.getValue(0), 16);
-
-				int id = Integer.parseInt(protocolCmd.getValue(1), 16);				
+				/* Generic conversion */
+				int segmentsCount = protocolCmd.getSegmentQuantity();
+				int[] values = new int[segmentsCount];
+				for (int i = 0; i < values.length; i++) {
+					values[i] = Integer.parseInt(protocolCmd.getValue(i), 16);
+				}
+				/* Assign values */
+				this.place = values[0];
+				this.device = values[1];
+				this.cmd = eDeviceCommands.NONE;
+				this.value = values[3];
 				for (eDeviceCommands var : eDeviceCommands.values()) {
-					if(var.getValue() == id)
+					if(var.getValue() == values[2])
 					{
 						this.cmd = var;
 						break;
 					}
-				}
-				
-				this.value = Integer.parseInt(protocolCmd.getValue(2), 16);				
+				}			
 			} catch (Exception e) {
 			}		
 		}
 	}
 
+	/**
+	 * Gets place command ID
+	 * @return eDeviceCommands
+	 */
+	public int getPlace()
+	{
+		return place;
+	}
+	
 	/**
 	 * Gets device command ID
 	 * @return eDeviceCommands
@@ -73,15 +90,26 @@ public class DeviceCommand {
 		return value;
 	}
 	
+	protected int[] getValuesToSend( ) {
+		return new int[] {place, device, cmd.getValue(), value};
+	}
+	
 	/**
 	 * Gets a command device in a string format
 	 */
 	public String toString(){
-		String deviceFormat = "%0" + String.valueOf(deviceLength) + "X";
-		String cmdFormat = "%0" + String.valueOf(cmdLength) + "X";
-		String valueFormat = "%0" + String.valueOf(valueLenght) + "X";
-		String retval = deviceID + String.format(deviceFormat, device) + cmdID + String.format(cmdFormat, cmd.getValue()) + valueID + String.format(valueFormat, value);
-		return retval;
+		int[] values = getValuesToSend();
+		String format;
+		StringBuilder stringBuilder = new StringBuilder();
+		/* Generic conversion */
+		for (int idx = 0; idx < protocolSegments.length; idx++) {
+			stringBuilder.append(protocolSegments[idx].getId());
+			if(protocolSegments[idx].getValueLenght() > 0) {
+				format = "%0" + String.valueOf(protocolSegments[idx].getValueLenght()) + "X";
+				stringBuilder.append(String.format(format, values[idx])); 
+			}
+		}
+		return stringBuilder.toString();
 	}
 	
 	/**
@@ -90,9 +118,11 @@ public class DeviceCommand {
 	 * @return
 	 */
 	public Boolean equals(DeviceCommand deviceCommand) {
-		return ((device == 0) || (device == deviceCommand.device)) && (cmd == deviceCommand.cmd) && (value == deviceCommand.value);
+		return ((place == 0) || (device == deviceCommand.device)) && ((device == 0) || (device == deviceCommand.device)) && (cmd == deviceCommand.cmd) && (value == deviceCommand.value);
 	}
 	
+	static private final String placeID = "P";
+	static private final int placeLength = 2;
 	static private final String deviceID = "I";
 	static private final int deviceLength = 2;
 	static private final String cmdID = "T";
@@ -100,16 +130,17 @@ public class DeviceCommand {
 	static private final String valueID = "V";
 	static private final int valueLenght = 4;
 	static private ProtocolCommand protocolCmd;
+	static private ProtocolSegment[] protocolSegments = new ProtocolSegment[] {
+			new ProtocolSegment(placeID, placeLength, "Place ID"),
+			new ProtocolSegment(deviceID, deviceLength, "Device ID"),
+			new ProtocolSegment(cmdID, cmdLength, "Command ID"),
+			new ProtocolSegment(valueID, valueLenght, "Value"),
+	};
 		
 	static private ProtocolCommand getProtocolCommand() {
 		if(protocolCmd == null) {
-			protocolCmd = new ProtocolCommand(new ProtocolSegment[] {
-						new ProtocolSegment(deviceID, deviceLength, "Device ID"),
-						new ProtocolSegment(cmdID, cmdLength, "Command ID"),
-						new ProtocolSegment(valueID, valueLenght, "Value"),
-				});
+			protocolCmd = new ProtocolCommand(protocolSegments);
 		}
-		
 		return protocolCmd;
 	}
 	
