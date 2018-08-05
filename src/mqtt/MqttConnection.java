@@ -11,6 +11,7 @@ public class MqttConnection implements MqttCallback {
 	private MqttPublisher mqttPublisher;
 	private IMqttReceiveCallback mqttReceiveCallback;
 	protected String mqttTopic = "carp";
+	protected String mqttFullPath;
 
 	public MqttConnection(MqttConnectionConfiguration mqttConfig, IMqttReceiveCallback mqttReceiveCallback) {
 		this(mqttConfig);
@@ -19,6 +20,7 @@ public class MqttConnection implements MqttCallback {
 
 	public MqttConnection(MqttConnectionConfiguration mqttConfig) {
 		this.mqttConfig = mqttConfig;
+		mqttFullPath = mqttConfig.getRootTopic() + mqttTopic;
 	}
 	
 	public void mqttReceiveCallbackSet(IMqttReceiveCallback mqttReceiveCallback) {
@@ -27,6 +29,7 @@ public class MqttConnection implements MqttCallback {
 
 	public void mqttTopicSet(String mqttTopic) {
 		this.mqttTopic = mqttTopic;
+		mqttFullPath = mqttConfig.getRootTopic() + mqttTopic;
 	}
 	
 	public boolean connect() {
@@ -74,7 +77,7 @@ public class MqttConnection implements MqttCallback {
 	@Override
 	public void messageArrived(String arg0, MqttMessage arg1) throws Exception {
 		if(mqttReceiveCallback != null) {
-			if(true || mqttTopic.contentEquals(arg0)) {
+			if(mqttFullPath.contentEquals(arg0)) {
 				mqttReceiveCallback.mqttReceive(arg1.toString());
 			}
 		}
