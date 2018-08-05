@@ -71,11 +71,17 @@ public class ProtocolSegment {
 			posEnd = posStart + segmentLenght;
 			if(posEnd <= param.length())
 			{
-				String auxValue = param.substring(posStart+id.length(), posEnd);
-				if(auxValue.matches(valueRegex))
-				{
+				if(valueLenght == 0) {
 					retval = true;
 					break;
+				}
+				else {
+					String auxValue = param.substring(posStart+id.length(), posEnd);
+					if(auxValue.matches(valueRegex))
+					{
+						retval = true;
+						break;
+					}
 				}
 			}
 			else
@@ -95,7 +101,7 @@ public class ProtocolSegment {
 		
 		if(this.isContained(data))
 		{
-			value = data.substring(posStart + id.length() , posEnd);	
+			value = (valueLenght > 0) ? data.substring(posStart + id.length() , posEnd) : "0";	
 			retval = true;	
 		}
 		

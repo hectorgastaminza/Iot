@@ -1,6 +1,6 @@
 package device;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 import deviceProtocol.ProtocolCommand;
 import deviceProtocol.ProtocolSegment;
@@ -10,97 +10,68 @@ import deviceProtocol.ProtocolSegment;
  * @author USER
  *
  */
-public class DeviceCommand {
-	private int place = 0;
-	private int device = 0;
-	private eDeviceCommands cmd = eDeviceCommands.NONE;
-	private int value = 0;	
+abstract public class DeviceCommand {
+	static final private ProtocolSegment SEGMENT_PLACE_ID = new ProtocolSegment("P", 2, "Place ID");
+	static final private ProtocolSegment SEGMENT_DEVICE_ID = new ProtocolSegment("I", 2, "Device ID");
+	static final private int CMD_OFFSET = 3;
+	private int placeID = 0;
+	private int deviceID = 0;
 	
-	/**
-	 * Constructs a device command
-	 * @param cmd : eDeviceCommands
-	 * @param value : int
-	 */
-	public DeviceCommand(int place, int device, eDeviceCommands cmd, int value){
-		this.place = place;
-		this.device = device;
-		this.cmd = cmd;
-		this.value = value;
-	}
-		
-	/**
-	 * Constructs a device command from a String
-	 * @param command : String
-	 */
-	public DeviceCommand(String command)
-	{
-		ProtocolCommand protocolCmd = getProtocolCommand();
-				
-		command = command.toUpperCase();
-		
-		if(protocolCmd.extractValue(command)) {
-			try {
-				/* Generic conversion */
-				int segmentsCount = protocolCmd.getSegmentQuantity();
-				int[] values = new int[segmentsCount];
-				for (int i = 0; i < values.length; i++) {
-					values[i] = Integer.parseInt(protocolCmd.getValue(i), 16);
-				}
-				/* Assign values */
-				this.place = values[0];
-				this.device = values[1];
-				this.cmd = eDeviceCommands.NONE;
-				this.value = values[3];
-				for (eDeviceCommands var : eDeviceCommands.values()) {
-					if(var.getValue() == values[2])
-					{
-						this.cmd = var;
-						break;
-					}
-				}			
-			} catch (Exception e) {
-			}		
-		}
-	}
-
-	/**
-	 * Gets place command ID
-	 * @return eDeviceCommands
-	 */
-	public int getPlace()
-	{
-		return place;
+	abstract protected int[] refreshValues();
+	
+	abstract protected ProtocolCommand getProtocolCommand();
+	
+	abstract protected ProtocolSegment[] getProtocolSegments();
+	
+	public DeviceCommand(int place, int device) {
+		this.placeID = place;
+		this.deviceID = device;
 	}
 	
 	/**
-	 * Gets device command ID
-	 * @return eDeviceCommands
-	 */
-	public eDeviceCommands getId()
-	{
-		return cmd;
-	}
-	
-	/**
-	 * Gets device command value
+	 * Gets place ID
 	 * @return int
 	 */
-	public int getValue()
+	public int getPlaceID()
 	{
-		return value;
+		return placeID;
 	}
 	
-	protected int[] getValuesToSend( ) {
-		return new int[] {place, device, cmd.getValue(), value};
+	/**
+	 * Gets device ID
+	 * @return int
+	 */
+	public int getDeviceID()
+	{
+		return deviceID;
+	}
+	
+	/**
+	 * Determines if a DeviceCommand is equal to another one
+	 * @param deviceCommand
+	 * @return
+	 */
+	public Boolean equals(DeviceCommand deviceCommand) {
+		return ((placeID == 0) || (placeID == deviceCommand.placeID)) && ((deviceID == 0) || (deviceID == deviceCommand.deviceID));
 	}
 	
 	/**
 	 * Gets a command device in a string format
 	 */
 	public String toString(){
-		int[] values = getValuesToSend();
 		String format;
 		StringBuilder stringBuilder = new StringBuilder();
+		ProtocolSegment[] protocolSegments = getProtocolSegments();
+		
+		int[] cmds = refreshValues();
+		int[] values = new int[CMD_OFFSET + cmds.length];
+		values[0] = 0;
+		values[1] = placeID;
+		values[2] = deviceID;
+		for (int i = 0; i < cmds.length; i++) {
+			values[i + CMD_OFFSET] = cmds[i];
+		}
+		
 		/* Generic conversion */
 		for (int idx = 0; idx < protocolSegments.length; idx++) {
 			stringBuilder.append(protocolSegments[idx].getId());
@@ -112,46 +83,41 @@ public class DeviceCommand {
 		return stringBuilder.toString();
 	}
 	
-	/**
-	 * Determines if a DeviceCommand is equal to another one
-	 * @param deviceCommand
-	 * @return
-	 */
-	public Boolean equals(DeviceCommand deviceCommand) {
-		return ((place == 0) || (device == deviceCommand.device)) && ((device == 0) || (device == deviceCommand.device)) && (cmd == deviceCommand.cmd) && (value == deviceCommand.value);
+	protected int[] getValues(String command) {
+		int[] retval = null;
+		int[] values = null;
+		
+		ProtocolCommand protocolCmd = getProtocolCommand();
+		
+		command = command.toUpperCase();
+		
+		if(protocolCmd.extractValue(command)) {
+			/* Generic conversion */
+			int segmentsCount = protocolCmd.getSegmentQuantity();
+			values = new int[segmentsCount];
+			for (int i = 0; i < values.length; i++) {
+				values[i] = Integer.parseInt(protocolCmd.getValue(i), 16);
+			}
+		}
+		/* Generic set of values */
+		this.placeID = values[1];
+		this.deviceID = values[2];
+		
+		retval = Arrays.copyOfRange(values, 3, values.length);
+		
+		return retval;
 	}
 	
-	static private final String placeID = "P";
-	static private final int placeLength = 2;
-	static private final String deviceID = "I";
-	static private final int deviceLength = 2;
-	static private final String cmdID = "T";
-	static private final int cmdLength = 2;
-	static private final String valueID = "V";
-	static private final int valueLenght = 4;
-	static private ProtocolCommand protocolCmd;
-	static private ProtocolSegment[] protocolSegments = new ProtocolSegment[] {
-			new ProtocolSegment(placeID, placeLength, "Place ID"),
-			new ProtocolSegment(deviceID, deviceLength, "Device ID"),
-			new ProtocolSegment(cmdID, cmdLength, "Command ID"),
-			new ProtocolSegment(valueID, valueLenght, "Value"),
-	};
+	static protected ProtocolSegment[] createDeviceCommandProtocolSegments(ProtocolSegment command, ProtocolSegment[] values) {
+		ProtocolSegment[] retval = new ProtocolSegment[CMD_OFFSET + values.length];
 		
-	static private ProtocolCommand getProtocolCommand() {
-		if(protocolCmd == null) {
-			protocolCmd = new ProtocolCommand(protocolSegments);
-		}
-		return protocolCmd;
-	}
-	
-	public static DeviceCommand[] createDeviceCommand(String data) {
-		ArrayList<DeviceCommand> retval = new ArrayList<>();
-		String[] commands = ProtocolCommand.extractCommands(getProtocolCommand(), data);	
-		
-		for (String value : commands) {
-			retval.add(new DeviceCommand(value));
+		retval[0] = command;
+		retval[1] = SEGMENT_PLACE_ID;
+		retval[2] = SEGMENT_DEVICE_ID;
+		for (int i = 0; i < values.length; i++) {
+			retval[i + CMD_OFFSET] = values[i];
 		}
 		
-		return retval.toArray(new DeviceCommand[retval.size()]);
+		return retval;
 	}
 }

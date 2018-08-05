@@ -4,19 +4,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import device.DeviceCommand;
+import device.DeviceCommandRequest;
 import device.eDeviceCommands;
 
 class TestDeviceCommand {
 	
 	@Test
 	void test() {
-		DeviceCommand cmd1 = new DeviceCommand(0x22, 0x55, eDeviceCommands.ON, 0x0A);
-		String test1 = "P22I55T04V000A";		
+		DeviceCommandRequest cmd1 = new DeviceCommandRequest(0x22, 0x55, eDeviceCommands.ON, 0x0A);
+		String expected = "RQP22I55T04V000A";	
+		String actual = cmd1.toString();
 		
-		assertEquals(cmd1.toString(), test1);
+		assertEquals(actual, expected);
 		
-		DeviceCommand cmd2 = new DeviceCommand(test1);
+		DeviceCommandRequest cmd2 = new DeviceCommandRequest(expected);
 		
 		assertTrue(cmd1.equals(cmd2));
 	}

@@ -1,14 +1,13 @@
 package application;
 
-import device.DeviceCommand;
+import device.DeviceCommandRefreshState;
 import device.eDeviceStates;
 import mqtt.MqttConnection;
-import mqtt.MqttPublisher;
 
 public class AppConnection implements mqtt.IMqttReceiveCallback, device.IDeviceRefreshState{
-	protected String mqttTopic = "comit";
-	protected mqtt.MqttConnectionConfiguration mqttConfig;
-	protected mqtt.MqttConnection mqttConnection;
+	private String mqttTopic = "comit";
+	private mqtt.MqttConnectionConfiguration mqttConfig;
+	private mqtt.MqttConnection mqttConnection;
 
 	public AppConnection(mqtt.MqttConnectionConfiguration mqttConfig) {
 		this.mqttConfig = mqttConfig;
@@ -22,19 +21,20 @@ public class AppConnection implements mqtt.IMqttReceiveCallback, device.IDeviceR
 		
 	    return mqttConnection.connect();
 	}
-
-	@Override
-	public void mqttReceive(String data) {
+	
+	public boolean disconnect() {
+		return mqttConnection.disconnect();
 	}
 
 	@Override
-	public boolean refreshState(int place, int id, eDeviceStates state, int value) {
-		boolean retval = false;
+	public void mqttReceive(String data) {
+		System.out.println(data);
+	}
+
+	@Override
+	public boolean refreshState(int placeID, int deviceID, eDeviceStates state, int value) {
+		DeviceCommandRefreshState command = new DeviceCommandRefreshState(placeID, deviceID, state, value);
 		
-		//DeviceCommand command = new DeviceCommand(place, id, state, value);
-		
-		//this.mqttConnection.MqttSend(command.toString());
-		
-		return retval;
+		return mqttConnection.MqttSend(command.toString());
 	}
 }

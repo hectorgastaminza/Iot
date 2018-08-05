@@ -2,6 +2,7 @@ package mqtt;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MqttConnection implements MqttCallback {
@@ -34,6 +35,26 @@ public class MqttConnection implements MqttCallback {
 		return true;
 	}
 	
+	public boolean disconnect() {
+		boolean retval = true;
+		try {
+		if(mqttListener != null && mqttListener.mqttClient.isConnected())
+		{
+			mqttListener.mqttClient.disconnectForcibly();
+			mqttListener.mqttClient.close();
+			mqttListener.mqttClient = null;
+		}
+		if(mqttPublisher != null && mqttPublisher.mqttClient.isConnected())
+		{
+			mqttPublisher.mqttClient.disconnectForcibly();
+			mqttPublisher.mqttClient.close();
+			mqttPublisher.mqttClient = null;
+		}
+		}
+		catch(MqttException e) { retval = false; }
+		return retval;
+	}
+	
 	public boolean MqttSend(String data) {
 		return this.mqttPublisher.publish(mqttTopic, data);
 	}
@@ -53,9 +74,15 @@ public class MqttConnection implements MqttCallback {
 	@Override
 	public void messageArrived(String arg0, MqttMessage arg1) throws Exception {
 		if(mqttReceiveCallback != null) {
-			if(mqttTopic.contentEquals(arg0)) {
+			if(true || mqttTopic.contentEquals(arg0)) {
 				mqttReceiveCallback.mqttReceive(arg1.toString());
 			}
 		}
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		this.disconnect();
 	}
 }

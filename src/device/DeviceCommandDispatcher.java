@@ -2,7 +2,7 @@ package device;
 
 public class DeviceCommandDispatcher {
 	
-	public static boolean processCommand(Device device, DeviceCommand command)
+	public static boolean processCommandRequest(Device device, DeviceCommandRequest command)
 	{
 		boolean retval = false;
 		
