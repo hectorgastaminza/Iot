@@ -2,12 +2,6 @@ package demo;
 
 import java.util.Scanner;
 
-import application.AppConnection;
-import application.IStringCommandCallback;
-import device.eDeviceCommands;
-import device.eDeviceStates;
-import mqtt.MqttConnectionConfiguration;
-
 public class Main {
 
 	public static void main(String[] args) {		

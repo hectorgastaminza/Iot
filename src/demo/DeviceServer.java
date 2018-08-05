@@ -4,12 +4,8 @@ import java.util.Scanner;
 
 import application.AppConnection;
 import application.IStringCommandCallback;
-import device.Device;
-import device.DeviceCommandDispatcher;
 import device.DeviceCommandRefreshState;
-import device.DeviceCommandRequest;
 import device.eDeviceCommands;
-import device.eDeviceStates;
 import mqtt.MqttConnectionConfiguration;
 
 public class DeviceServer implements IStringCommandCallback {

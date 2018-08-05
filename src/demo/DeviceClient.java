@@ -7,7 +7,6 @@ import application.IStringCommandCallback;
 import device.Device;
 import device.DeviceCommandDispatcher;
 import device.DeviceCommandRequest;
-import device.eDeviceStates;
 import mqtt.MqttConnectionConfiguration;
 
 public class DeviceClient implements IStringCommandCallback {
