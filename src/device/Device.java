@@ -35,6 +35,7 @@ public class Device {
 	
 	public void setState(eDeviceStates state) {
 		this.state = state;
+		refreshState();
 	}
 	
 	public int getValue() {
@@ -63,22 +64,32 @@ public class Device {
 	}
 	
 	public boolean reset() {
+		setState(eDeviceStates.NONE);
+		System.out.println("reset");
 		return true;
 	}
 	
 	public boolean on() {
+		setState(eDeviceStates.ON);
+		System.out.println("on");
 		return true;
 	}
 	
 	public boolean off() {
+		setState(eDeviceStates.OFF);
+		System.out.println("off");
 		return true;
 	}
 	
 	public boolean up() {
+		setState(eDeviceStates.ON_VALUE);
+		System.out.println("up");
 		return true;
 	}
 	
 	public boolean down() {
+		setState(eDeviceStates.ON_VALUE);
+		System.out.println("down");
 		return true;
 	}
 	

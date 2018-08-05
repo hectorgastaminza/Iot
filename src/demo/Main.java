@@ -4,37 +4,51 @@ import java.util.Scanner;
 
 import application.AppConnection;
 import application.IStringCommandCallback;
+import device.eDeviceCommands;
 import device.eDeviceStates;
 import mqtt.MqttConnectionConfiguration;
 
-public class Main implements IStringCommandCallback {
+public class Main {
 
 	public static void main(String[] args) {		
+		final int PLACE_ID = 8;
+		final int DEVICE_ID = 9;
 		Scanner scanner = new Scanner(System.in);
-		int option = 0;
 		
-		AppConnection connection = new AppConnection(new MqttConnectionConfiguration(), new Main());
+		int option = -1;
 		
 		System.out.println("Hello comit...");
 		System.out.println("This is a IOT test.");
-		System.out.println("Enter values between [0 : 99]");
 		
-		connection.connect();
-		
-		while ((option <= 99) && (option >= 0)) {
+		while (option != 0) {
+			System.out.println("1 - Device client");
+			System.out.println("2 - Device server");
+			System.out.println("0 - exit");
+			System.out.println("Enter option selected:");
 			option = scanner.nextInt();
-			connection.commandRefreshState(8, 16, eDeviceStates.ON, option);
+			
+			switch (option) {
+			case 1:
+				{
+					DeviceClient client = new DeviceClient(PLACE_ID, DEVICE_ID);
+					client.createDeviceClient();
+				}
+				break;
+			case 2:
+				{
+					DeviceServer server = new DeviceServer(PLACE_ID, DEVICE_ID);
+					server.createDeviceServer();
+				}
+				break;
+			default:
+				break;
+			}
 		}
 		
-		System.out.println("Almost finish... waiting for disconnection...");
-		
-		System.out.println("Disconnection : " + (connection.disconnect() ? "OK" : "FAIL"));
+		System.out.println("Closing application... almost done...");
+
+		scanner.close();
 		
 		System.out.println("Bye!");
-	}
-	
-	public boolean receivedStringCommand(String command) {
-		System.out.println(command);
-		return true;
 	}
 }
