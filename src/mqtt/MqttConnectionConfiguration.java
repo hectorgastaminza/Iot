@@ -16,16 +16,36 @@ public class MqttConnectionConfiguration {
 	/* Clean session */
 	private boolean cleanSession = true;
 
-	public String getUsername() {
+	/** Generic constructor */
+	public MqttConnectionConfiguration() {}
+	
+	public MqttConnectionConfiguration(
+	String brokerHost, int brokerPort, int brokerWebSocketsPort,
+	String userId, String password,
+	String rootTopic
+	) {
+		this.brokerHost = brokerHost;
+		this.brokerPort = brokerPort;
+		this.brokerWebSocketsPort = brokerWebSocketsPort;
+		this.userId = userId;
+		this.password = password;
+		this.rootTopic = rootTopic;
+	}
+	
+	protected String getUsername() {
 		return userId;
 	}
 
-	public char[] getPassword() {
+	protected char[] getPassword() {
 		return password.toCharArray();
 	}
 
-	public String getBrokerURL() {
+	protected String getBrokerURL() {
 		return ("tcp://"+brokerHost+":"+String.valueOf(brokerPort));		
+	}
+	
+	protected int getBrokerWebSocketsPort() {
+		return brokerWebSocketsPort;		
 	}
 	
 	public String getRootTopic() {

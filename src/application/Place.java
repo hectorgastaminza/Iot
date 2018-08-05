@@ -3,24 +3,24 @@ package application;
 import java.util.ArrayList;
 
 import device.Device;
-import device.IDeviceRefreshState;
+import device.IDeviceCommandsCallback;
 
 public class Place {
 	private int id;
 	private String description;
 	private ArrayList<Device> devices;
-	private IDeviceRefreshState callbackRefreshState = null;
+	private IDeviceCommandsCallback callbackRefreshState = null;
 	
 	public Place(int id) {
 		this.id = id;
 		devices = new ArrayList<>();
 	}
 	
-	public void setCallbackRefreshState(IDeviceRefreshState callbackRefreshState) {
+	public void setCallbackRefreshState(IDeviceCommandsCallback callbackRefreshState) {
 		this.callbackRefreshState = callbackRefreshState;
 		
 		for (Device device : devices) {
-			device.setCallbackRefreshState(callbackRefreshState);
+			device.setDeviceCommandsCallback(callbackRefreshState);
 		}
 	}
 	

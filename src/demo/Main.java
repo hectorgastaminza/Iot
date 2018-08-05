@@ -1,17 +1,19 @@
-package application;
+package demo;
 
 import java.util.Scanner;
 
+import application.AppConnection;
+import application.IStringCommandCallback;
 import device.eDeviceStates;
 import mqtt.MqttConnectionConfiguration;
 
-public class Main {
+public class Main implements IStringCommandCallback {
 
 	public static void main(String[] args) {		
 		Scanner scanner = new Scanner(System.in);
 		int option = 0;
 		
-		AppConnection connection = new AppConnection(new MqttConnectionConfiguration());
+		AppConnection connection = new AppConnection(new MqttConnectionConfiguration(), new Main());
 		
 		System.out.println("Hello comit...");
 		System.out.println("This is a IOT test.");
@@ -21,7 +23,7 @@ public class Main {
 		
 		while ((option <= 99) && (option >= 0)) {
 			option = scanner.nextInt();
-			connection.refreshState(8, 16, eDeviceStates.ON, option);
+			connection.commandRefreshState(8, 16, eDeviceStates.ON, option);
 		}
 		
 		System.out.println("Almost finish... waiting for disconnection...");
@@ -30,5 +32,9 @@ public class Main {
 		
 		System.out.println("Bye!");
 	}
-
+	
+	public boolean receivedStringCommand(String command) {
+		System.out.println(command);
+		return true;
+	}
 }

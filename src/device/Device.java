@@ -5,7 +5,7 @@ public class Device {
 	private int id = 0;
 	private eDeviceStates state = eDeviceStates.NONE;
 	private int value = 0;
-	private IDeviceRefreshState callbackRefreshState = null;
+	private IDeviceCommandsCallback deviceCommandsCallback = null;
 	private String description;
 	
 	public Device(int place, int id) {
@@ -29,8 +29,8 @@ public class Device {
 		return state;
 	}
 	
-	public void setCallbackRefreshState(IDeviceRefreshState callbackRefreshState) {
-		this.callbackRefreshState = callbackRefreshState;
+	public void setDeviceCommandsCallback(IDeviceCommandsCallback deviceCommandsCallback) {
+		this.deviceCommandsCallback = deviceCommandsCallback;
 	}
 	
 	public void setState(eDeviceStates state) {
@@ -83,6 +83,6 @@ public class Device {
 	}
 	
 	public boolean refreshState() {
-		return (callbackRefreshState != null) ? callbackRefreshState.refreshState(place, id, state, value) : false;
+		return (deviceCommandsCallback != null) ? deviceCommandsCallback.commandRefreshState(place, id, state, value) : false;
 	}
 }
