@@ -1,4 +1,4 @@
-package demo;
+package raspberry;
 
 import java.util.Scanner;
 
