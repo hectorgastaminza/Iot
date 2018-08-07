@@ -4,6 +4,12 @@ import java.util.Scanner;
 
 public class Main {
 
+	/**
+	 * See
+	 * https://docs.oracle.com/javase/tutorial/essential/environment/cmdLineArgs.html
+	 * @param args
+	 */
+	
 	public static void main(String[] args) {		
 		final int PLACE_ID = 8;
 		final int DEVICE_ID = 9;

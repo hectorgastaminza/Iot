@@ -51,7 +51,7 @@ public class Device {
 		return place;
 	}
 	
-	public void setPlace(int place) {
+	private void setPlace(int place) {
 		this.place = place;
 	}
 	
