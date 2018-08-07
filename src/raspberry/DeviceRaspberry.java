@@ -22,7 +22,7 @@ import com.pi4j.io.gpio.event.GpioPinEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import com.pi4j.io.gpio.event.PinEventType;
 
-public class DeviceRaspberry3BPlus extends device.Device {
+public class DeviceRaspberry extends device.Device {
 	/** 
 	 * http://pi4j.com/usage.html
 	 */
