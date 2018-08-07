@@ -9,6 +9,8 @@ import device.DeviceCommandDispatcher;
 import device.DeviceCommandRequest;
 import mqtt.MqttConnectionConfiguration;
 
+import com.pi4j.io.gpio.GpioPin;
+
 public class DeviceClient implements IStringCommandCallback {
 	private int placeID;
 	private int deviceID;

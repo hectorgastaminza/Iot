@@ -29,7 +29,7 @@ public class DeviceRaspberry extends device.Device {
 	final GpioController gpio;
 	GpioPinDigitalOutput myLed;
 	
-	public DeviceRaspberry3BPlus(int place, int id, RaspiPin pin) {
+	public DeviceRaspberry(int place, int id, Pin pin) {
 		super(place, id);
 		gpio = GpioFactory.getInstance();
 		// provision gpio pins #04 as an output pin and make sure is is set to LOW at startup
