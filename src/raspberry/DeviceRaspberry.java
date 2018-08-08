@@ -1,7 +1,7 @@
 package raspberry;
 
 import device.eDeviceStates;
-/*
+
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPin;
@@ -21,28 +21,23 @@ import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import com.pi4j.io.gpio.event.PinEventType;
-*/
+
 public class DeviceRaspberry extends device.Device {
 	/** 
 	 * http://pi4j.com/usage.html
 	 */
-	/*
 	final GpioController gpio;
 	GpioPinDigitalOutput myLed;
-	*/
+
 	public DeviceRaspberry(int place, int id, int pin) {
 		super(place, id);
-		/*
 		gpio = GpioFactory.getInstance();
 		// provision gpio pins #04 as an output pin and make sure is is set to LOW at startup
-		myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04,   // PIN NUMBER
-		                                                           "My LED",           	// PIN FRIENDLY NAME (optional)
-		                                                           PinState.LOW);      	// PIN STARTUP STATE (optional)		
+		myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "My LED", PinState.LOW);
 		// configure the pin shutdown behavior; these settings will be
 		// automatically applied to the pin when the application is terminated
 		// ensure that the LED is turned OFF when the application is shutdown
 		myLed.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
-		*/
 	}
 	
 	public boolean reset() {
@@ -51,16 +46,12 @@ public class DeviceRaspberry extends device.Device {
 	}
 	
 	public boolean on() {
-        // explicitly set a state on the pin object
-        //myLed.high();
-		setState(eDeviceStates.ON);
+        myLed.high();
 		return true;
 	}
 	
 	public boolean off() {
-        // explicitly set a state on the pin object
-		//myLed.low();
-		setState(eDeviceStates.OFF);
+		myLed.low();
 		return true;
 	}
 	
@@ -76,8 +67,8 @@ public class DeviceRaspberry extends device.Device {
 	
 	@Override
 	protected void finalize() throws Throwable {
-		// TODO Auto-generated method stub
 		super.finalize();
+		gpio.shutdown();
 	}
 
 }
