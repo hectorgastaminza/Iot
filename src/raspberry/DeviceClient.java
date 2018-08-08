@@ -18,7 +18,7 @@ public class DeviceClient implements IStringCommandCallback {
 	public DeviceClient(int placeID, int deviceID) {
 		this.placeID = placeID;
 		this.deviceID = deviceID;
-		device = new DeviceRaspberry(placeID, deviceID);
+		device = new DeviceRaspberry(placeID, deviceID, 0);
 	}
 	
 	public boolean receivedStringCommand(String command) {
