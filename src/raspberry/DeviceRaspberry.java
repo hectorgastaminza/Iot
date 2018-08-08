@@ -67,10 +67,6 @@ public class DeviceRaspberry extends device.Device {
 		return true;
 	}
 	
-	public boolean refreshState() {
-		return (deviceCommandsCallback != null) ? deviceCommandsCallback.commandRefreshState(place, id, state, value) : false;
-	}
-	
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
