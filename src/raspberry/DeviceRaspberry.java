@@ -47,11 +47,13 @@ public class DeviceRaspberry extends device.Device {
 	
 	public boolean on() {
         myLed.high();
+        setState(eDeviceStates.ON);
 		return true;
 	}
 	
 	public boolean off() {
 		myLed.low();
+		setState(eDeviceStates.OFF);
 		return true;
 	}
 	
@@ -63,6 +65,10 @@ public class DeviceRaspberry extends device.Device {
 	public boolean down() {
 		setState(eDeviceStates.ON_VALUE);
 		return true;
+	}
+	
+	public boolean refreshState() {
+		return (deviceCommandsCallback != null) ? deviceCommandsCallback.commandRefreshState(place, id, state, value) : false;
 	}
 	
 	@Override
