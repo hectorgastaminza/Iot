@@ -39,12 +39,14 @@ public class DeviceClient implements IStringCommandCallback {
 	public void createDeviceClient() {
 		Scanner scanner = new Scanner(System.in);
 		
+		System.out.println("Device " + deviceID + " on place " + placeID + " connecting...");
+		
 		AppConnection connection = new AppConnection(new MqttConnectionConfiguration(), this);
+		boolean result = connection.connect();
 		device.setDeviceCommandsCallback(connection);
 		
-		System.out.println("Device " + deviceID + " on place " + placeID + " connecting...");
-		System.out.println("Connection : " + connection.connect());		
-		
+		System.out.println("Connection : " + result);		
+
 		while (option != 0) {
 			System.out.println("1 - Device on");
 			System.out.println("2 - Device off");

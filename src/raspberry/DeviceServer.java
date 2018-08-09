@@ -40,10 +40,12 @@ public class DeviceServer implements IStringCommandCallback {
 	public void createDeviceServer() {
 		Scanner scanner = new Scanner(System.in);
 		
+		System.out.println("ServerRaspberry " + deviceID + " on place " + placeID + " connecting...");
+
 		AppConnection connection = new AppConnection(new MqttConnectionConfiguration(), this);
+		boolean result =  connection.connect();
 		
-		System.out.println("Device " + deviceID + " on place " + placeID + " connecting...");
-		System.out.println("Connection : " + connection.connect());		
+		System.out.println("Connection : " + result);		
 		
 		while (option != 0) {
 			System.out.println("1 - Device on");

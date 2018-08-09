@@ -38,6 +38,8 @@ public class DeviceRaspberry extends device.Device {
 		// automatically applied to the pin when the application is terminated
 		// ensure that the LED is turned OFF when the application is shutdown
 		myLed.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+		
+		System.out.println("RASPBERRY DEVICE!!!");
 	}
 	
 	public boolean reset() {
