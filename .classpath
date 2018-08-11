@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="raspberry/" kind="src" path="src"/>
+	<classpathentry excluding="raspberry/|device/raspberry/|demo/raspberry/" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="lib" path="src/protocol/mqtt/org.eclipse.paho.client.mqttv3-1.0.2.jar"/>
