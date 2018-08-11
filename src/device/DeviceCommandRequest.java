@@ -37,15 +37,8 @@ public class DeviceCommandRequest extends DeviceCommand {
 		int[] values = getValues(command);
 		
 		/* Assign values */
+		this.cmd = eDeviceCommands.getFromValue(values[0]);
 		this.value = values[1];
-		this.cmd = eDeviceCommands.NONE;
-		for (eDeviceCommands var : eDeviceCommands.values()) {
-			if(var.getValue() == values[0])
-			{
-				this.cmd = var;
-				break;
-			}
-		}
 	}
 
 	/**

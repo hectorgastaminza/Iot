@@ -1,0 +1,36 @@
+@startuml
+class AppClient{
+}
+class DeviceClient{
+	ProcessServerRequest()
+	SendStatus()
+}
+class AppConnection {
+	connect()
+	disconnect()
+	send()
+	receive()
+}
+class Device {
+deviceID
+placeID
+name
+description
+}
+class MqttConnectionConfiguration{
+  brokerHost
+  brokerPort
+  userId
+  password
+}
+
+
+
+AppClient o-- MqttConnectionConfiguration
+AppClient o-- DeviceClient
+AppClient o-- AppConnection
+AppClient o-- Device
+DeviceClient -- AppConnection
+DeviceClient -- Device
+
+@enduml

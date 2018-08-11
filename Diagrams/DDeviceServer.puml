@@ -1,0 +1,54 @@
+@startuml
+class AppServer{
+}
+class User{
+username
+password
+}
+class Database{
+}
+class EndPoint{
+}
+class DeviceServer{
+	SendRequest()
+	ProcessClientResponse()
+	RefreshEndPoint()
+	RefreshPersistentData()
+}
+class AppConnection {
+	connect()
+	disconnect()
+	send()
+	receive()
+}
+class Place {
+placeID
+name
+description
+}
+class Device {
+deviceID
+placeID
+name
+description
+}
+class MqttConnectionConfiguration{
+  brokerHost
+  brokerPort
+  userId
+  password
+}
+
+AppServer o-- User
+User o-- MqttConnectionConfiguration
+AppConnection -- MqttConnectionConfiguration
+AppServer o-- Database
+AppServer o-- EndPoint
+AppServer o-- DeviceServer
+AppServer o-- AppConnection
+DeviceServer -- AppConnection
+DeviceServer o-- Place
+Place o-- Device
+
+
+@enduml

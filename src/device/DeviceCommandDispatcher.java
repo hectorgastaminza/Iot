@@ -4,9 +4,13 @@ public class DeviceCommandDispatcher {
 	
 	public static boolean processCommandRequest(Device device, DeviceCommandRequest command)
 	{
+		return processCommand(device, command.getId(), command.getValue());
+	}
+	
+	public static boolean processCommand(Device device, eDeviceCommands command, int value) {
 		boolean retval = false;
 		
-		switch (command.getId()) {
+		switch (command) {
 		case RESET:
 			retval = device.reset();
 			break;
@@ -17,7 +21,7 @@ public class DeviceCommandDispatcher {
 			retval = device.on();
 			break;
 		case SET_VALUE:
-			retval = device.setValue(command.getValue());;
+			retval = device.setValue(value);
 			break;
 		case UP:
 			retval = device.up();
