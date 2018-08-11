@@ -6,11 +6,11 @@ public class MqttConnectionConfiguration {
 	/* Optional */
 	private int brokerWebSocketsPort = 8080;
 	/* Optional */
-	private String userId = "hectorgastaminza@gmail.com";
+	private String userId = "comiotproject@gmail.com";
 	/* Optional */
-	private String password = "67b9ee69";
+	private String password = "fbe4629f";
 	/* Optional */
-	private String rootTopic = "/hectorgastaminza@gmail.com/";
+	private String rootTopic = "/comiotproject@gmail.com/";
 	/* Quality of service */
 	private int qos = 0;
 	/* Clean session */
