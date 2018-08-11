@@ -1,9 +1,9 @@
-package device;
+package device.command;
 
 import java.util.ArrayList;
 
-import deviceProtocol.ProtocolCommand;
-import deviceProtocol.ProtocolSegment;
+import device.protocol.ProtocolCommand;
+import device.protocol.ProtocolSegment;
 
 public class DeviceCommandRequest extends DeviceCommand {
 	static final private ProtocolSegment COMMAND_HEADER_ID = new ProtocolSegment("RQ", 0, "Request Command");

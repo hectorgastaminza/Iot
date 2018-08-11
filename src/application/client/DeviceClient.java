@@ -1,11 +1,11 @@
 package application.client;
 
-import application.AppConnection;
-import application.IStringCommandCallback;
+import application.common.AppConnection;
+import application.common.IStringCommandCallback;
 import device.Device;
-import device.DeviceCommandDispatcher;
-import device.DeviceCommandRequest;
 import device.DeviceControl;
+import device.command.DeviceCommandDispatcher;
+import device.command.DeviceCommandRequest;
 
 public class DeviceClient implements IStringCommandCallback {
 	private AppConnection appConnection = null;
@@ -41,6 +41,10 @@ public class DeviceClient implements IStringCommandCallback {
 		
 		return retval;
 	}
+	
+	public boolean disconnect() {
+		return appConnection.disconnect();
+	}
 		
 	static public void clientLaunch(Device device, AppConnection appConnection) {
 		boolean connection = false;
@@ -53,7 +57,7 @@ public class DeviceClient implements IStringCommandCallback {
 			DeviceControl.console(device);
 			
 			System.out.println("Closing connection... almost done... waiting for disconnection...");
-			connection = appConnection.disconnect();
+			connection = deviceClient.disconnect();
 			System.out.println("Disconnection : " + ((connection) ? "OK" : "FAIL"));
 		}
 	}

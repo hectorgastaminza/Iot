@@ -1,4 +1,4 @@
-package mqtt;
+package protocol.mqtt;
 
 public class MqttConnectionConfiguration {
 	private String brokerHost = "mqtt.dioty.co";

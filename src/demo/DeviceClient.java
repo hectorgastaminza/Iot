@@ -2,12 +2,12 @@ package demo;
 
 import java.util.Scanner;
 
-import application.AppConnection;
-import application.IStringCommandCallback;
+import application.common.AppConnection;
+import application.common.IStringCommandCallback;
 import device.Device;
-import device.DeviceCommandDispatcher;
-import device.DeviceCommandRequest;
-import mqtt.MqttConnectionConfiguration;
+import device.command.DeviceCommandDispatcher;
+import device.command.DeviceCommandRequest;
+import protocol.mqtt.MqttConnectionConfiguration;
 
 public class DeviceClient implements IStringCommandCallback {
 	private int placeID;

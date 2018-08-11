@@ -4,14 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import deviceProtocol.ProtocolCommand;
-import deviceProtocol.ProtocolSegment;
+import device.protocol.ProtocolCommand;
+import device.protocol.ProtocolSegment;
 
 class TestProtocolCommand {
 
 	@Test
 	void test() {
-		deviceProtocol.ProtocolCommand command = new ProtocolCommand(new ProtocolSegment[] {
+		device.protocol.ProtocolCommand command = new ProtocolCommand(new ProtocolSegment[] {
 				new ProtocolSegment("I", 2, "Id"),
 				new ProtocolSegment("T", 2, "Command"),
 				new ProtocolSegment("V", 4, "Value"),

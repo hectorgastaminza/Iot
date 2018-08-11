@@ -1,9 +1,10 @@
-package device;
+package device.command;
 
 import java.util.ArrayList;
 
-import deviceProtocol.ProtocolCommand;
-import deviceProtocol.ProtocolSegment;
+import device.eDeviceStates;
+import device.protocol.ProtocolCommand;
+import device.protocol.ProtocolSegment;
 
 public class DeviceCommandRefreshState extends DeviceCommand {
 	

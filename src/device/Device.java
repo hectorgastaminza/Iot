@@ -1,6 +1,13 @@
 package device;
 
+import device.command.IDeviceCommandsCallback;
+
 public class Device {
+	public static final int DEVICE_ID_INVALID = 0x00;
+	public static final int DEVICE_ID_BROADCAST = 0xFF;
+	public static final int DEVICE_ID_MIN = DEVICE_ID_INVALID + 1;
+	public static final int DEVICE_ID_MAX = DEVICE_ID_BROADCAST - 1;
+	
 	private int place = 0;
 	private int id = 0;
 	private eDeviceStates state = eDeviceStates.NONE;
@@ -33,6 +40,11 @@ public class Device {
 		this.deviceCommandsCallback = deviceCommandsCallback;
 	}
 	
+	public void setState(eDeviceStates state, int value) {
+		this.state = state;
+		this.value = value;
+	}
+	
 	public void setState(eDeviceStates state) {
 		this.state = state;
 		
@@ -54,7 +66,7 @@ public class Device {
 		return true;
 	}
 	
-	public int getPlace() {
+	public int getPlaceID() {
 		return place;
 	}
 	

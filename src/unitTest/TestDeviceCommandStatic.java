@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import device.DeviceCommandRequest;
+import device.command.DeviceCommandRequest;
 
 class TestDeviceCommandStatic {
 

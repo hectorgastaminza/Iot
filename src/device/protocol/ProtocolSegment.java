@@ -1,4 +1,4 @@
-package deviceProtocol;
+package device.protocol;
 
 public class ProtocolSegment {
 	private String description;

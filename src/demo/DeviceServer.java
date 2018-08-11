@@ -2,11 +2,11 @@ package demo;
 
 import java.util.Scanner;
 
-import application.AppConnection;
-import application.IStringCommandCallback;
-import device.DeviceCommandRefreshState;
-import device.eDeviceCommands;
-import mqtt.MqttConnectionConfiguration;
+import application.common.AppConnection;
+import application.common.IStringCommandCallback;
+import device.command.DeviceCommandRefreshState;
+import device.command.eDeviceCommands;
+import protocol.mqtt.MqttConnectionConfiguration;
 
 public class DeviceServer implements IStringCommandCallback {
 

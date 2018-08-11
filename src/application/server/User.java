@@ -1,7 +1,7 @@
-package application;
+package application.server;
 
 public class User {
 	private String username;
 	private String password;
-	private mqtt.MqttConnectionConfiguration mqttConfig;
+	private protocol.mqtt.MqttConnectionConfiguration mqttConfig;
 }

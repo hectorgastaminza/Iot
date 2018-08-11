@@ -1,4 +1,4 @@
-package device;
+package device.command;
 /**
  * Define device available commands
  * 

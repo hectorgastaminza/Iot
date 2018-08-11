@@ -1,27 +1,22 @@
-package application;
+package application.server;
 
-import java.util.ArrayList;
-
+import java.util.HashMap;
 import device.Device;
-import device.IDeviceCommandsCallback;
+import device.command.DeviceCommandDispatcher;
+import device.command.DeviceCommandRefreshState;
 
 public class Place {
 	private int placeID;
 	private String description;
-	private ArrayList<Device> devices;
-	private IDeviceCommandsCallback deviceCommandsCallback = null;
+	private HashMap<Integer, Device> devices;
 	
 	public Place(int placeID) {
 		this.placeID = placeID;
-		devices = new ArrayList<>();
+		devices = new HashMap<>();
 	}
 	
-	public void setCallbackRefreshState(IDeviceCommandsCallback deviceCommandsCallback) {
-		this.deviceCommandsCallback = deviceCommandsCallback;
-		
-		for (Device device : devices) {
-			device.setDeviceCommandsCallback(deviceCommandsCallback);
-		}
+	public int getPlaceID() {
+		return placeID;
 	}
 	
 	public String getDescription() {
@@ -33,44 +28,65 @@ public class Place {
 	}
 	
 	public Device[] getDevices() {
-		return devices.toArray(new Device[devices.size()]);
+		return devices.values().toArray(new Device[devices.size()]);
 	}
 	
 	public Device getDevice(int deviceID) {
-		int index = containsDeviceId(deviceID);
-		return (index < 0) ? null : devices.get(index);
+		Device device = null;
+		
+		if(devices.containsKey(deviceID)) {
+			device = devices.get(deviceID);
+		}
+		
+		return device;
 	}
 
-	public int containsDeviceId(int deviceID) {
-		int retval = -1;
-		for (int index=0 ; index < devices.size() ; index++) {
-			if(devices.get(index).getId() == deviceID) {
-				retval = index;
-				break;
-			}
-		}
-		return retval;
+	public boolean containsDeviceId(int deviceID) {
+		return devices.containsKey(deviceID);
 	}
 	
 	public int getDeviceIdAvailable() {
 		int retval = -1;
-		for (int index=0 ; ((retval < 0) && (index < devices.size())) ; index++) {
-			if(containsDeviceId(index) < 0) {
-				retval = index;
+		
+		for (int idx = Device.DEVICE_ID_MIN; idx < Device.DEVICE_ID_MAX; idx++) {
+			if(!containsDeviceId(idx)) {
+				retval = idx;
 				break;
 			}
 		}
+		
 		return retval;
 	}
 	
-	public boolean addDevice(int deviceID) {
+	public boolean addDevice(Device device) {
 		boolean retval = false;
 		
-		if(containsDeviceId(deviceID) >= 0) {
-			Device device = new Device(this.placeID, deviceID);
-			device.setDeviceCommandsCallback(deviceCommandsCallback);
-			devices.add(device);
+		if(!containsDeviceId(device.getId())) {
+			devices.put(device.getId(), device);
 			retval = true;
+		}
+		
+		return retval;
+	}
+	
+	public boolean removeDevice(int deviceID) {
+		boolean retval = false;
+		
+		if(containsDeviceId(deviceID)) {
+			devices.remove(deviceID);
+			retval = true;
+		}
+		
+		return retval;
+	}
+	
+	public boolean processDeviceCommandRefreshState(DeviceCommandRefreshState deviceCommandRefreshState) {
+		boolean retval = false;
+		
+		int deviceID = deviceCommandRefreshState.getDeviceID();
+		if(devices.containsKey(deviceID)) {
+			Device device = devices.get(deviceID);
+			retval = DeviceCommandDispatcher.processCommandRefresh(device, deviceCommandRefreshState);
 		}
 		
 		return retval;

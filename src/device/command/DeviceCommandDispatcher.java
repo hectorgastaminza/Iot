@@ -1,10 +1,16 @@
-package device;
+package device.command;
+
+import device.Device;
 
 public class DeviceCommandDispatcher {
 	
-	public static boolean processCommandRequest(Device device, DeviceCommandRequest command)
-	{
+	public static boolean processCommandRequest(Device device, DeviceCommandRequest command){
 		return processCommand(device, command.getId(), command.getValue());
+	}
+	
+	public static boolean processCommandRefresh(Device device, DeviceCommandRefreshState deviceCommandRefreshState) {
+		device.setState(deviceCommandRefreshState.getState(), deviceCommandRefreshState.getValue());
+		return true;
 	}
 	
 	public static boolean processCommand(Device device, eDeviceCommands command, int value) {

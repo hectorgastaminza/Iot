@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 import com.sun.javafx.binding.StringFormatter;
 
+import device.command.DeviceCommandDispatcher;
+import device.command.eDeviceCommands;
+
 public class DeviceControl {
 	
 	public static void console(Device device) {
@@ -68,10 +71,8 @@ public class DeviceControl {
 		String format = "%-15s%-15s%s%n";
 
 		System.out.println("\n" + stringbuilder);
-		System.out.println("DEVICE STATUS");
+		System.out.println("DEVICE " + device.getId() + "| PLACE " + device.getPlaceID() +" | STATUS");
 		System.out.println(stringbuilder);
-		System.out.printf(format, "DeviceID", ":", device.getId());
-		System.out.printf(format, "PlaceID", ":", device.getPlace());
 		System.out.printf(format, "State", ":", device.getState().toString());
 		System.out.printf(format, "Value", ":", device.getValue());
 		System.out.println(stringbuilder);

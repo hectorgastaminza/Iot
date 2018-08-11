@@ -2,11 +2,11 @@ package demo;
 
 import java.util.Scanner;
 
-import application.AppConnection;
 import application.client.DeviceClient;
+import application.common.AppConnection;
 import device.Device;
 import device.DeviceControl;
-import mqtt.MqttConnectionConfiguration;
+import protocol.mqtt.MqttConnectionConfiguration;
 
 public class Main {
 

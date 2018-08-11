@@ -1,22 +1,22 @@
-package application;
+package application.common;
 
-import device.DeviceCommandRefreshState;
-import device.DeviceCommandRequest;
-import device.eDeviceCommands;
 import device.eDeviceStates;
-import mqtt.MqttConnection;
+import device.command.DeviceCommandRefreshState;
+import device.command.DeviceCommandRequest;
+import device.command.eDeviceCommands;
+import protocol.mqtt.MqttConnection;
 
-public class AppConnection implements mqtt.IMqttReceiveCallback, device.IDeviceCommandsCallback{
+public class AppConnection implements protocol.mqtt.IMqttReceiveCallback, device.command.IDeviceCommandsCallback{
 	private String mqttTopic = "comit";
-	private mqtt.MqttConnectionConfiguration mqttConfig;
-	private mqtt.MqttConnection mqttConnection;
+	private protocol.mqtt.MqttConnectionConfiguration mqttConfig;
+	private protocol.mqtt.MqttConnection mqttConnection;
 	private IStringCommandCallback stringCommandCallback = null;
 
-	public AppConnection(mqtt.MqttConnectionConfiguration mqttConfig) {
+	public AppConnection(protocol.mqtt.MqttConnectionConfiguration mqttConfig) {
 		this.mqttConfig = mqttConfig;
 	}
 	
-	public AppConnection(mqtt.MqttConnectionConfiguration mqttConfig, IStringCommandCallback stringCommandCallback) {
+	public AppConnection(protocol.mqtt.MqttConnectionConfiguration mqttConfig, IStringCommandCallback stringCommandCallback) {
 		this(mqttConfig);
 		this.stringCommandCallback = stringCommandCallback;
 	}

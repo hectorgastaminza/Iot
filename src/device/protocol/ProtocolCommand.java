@@ -1,4 +1,4 @@
-package deviceProtocol;
+package device.protocol;
 
 import java.util.ArrayList;
 

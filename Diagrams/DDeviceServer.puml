@@ -46,9 +46,11 @@ AppServer o-- Database
 AppServer o-- EndPoint
 AppServer o-- DeviceServer
 AppServer o-- AppConnection
+AppServer o-- Device
+AppServer o-- Place
 DeviceServer -- AppConnection
-DeviceServer o-- Place
-Place o-- Device
+DeviceServer -- Place
+Place -- Device
 
 
 @enduml
