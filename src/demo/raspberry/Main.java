@@ -3,6 +3,7 @@ package demo.raspberry;
 import application.client.DeviceClient;
 import application.common.AppConnection;
 import device.Device;
+import device.raspberry.DeviceRaspeberry;
 import protocol.mqtt.MqttConnectionConfiguration;
 
 public class Main {
