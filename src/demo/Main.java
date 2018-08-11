@@ -5,7 +5,6 @@ import java.util.Scanner;
 import application.client.DeviceClient;
 import application.common.AppConnection;
 import device.Device;
-import device.DeviceControl;
 import protocol.mqtt.MqttConnectionConfiguration;
 
 public class Main {

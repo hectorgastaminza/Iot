@@ -2,8 +2,6 @@ package device;
 
 import java.util.Scanner;
 
-import com.sun.javafx.binding.StringFormatter;
-
 import device.command.DeviceCommandDispatcher;
 import device.command.eDeviceCommands;
 
@@ -42,7 +40,7 @@ public class DeviceControl {
 		System.out.println(strLine);
 		/* List of commands */
 		for (eDeviceCommands var : eDeviceCommands.values()) {
-			if((var.getValue() != exit) && (var != command.RESET))
+			if((var.getValue() != exit) && (var != eDeviceCommands.RESET))
 			{
 				System.out.printf(format, var.getValue(), var.getName());
 			}
