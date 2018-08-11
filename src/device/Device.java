@@ -50,6 +50,7 @@ public class Device {
 	
 	public boolean setValue(int value) {
 		this.value = value;
+		setState(eDeviceStates.ON_VALUE);
 		return true;
 	}
 	

@@ -2,6 +2,12 @@ package demo;
 
 import java.util.Scanner;
 
+import application.AppConnection;
+import application.client.DeviceClient;
+import device.Device;
+import device.DeviceControl;
+import mqtt.MqttConnectionConfiguration;
+
 public class Main {
 
 	/**
@@ -30,8 +36,10 @@ public class Main {
 			switch (option) {
 			case 1:
 				{
-					DeviceClient client = new DeviceClient(PLACE_ID, DEVICE_ID);
-					client.createDeviceClient();
+					Device device = new Device(PLACE_ID, DEVICE_ID);
+					AppConnection appConnection = new AppConnection(new MqttConnectionConfiguration());
+					
+					DeviceClient.clientLaunch(device, appConnection);
 				}
 				break;
 			case 2:
@@ -51,4 +59,6 @@ public class Main {
 		
 		System.out.println("Bye!");
 	}
+	
+
 }

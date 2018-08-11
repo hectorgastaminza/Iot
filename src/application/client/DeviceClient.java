@@ -1,14 +1,11 @@
 package application.client;
 
-import java.util.Scanner;
-
 import application.AppConnection;
 import application.IStringCommandCallback;
 import device.Device;
 import device.DeviceCommandDispatcher;
 import device.DeviceCommandRequest;
-import device.eDeviceCommands;
-import mqtt.MqttConnectionConfiguration;
+import device.DeviceControl;
 
 public class DeviceClient implements IStringCommandCallback {
 	private AppConnection appConnection = null;
@@ -16,6 +13,7 @@ public class DeviceClient implements IStringCommandCallback {
 	
 	public DeviceClient(AppConnection appConnection, Device device) {
 		this.appConnection = appConnection;
+		this.appConnection.setStringCommandCallback(this);
 		this.device = device;
 	}
 
@@ -43,66 +41,20 @@ public class DeviceClient implements IStringCommandCallback {
 		
 		return retval;
 	}
-	
-	public boolean controlDevice(boolean autoconnect, boolean showConnectionMessages) {
-		boolean retval = true;
-
-		if(autoconnect) {
-			retval = connect();
-			System.out.println("Connection : " + ((retval) ? "OK" : "FAIL"));
-		}
-
-		if(retval == true) {
-			Scanner scanner = new Scanner(System.in);
-			int option = -1;
-			int exit = 0;
-			eDeviceCommands command = eDeviceCommands.NONE;
-
-			while (option != exit) {
-				command = eDeviceCommands.NONE;
-				/* Auto-generating menu */
-				System.out.println("Menu");
-				/* List of commands */
-				for (eDeviceCommands var : eDeviceCommands.values()) {
-					if(var.getValue() != exit)
-					{
-						System.out.println(var.getValue() + " - " + var.getName());
-					}
-				}
-				/* Exit command */
-				System.out.println("0 - exit");
-				System.out.println("Enter option selected:");
-				option = scanner.nextInt();
-				
-				if(option != exit)
-				{
-					command = eDeviceCommands.getFromValue(option);
-					if(command != eDeviceCommands.NONE) {
-						int value = enterValue(command);
-						DeviceCommandDispatcher.processCommand(device, command, value);
-					}
-				}
-			}
+		
+	static public void clientLaunch(Device device, AppConnection appConnection) {
+		boolean connection = false;
+		application.client.DeviceClient deviceClient = new DeviceClient(appConnection, device);
+		
+		connection = deviceClient.connect();
+		System.out.println("Connection : " + ((connection) ? "OK" : "FAIL"));
+		if(connection) {
 			
-			if(autoconnect) {
-				System.out.println("Closing connection... almost done... waiting for disconnection...");
-				retval = appConnection.disconnect();
-				System.out.println("Disconnection : " + ((retval) ? "OK" : "FAIL"));
-			}
+			DeviceControl.console(device);
+			
+			System.out.println("Closing connection... almost done... waiting for disconnection...");
+			connection = appConnection.disconnect();
+			System.out.println("Disconnection : " + ((connection) ? "OK" : "FAIL"));
 		}
-		
-		return retval;
-	}
-	
-	private int enterValue(eDeviceCommands command) {
-		int retval = 0;
-		
-		if(command == eDeviceCommands.SET_VALUE) {
-			Scanner scanner = new Scanner(System.in);
-			System.out.println("Please enter a value: ");
-			retval = scanner.nextInt();
-		}
-		
-		return retval;
 	}
 }
