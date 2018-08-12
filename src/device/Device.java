@@ -48,10 +48,12 @@ public class Device {
 	public void setState(eDeviceStates state) {
 		this.state = state;
 		
+		/*
 		System.out.println("Device: " + id + 
 				" | Place: " + place +
 				" | new state: " + state
 				);
+				*/
 		
 		refreshState();
 	}
