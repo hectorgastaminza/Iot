@@ -1,4 +1,4 @@
-package raspberry;
+package device.raspberry;
 
 import device.eDeviceStates;
 
