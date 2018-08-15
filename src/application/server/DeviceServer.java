@@ -5,6 +5,7 @@ import java.util.HashMap;
 import application.common.AppConnection;
 import application.common.IStringCommandCallback;
 import device.Device;
+import device.DeviceControl;
 import device.command.DeviceCommandRefreshState;
 
 public class DeviceServer implements IStringCommandCallback {
@@ -71,10 +72,13 @@ public class DeviceServer implements IStringCommandCallback {
 			for (DeviceCommandRefreshState deviceCommandRefreshState : commands) {
 				if(places.containsKey(deviceCommandRefreshState.getPlaceID())) {
 					Place place = places.get(deviceCommandRefreshState.getPlaceID());
-					place.processDeviceCommandRefreshState(deviceCommandRefreshState);
+					retval = place.processDeviceCommandRefreshState(deviceCommandRefreshState);
+				
+					if(retval) {
+						// Refresh UI
+					}
 				}
 			}
-			retval = true;
 		}
 		
 		return retval;
@@ -88,18 +92,19 @@ public class DeviceServer implements IStringCommandCallback {
 		return appConnection.disconnect();
 	}
 	
-	static public void serverLaunch(AppConnection appConnection) {
+	public void serverLaunch() {
 		boolean connection = false;
-		application.server.DeviceServer deviceServer = new DeviceServer(appConnection);
 		
-		connection = deviceServer.connect();
+		connection = connect();
 		System.out.println("Connection : " + ((connection) ? "OK" : "FAIL"));
 		if(connection) {
 			
-			//DeviceControl.console(device);
+			for (Place place : places.values()) {
+				DeviceControl.showPlaceStatus(place);
+			}
 			
 			System.out.println("Closing connection... almost done... waiting for disconnection...");
-			connection = deviceServer.disconnect();
+			connection = disconnect();
 			System.out.println("Disconnection : " + ((connection) ? "OK" : "FAIL"));
 		}
 	}

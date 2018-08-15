@@ -2,6 +2,7 @@ package device;
 
 import java.util.Scanner;
 
+import application.server.Place;
 import device.command.DeviceCommandDispatcher;
 import device.command.eDeviceCommands;
 
@@ -74,6 +75,13 @@ public class DeviceControl {
 		System.out.printf(format, "State", ":", device.getState().toString());
 		System.out.printf(format, "Value", ":", device.getValue());
 		System.out.println(stringbuilder);
+	}
+	
+	static public void showPlaceStatus(Place place) {
+		System.out.println("PLACE : " + place.getPlaceID() + " | " + place.getDescription() + " |");
+		for (Device device : place.getDevices()) {
+			showDeviceStatus(device);
+		}
 	}
 	
 	static private void addStringLine(StringBuilder stringbuilder, char c, int count) {
