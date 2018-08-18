@@ -63,4 +63,7 @@ INSERT INTO device (pk_user_id, place_id, device_id, device_name, device_descrip
 VALUES (@user_pk, '20', '9', 'Raspberry', 'Raspberry device');
 
 SELECT * FROM place WHERE pk_user_id = @user_pk;
-
+SET @place_id = 8;
+SELECT * FROM place WHERE pk_user_id = @user_pk AND place_id = @place_id;
+SET @device_id = 5;
+SELECT * FROM device WHERE pk_user_id = @user_pk AND place_id = @place_id AND device_id = @device_id;
