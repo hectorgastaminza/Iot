@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
-		boolean isUserValid = ConnectorMysql.ConnectorMysql(username, password);
+		boolean isUserValid = ConnectorMysql.connect(username, password);
 		
 		if (isUserValid) {
 			response.sendRedirect("/home");

@@ -1,8 +1,9 @@
 package database.mysql;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
@@ -10,39 +11,38 @@ public class ConnectorMysql {
 	
 	// init database constants
 	private static final String DATABASE_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DATABASE_URL = "localhost:3306";
+	private static final String DATABASE_URL = "localhost";
 	private static final String DATABASE_NAME = "comiot";
 	private static final String USERNAME = "comiot";
 	private static final String PASSWORD = "123456";
 	private static final String MAX_POOL = "250"; // set your own limit
 	
-	public static boolean ConnectorMysql(String username, String password) {
+	public static boolean connect(String username, String password) {
 		boolean retval = false;
 
 		MysqlDataSource dataSource = new MysqlDataSource();
 		dataSource.setUser(USERNAME);
-		dataSource.setPassword(USERNAME);
+		dataSource.setPassword(PASSWORD);
 		dataSource.setDatabaseName(DATABASE_NAME);
 		dataSource.setServerName(DATABASE_URL);
-		
-		try {
-			// The newInstance() call is a work around for some
-			// broken Java implementations
-
-			Class.forName(DATABASE_DRIVER).newInstance();
-		} catch (Exception ex) {
-			// handle the error
-			System.out.println(ex.toString());
-		}
 
 		Connection conn = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://" + DATABASE_URL + "/" + DATABASE_NAME + "?" +
-					"user="+USERNAME+"&password="+PASSWORD);
+			conn = dataSource.getConnection();
 			if(conn.isValid(0))
 			{
-				System.out.println("connected");
-				retval = true;
+				String query = "SELECT pk_user_id FROM user WHERE username=? or password=?";
+				PreparedStatement p = conn.prepareStatement(query);
+				p.setString(1, username);
+				p.setString(2, password);
+				ResultSet rs = p.executeQuery();
+				
+				if(rs.next()) {
+					int pk_user_id = rs.getInt("pk_user_id");
+
+					System.out.println("connected : " + pk_user_id);
+					retval = true;
+				}
 			}
 
 		} catch (SQLException ex) {
