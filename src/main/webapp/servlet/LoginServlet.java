@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import database.DBConnector;
 import database.mysql.ConnectorMysql;
 
 @WebServlet(urlPatterns="/login.do")
@@ -29,9 +31,15 @@ public class LoginServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
-		boolean isUserValid = ConnectorMysql.connect(username, password);
+		int userID = 0;
+		try {
+			userID = DBConnector.getUserId(ConnectorMysql.getConnection(), username, password);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		if (isUserValid) {
+		if (userID > 0) {
 			response.sendRedirect("/home");
 		}
 		else {
