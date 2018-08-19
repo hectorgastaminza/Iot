@@ -6,6 +6,13 @@ import java.sql.SQLException;
 
 public class ConnectorMysql {
 	
+	// init database constants
+	private static final String DATABASE_DRIVER = "com.mysql.jdbc.Driver";
+	private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/comiot?";
+	private static final String USERNAME = "comiot";
+	private static final String PASSWORD = "123456";
+	private static final String MAX_POOL = "250"; // set your own limit
+	
 	public static boolean ConnectorMysql(String username, String password) {
 		boolean retval = false;
 
@@ -13,7 +20,7 @@ public class ConnectorMysql {
 			// The newInstance() call is a work around for some
 			// broken Java implementations
 
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			Class.forName(DATABASE_DRIVER).newInstance();
 		} catch (Exception ex) {
 			// handle the error
 			System.out.println(ex.toString());
@@ -21,8 +28,8 @@ public class ConnectorMysql {
 
 		Connection conn = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/comiot?" +
-					"user=comiot&password=123456");
+			conn = DriverManager.getConnection(DATABASE_URL +
+					"user="+USERNAME+"&password="+PASSWORD);
 			if(conn.isValid(0))
 			{
 				System.out.println("connected");
