@@ -44,7 +44,6 @@ public class SignupServlet extends HttpServlet {
 		
 		if (user != null) {
 			request.setAttribute("errorMessage", "This user is already been registered");
-			request.getRequestDispatcher("/signup").forward(request, response);
 		}
 		else {
 			String password = request.getParameter("password");
@@ -58,7 +57,6 @@ public class SignupServlet extends HttpServlet {
 					int result = DBConnector.userInsert(conn, user);
 					if(result > 0) {
 						request.setAttribute("successMessage", "User created. Please login");
-						request.getRequestDispatcher("/signup").forward(request, response);
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -67,8 +65,9 @@ public class SignupServlet extends HttpServlet {
 			else
 			{
 				request.setAttribute("errorMessage", "Passwords are not equals");
-				request.getRequestDispatcher("/signup").forward(request, response);
 			}
 		}
+		
+		request.getRequestDispatcher("/signup").forward(request, response);
 	}
 }

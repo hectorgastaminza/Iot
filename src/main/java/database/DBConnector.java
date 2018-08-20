@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import application.server.User;
+import database.mysql.ConnectorMysql;
 
 import java.sql.ResultSet;
 
@@ -25,7 +26,7 @@ public class DBConnector {
 		
 		if((conn != null) && (conn.isValid(0)))
 		{
-			String query = "SELECT pk_user_id FROM user WHERE username=? or password=?";
+			String query = "SELECT pk_user_id FROM user WHERE username=? and password=?";
 			PreparedStatement p = conn.prepareStatement(query);
 			p.setString(1, username);
 			p.setString(2, password);
@@ -33,12 +34,28 @@ public class DBConnector {
 			
 			if(rs.next()) {
 				int pk_user_id = rs.getInt("pk_user_id");
-				System.out.println("connected : " + pk_user_id);
+				System.out.println("connected : " + pk_user_id + ", " + username + ", " + password);
 				retval = pk_user_id;
 			}
 		}
 		
 		return retval;
+	}
+	
+	public static User userGetByPk(Connection conn, int pk) throws SQLException {
+		User user = null;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "SELECT * FROM user WHERE pk_user_id=?";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setInt(1, pk);
+			ResultSet rs = p.executeQuery();
+			
+			user = dbCreateUser(rs);
+		}
+		
+		return user;
 	}
 	
 	public static User userGetByUsername(Connection conn, String username) throws SQLException {
@@ -87,12 +104,38 @@ public class DBConnector {
 			
 			if(retval > 0) {
 				System.out.println("inserted : " + retval);
-				/* noresponse@comiotproject.com */
-				/* +MAIfrosklo3201 */
 			}
 		}
 		
 		return retval;
 	}
-	
+
+	public static int userUpdate(Connection conn, int pk, User user) throws SQLException{
+		boolean error = false;
+		int result = -1;
+		User oldUser = DBConnector.userGetByPk(conn, pk);
+		
+		if(!oldUser.getUsername().equals(user.getUsername())){
+			if(DBConnector.userGetByUsername(conn, user.getUsername()) != null) {
+				error = true;
+			}
+		}
+		if(!error){
+			if(!oldUser.getEmail().equals(user.getEmail())){
+				if(DBConnector.userGetByEmail(conn, user.getEmail()) != null) {
+					error = true;
+				}
+			}
+		}
+		if(!error) {
+			String query = "UPDATE user SET username = ?, password = ?, email = ?";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setString(1, user.getUsername());
+			p.setString(2, user.getPassword());
+			p.setString(3, user.getEmail());
+			result = p.executeUpdate();
+		}
+		
+		return result;
+	}
 }
