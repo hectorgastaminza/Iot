@@ -23,7 +23,6 @@ public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		request.getRequestDispatcher("/login").forward(request, response);
 	}
 	
@@ -33,9 +32,8 @@ public class LoginServlet extends HttpServlet {
 		
 		int userID = 0;
 		try {
-			userID = DBConnector.getUserId(ConnectorMysql.getConnection(), username, password);
+			userID = DBConnector.userGetPk(ConnectorMysql.getConnection(), username, password);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -44,8 +42,7 @@ public class LoginServlet extends HttpServlet {
 		}
 		else {
 			request.setAttribute("errorMessage", "Invalid Credentials");
-			request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+			request.getRequestDispatcher("/login").forward(request, response);
 		}
-			
 	}
 }

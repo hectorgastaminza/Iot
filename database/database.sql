@@ -43,6 +43,8 @@ CREATE TABLE IF NOT EXISTS device (
 INSERT INTO user (username, password, email)
 VALUES ('comiot', '123456', 'comiotproject@gmail.com');
 
+DELETE FROM user where email = 'hectorgastaminza@gmail.com';
+SELECT * FROM user;
 SELECT @user_pk := pk_user_id FROM user WHERE username = 'comiot';
 
 INSERT INTO connection (pk_user_id, host, port, username, password, root_topic)

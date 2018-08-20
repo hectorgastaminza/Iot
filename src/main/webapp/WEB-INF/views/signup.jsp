@@ -25,7 +25,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="/login.do">Login</a>
+                <a class="nav-link" href="/login">Login</a>
               </li>
               <li class="nav-item active">
                 <a class="nav-link" href="/signup">Sign up<span class="sr-only">(current)</span></a>
@@ -48,29 +48,40 @@
     </div>
    
     <div class="container">
+    	<c:if test="${errorMessage != null }">
+			<div class="alert alert-danger mt-3" role="alert">
+	  			${errorMessage}
+			</div>
+		</c:if>
+		<c:if test="${successMessage != null }">
+			<div class="alert alert-success mt-3" role="alert">
+	  			${successMessage}
+			</div>
+		</c:if>
+        <form action="/signup.do" method="post">
             <div class="form-group row" style="border">
-                <label for="userEmail" class="col-sm-2 col-form-label">Email address</label>
+                <label for="email" class="col-sm-2 col-form-label">Email address</label>
                 <div class="col-sm-10">
-                    <input type="email" class="form-control" id="userEmail" placeholder="Enter email">
+                    <input type="email" class="form-control" name="email" placeholder="Enter email">
                 </div>
             </div>
             
             <div class="form-group row">
                 <label for="username" class="col-sm-2 col-form-label">Username</label>
                 <div class="col-sm-10">
-                    <input type="username" class="form-control" id="username" placeholder="Enter username">
+                    <input type="text" class="form-control" name="username" placeholder="Enter username">
                 </div>
             </div>
             <div class="form-group row">
-                <label for="userPassword" class="col-sm-2 col-form-label">Password</label>
+                <label for="password" class="col-sm-2 col-form-label">Password</label>
                 <div class="col-sm-10">
-                    <input type="password" class="form-control" id="userPassword" placeholder="Enter Password">
+                    <input type="password" class="form-control" name="password" placeholder="Enter Password">
                 </div>
             </div>
             <div class="form-group row">
-                <label for="userConfirmPassword" class="col-sm-2 col-form-label">Confirm password</label>
+                <label for="confirm" class="col-sm-2 col-form-label">Confirm password</label>
                 <div class="col-sm-10">
-                    <input type="password" class="form-control" id="userConfirmPassword" placeholder="Confirm password">
+                    <input type="password" class="form-control" name="confirm" placeholder="Confirm password">
                 </div>
             </div>
           <button type="submit" class="btn btn-primary btn-block">Sign up</button>

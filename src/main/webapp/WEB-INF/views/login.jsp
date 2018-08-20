@@ -25,7 +25,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item active">
-                <a class="nav-link" href="/login.do">Login<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/login">Login<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/signup">Sign up</a>
@@ -57,7 +57,7 @@
             <div class="form-group row">
                 <label for="username" class="col-sm-2 col-form-label">Username</label>
                 <div class="col-sm-10">
-                    <input type="username" class="form-control" name="username" placeholder="Enter username">
+                    <input type="text" class="form-control" name="username" placeholder="Enter username">
                 </div>
             </div>
             <div class="form-group row">
