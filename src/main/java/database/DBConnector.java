@@ -21,6 +21,26 @@ public class DBConnector {
 		return user;
 	}
 	
+	private static boolean userDataValidator(Connection conn, int pk, User user) throws SQLException {
+		boolean retval = false;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "SELECT * FROM user where ((username = ? or email = ? ) and (pk_user_id != ?))";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setString(1, user.getUsername());
+			p.setString(2, user.getEmail());
+			p.setInt(3, pk);
+			ResultSet rs = p.executeQuery();
+			
+			if(!rs.next()) {
+				retval = true;
+			}
+		}
+		
+		return retval;
+	}
+	
 	public static int userGetPk(Connection conn, String username, String password) throws SQLException {
 		int retval = -1;
 		
@@ -95,15 +115,27 @@ public class DBConnector {
 		
 		if((conn != null) && (conn.isValid(0)))
 		{
-			String query = "INSERT INTO user (username, password, email) values (?, ?, ?)";
-			PreparedStatement p = conn.prepareStatement(query);
-			p.setString(1, user.getUsername());
-			p.setString(2, user.getPassword());
-			p.setString(3, user.getEmail());
-			retval = p.executeUpdate();
-			
-			if(retval > 0) {
-				System.out.println("inserted : " + retval);
+			if(userDataValidator(conn, -1, user)) {
+				String query = "INSERT INTO user (username, password, email) values (?, ?, ?)";
+				PreparedStatement p = conn.prepareStatement(query);
+				p.setString(1, user.getUsername());
+				p.setString(2, user.getPassword());
+				p.setString(3, user.getEmail());
+				retval = p.executeUpdate();
+				
+				/*
+				 * // fill in the prepared statement and
+					pInsertOid.executeUpdate();
+					ResultSet rs = pInsertOid.getGeneratedKeys();
+					if (rs.next()) {
+					  int newId = rs.getInt(1);
+					  oid.setId(newId);
+					}
+				 */
+				
+				if(retval > 0) {
+					System.out.println("inserted : " + retval);
+				}
 			}
 		}
 		
@@ -111,29 +143,19 @@ public class DBConnector {
 	}
 
 	public static int userUpdate(Connection conn, int pk, User user) throws SQLException{
-		boolean error = false;
 		int result = -1;
-		User oldUser = DBConnector.userGetByPk(conn, pk);
 		
-		if(!oldUser.getUsername().equals(user.getUsername())){
-			if(DBConnector.userGetByUsername(conn, user.getUsername()) != null) {
-				error = true;
+		if((conn != null) && (conn.isValid(0)))
+		{
+			if(userDataValidator(conn, pk, user)) {
+				String query = "UPDATE user SET username = ?, password = ?, email = ? where pk_user_id = ?";
+				PreparedStatement p = conn.prepareStatement(query);
+				p.setString(1, user.getUsername());
+				p.setString(2, user.getPassword());
+				p.setString(3, user.getEmail());
+				p.setInt(4, pk);
+				result = p.executeUpdate();
 			}
-		}
-		if(!error){
-			if(!oldUser.getEmail().equals(user.getEmail())){
-				if(DBConnector.userGetByEmail(conn, user.getEmail()) != null) {
-					error = true;
-				}
-			}
-		}
-		if(!error) {
-			String query = "UPDATE user SET username = ?, password = ?, email = ?";
-			PreparedStatement p = conn.prepareStatement(query);
-			p.setString(1, user.getUsername());
-			p.setString(2, user.getPassword());
-			p.setString(3, user.getEmail());
-			result = p.executeUpdate();
 		}
 		
 		return result;

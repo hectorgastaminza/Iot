@@ -1,51 +1,68 @@
+SHOW ENGINE INNODB STATUS;
+
 CREATE DATABASE comiot;
 
 USE comiot;
 
 CREATE TABLE IF NOT EXISTS user (
-  pk_user_id BIGINT NOT NULL AUTO_INCREMENT,
+  pk_user_id int NOT NULL AUTO_INCREMENT,
   username VARCHAR(64) NOT NULL,
   password VARCHAR(64) NOT NULL,
   email VARCHAR(128) NOT NULL,
   PRIMARY KEY (pk_user_id)
 ) ENGINE=InnoDB;
+ALTER TABLE user
+MODIFY COLUMN pk_user_id int;
+
 /* */
 CREATE TABLE IF NOT EXISTS connection (
-  pk_connection_id BIGINT NOT NULL AUTO_INCREMENT,
-  pk_user_id BIGINT NOT NULL,
-  host VARCHAR(128) NOT NULL,
-  port SMALLINT NOT NULL,
-  username VARCHAR(64) NOT NULL,
-  password VARCHAR(64) NOT NULL,
-  root_topic VARCHAR(128) NOT NULL,
-  PRIMARY KEY (pk_connection_id)
-) ENGINE=InnoDB;
+    pk_user_id int NOT NULL,
+    pk_connection_id int NOT NULL AUTO_INCREMENT,
+    host VARCHAR(128) NOT NULL,
+    port SMALLINT NOT NULL,
+    username VARCHAR(64) NOT NULL,
+    password VARCHAR(64) NOT NULL,
+    root_topic VARCHAR(128) NOT NULL,
+    PRIMARY KEY (pk_connection_id),
+    FOREIGN KEY (pk_user_id) REFERENCES user(pk_user_id)
+)  ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS place (
-  pk_place_id BIGINT NOT NULL AUTO_INCREMENT,
-  pk_user_id BIGINT NOT NULL,
+  pk_place_id int NOT NULL AUTO_INCREMENT,
+  pk_user_id int NOT NULL,
   place_id MEDIUMINT NOT NULL,
   place_name VARCHAR(64) NOT NULL,
   place_description VARCHAR(128),
-  PRIMARY KEY (pk_place_id)
+  PRIMARY KEY (pk_place_id),
+  FOREIGN KEY (pk_user_id) REFERENCES user(pk_user_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS device (
-  pk_device_id BIGINT NOT NULL AUTO_INCREMENT,
-  pk_user_id BIGINT NOT NULL,
+  pk_device_id int NOT NULL AUTO_INCREMENT,
+  pk_user_id int NOT NULL,
   place_id MEDIUMINT NOT NULL,
   device_id MEDIUMINT NOT NULL,
   device_name VARCHAR(64) NOT NULL,
   device_description VARCHAR(128),
-  PRIMARY KEY (pk_device_id)
+  PRIMARY KEY (pk_device_id),
+  FOREIGN KEY (pk_user_id) REFERENCES user(pk_user_id)
 ) ENGINE=InnoDB;
 
 INSERT INTO user (username, password, email)
 VALUES ('comiot', '123456', 'comiotproject@gmail.com');
 
-DELETE FROM user where email = 'hectorgastaminza@gmail.com';
+INSERT INTO user (username, password, email)
+VALUES ('b', 'b', 'comiotproject@gmail.com');
+
+INSERT INTO user (username, password, email)
+VALUES ('comiot', 'a', 'a@gmail.com');
+
+DELETE FROM user where pk_user_id = 4;
 SELECT * FROM user;
 SELECT @user_pk := pk_user_id FROM user WHERE username = 'comiot';
+SELECT * FROM user where ((username = 'comiot' or email = 'comiotproject@gmail.com' ) and (pk_user_id != 1));
+
+UPDATE user SET username = 'b', password = 'b', email = 'b@b.com' where pk_user_id = 6;
 
 INSERT INTO connection (pk_user_id, host, port, username, password, root_topic)
 VALUES (@user_pk, 'mqtt.dioty.co', '1883', 'comiotproject@gmail.com', 'fbe4629f', '/comiotproject@gmail.com/');
