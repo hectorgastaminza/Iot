@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import application.server.Place;
 import application.server.User;
+import device.Device;
 import protocol.mqtt.MqttConnectionConfiguration;
 
 import java.sql.ResultSet;
@@ -283,10 +286,99 @@ public class DBConnector {
 	/* ------------------ PLACE --------------------------- */
 	/* ---------------------------------------------------- */
 
+	private static ArrayList<Place> dbCreatePlaces(ResultSet rs) throws SQLException {
+		ArrayList<Place> places = new ArrayList<>();;
+		
+		while(rs.next()) {
+			Place place = new Place(rs.getInt("place_id"));
+			place.setPlaceName(rs.getString("place_name"));
+			place.setPlaceName(rs.getString("place_description"));
+			place.setPk(rs.getInt("pk_place_id"));
+			places.add(place);
+		}
+		
+		return places;
+	}
 
+	public static ArrayList<Place> placesGetByUserPk(Connection conn, int userPk) throws SQLException {
+		ArrayList<Place> retval = null;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "SELECT * FROM place WHERE pk_user_id=?";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setInt(1, userPk);
+			ResultSet rs = p.executeQuery();
+			
+			retval = dbCreatePlaces(rs);
+		}
+		
+		return retval;
+	}
+	
+	public static int placeDelete(Connection conn, int placePk) throws SQLException {
+		int result = -1;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "DELETE FROM place "
+					+ "where pk_place_id=?";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setInt(1, placePk);
+			result = p.executeUpdate();
+		}
+		
+		return result;
+	}
+	
+	
 	/* ---------------------------------------------------- */
 	/* ------------------ DEVICE -------------------------- */
 	/* ---------------------------------------------------- */
 
+	private static ArrayList<Device> dbCreateDevices(ResultSet rs) throws SQLException {
+		ArrayList<Device> devices = new ArrayList<>();;
+		
+		while(rs.next()) {
+			Device device = new Device(rs.getInt("place_id"), rs.getInt("device_id"));
+			device.setName(rs.getString("device_name"));
+			device.setDescription(rs.getString("device_description"));
+			device.setPk(rs.getInt("pk_device_id"));
+			devices.add(device);
+		}
+		
+		return devices;
+	}
+
+	public static ArrayList<Device> devicesGetByUserPk(Connection conn, int userPk) throws SQLException {
+		ArrayList<Device> retval = null;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "SELECT * FROM device WHERE pk_user_id=?";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setInt(1, userPk);
+			ResultSet rs = p.executeQuery();
+			
+			retval = dbCreateDevices(rs);
+		}
+		
+		return retval;
+	}
+	
+	public static int deviceDelete(Connection conn, int devicePk) throws SQLException {
+		int result = -1;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "DELETE FROM device "
+					+ "where pk_device_id=?";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setInt(1, devicePk);
+			result = p.executeUpdate();
+		}
+		
+		return result;
+	}
 
 }

@@ -9,6 +9,7 @@ import device.command.DeviceCommandRefreshState;
 
 public class Place extends DBRecord {
 	private int placeID;
+	private String placeName;
 	private String description;
 	private HashMap<Integer, Device> devices;
 	
@@ -92,5 +93,13 @@ public class Place extends DBRecord {
 		}
 		
 		return retval;
+	}
+
+	public String getPlaceName() {
+		return placeName;
+	}
+
+	public void setPlaceName(String placeName) {
+		this.placeName = placeName;
 	}
 }

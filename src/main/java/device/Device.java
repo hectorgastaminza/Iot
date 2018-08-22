@@ -15,6 +15,7 @@ public class Device extends DBRecord {
 	private int value = 0;
 	private IDeviceCommandsCallback deviceCommandsCallback = null;
 	private String description;
+	private String name;
 	
 	public Device(int place, int id) {
 		this.place = place;
@@ -73,7 +74,7 @@ public class Device extends DBRecord {
 		return place;
 	}
 	
-	private void setPlace(int place) {
+	public void setPlace(int place) {
 		this.place = place;
 	}
 	
@@ -112,5 +113,13 @@ public class Device extends DBRecord {
 	
 	public boolean refreshState() {
 		return (deviceCommandsCallback != null) ? deviceCommandsCallback.commandRefreshState(place, id, state, value) : false;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
