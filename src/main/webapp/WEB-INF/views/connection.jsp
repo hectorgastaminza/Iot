@@ -15,71 +15,75 @@
     <!------ WEB DESIGN ---------->
 	<div class="container">
 		<div class="row content">
-	    <div class="container">
-	       	<nav class="navbar navbar-expand-lg navbar-light bg-primary">
-	          <a class="navbar-brand" href="/home.do">C⊙mI⊙T HOME</a>
-	          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-	            <span class="navbar-toggler-icon"></span>
-	          </button>
-	        </nav>
-    	</div>
-    	<!------ ALERT MESSAGES ---------->
-    	<c:if test="${errorMessage != null }">
-			<div class="alert alert-danger mt-3" role="alert">
-	  			${errorMessage}
-			</div>
-		</c:if>
-		<c:if test="${successMessage != null }">
-			<div class="alert alert-success mt-3" role="alert">
-	  			${successMessage}
-			</div>
-		</c:if>
-	</div>		
-				
-   <!------ ELEMENTS : See Dropdowns ---------->
-   <div class="row content">
-        <div class="container col-sm-2">
-        </div>
-       
-        <div class="container col-sm-8">
-            <h1 class="menu-title">MQTT CONFIGURATION</h1>
-           
-            <div class="form-group row">
-                <label for="host" class="col-sm-2 col-form-label">Broker</label>
-                <div class="col-sm-10">
-                    <input type="url" class="form-control" id="host" placeholder="Enter MQTT broker host url">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="port" class="col-sm-2 col-form-label">Port</label>
-                <div class="col-sm-10">
-                    <input type="number" class="form-control" id="port" placeholder="Enter host port number">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="username" class="col-sm-2 col-form-label">Username</label>
-                <div class="col-sm-10">
-                    <input type="username" class="form-control" id="username" placeholder="Enter username">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="userPassword" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-10">
-                    <input type="password" class="form-control" id="userPassword" placeholder="Enter Password">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="topic" class="col-sm-2 col-form-label">Root topic</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="topic" placeholder="Enter root topic">
-                </div>
-            </div>
-          <button type="submit" class="btn btn-primary btn-block">Submit</button>
-        </div>
-        
-        <div class="container col-sm-1">
-        </div>
-    </div>
+			<div class="container col-sm-12">
+			 		<!------ NAVBAR ---------->
+				    <div class="container">
+				       	<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+					        <a class="navbar-brand" href="/home.do">C⊙mI⊙T HOME</a>
+				        </nav>
+			    	</div>
+			    	<!------ ALERT MESSAGES ---------->
+			    	<c:if test="${errorMessage != null }">
+						<div class="alert alert-danger mt-3" role="alert">
+				  			${errorMessage}
+						</div>
+					</c:if>
+					<c:if test="${successMessage != null }">
+						<div class="alert alert-success mt-3" role="alert">
+				  			${successMessage}
+						</div>
+					</c:if>
+				</div>		
+		</div>	
+					
+	   <!------ ELEMENTS : See Dropdowns ---------->
+	   <div class="row content">
+	        <div class="container col-sm-2">
+	        </div>
+	       
+	        <div class="container col-sm-8">
+	            <h1 class="menu-title">MQTT CONFIGURATION</h1>
+	           
+	           <form action="/connection.do" method="post">
+		            <div class="form-group row">
+		                <label for="host" class="col-sm-2 col-form-label">Broker</label>
+		                <div class="col-sm-10">
+		                    <input type="text" class="form-control" name="mqtthost"  value="${mqtthost}" placeholder="Enter MQTT broker host url">
+		                </div>
+		            </div>
+		            <div class="form-group row">
+		                <label for="port" class="col-sm-2 col-form-label">Port</label>
+		                <div class="col-sm-10">
+		                    <input type="number" class="form-control" name="mqttport"  value="${mqttport}" placeholder="Enter host port number">
+		                </div>
+		            </div>
+		            <div class="form-group row">
+		                <label for="username" class="col-sm-2 col-form-label">Username</label>
+		                <div class="col-sm-10">
+		                    <input type="username" class="form-control" name="mqttusername" value="${mqttusername}" placeholder="Enter username">
+		                </div>
+		            </div>
+		            <div class="form-group row">
+		                <label for="userPassword" class="col-sm-2 col-form-label">Password</label>
+		                <div class="col-sm-10">
+		                    <input type="password" class="form-control" name="mqttpassword"  value="${mqttpassword}" placeholder="Enter Password">
+		                </div>
+		            </div>
+		            <div class="form-group row">
+		                <label for="topic" class="col-sm-2 col-form-label">Root topic</label>
+		                <div class="col-sm-10">
+		                    <input type="text" class="form-control" name="mqtttopic"  value="${mqtttopic}" placeholder="Enter root topic">
+		                </div>
+		            </div>
+		          <button type="submit" class="btn btn-primary btn-block">Submit</button>
+		        </form>
+	          
+	        </div>
+	        
+	        <div class="container col-sm-1">
+	        </div>
+	    </div>
+	</div>
 
     <!------ BOOTSTRAP INCLUDES -- At the end of body to avoid a slow load -------->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -67,7 +67,9 @@ UPDATE user SET username = 'b', password = 'b', email = 'b@b.com' where pk_user_
 INSERT INTO connection (pk_user_id, host, port, username, password, root_topic)
 VALUES (@user_pk, 'mqtt.dioty.co', '1883', 'comiotproject@gmail.com', 'fbe4629f', '/comiotproject@gmail.com/');
 
+SELECT * FROM connection;
 SELECT * FROM connection WHERE pk_user_id = @user_pk;
+DELETE FROM connection where pk_user_id = 6;
 
 INSERT INTO place (pk_user_id, place_id, place_name, place_description)
 VALUES (@user_pk, '8', 'House', 'This is a description.');

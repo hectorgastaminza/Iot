@@ -11,19 +11,34 @@ import database.mysql.ConnectorMysql;
 
 public class SessionValidator {
        
-	public static boolean isUserValid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public static boolean isSessionValid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		boolean valid = false;
-		String username = (String) request.getSession().getAttribute("username");
-		String password = (String) request.getSession().getAttribute("password");
 		
-		if((username != null) && (password != null)) {
-			try {
-				int result = DBConnector.userGetPk(ConnectorMysql.getConnection(), username, password);
-				if(result > 0) {
-					valid = true;
+		String validsession = (String)request.getSession().getAttribute("validsession");
+		
+		if((validsession != null) && (validsession.equals(request.getSession().getId()))) {
+			valid = true;
+		}
+		else {
+			String username = (String) request.getSession().getAttribute("username");
+			String password = (String) request.getSession().getAttribute("password");
+			
+			if((username != null) && (password != null)) {
+				try {
+					int result = DBConnector.userGetPk(ConnectorMysql.getConnection(), username, password);
+					if(result > 0) {
+						valid = true;
+						request.getSession().setAttribute("userpk", result);
+						request.getSession().setAttribute("validsession", request.getSession().getId());
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+			}
+			else {
+				request.getSession().removeAttribute("validsession");
+				request.getSession().removeAttribute("username");
+				request.getSession().removeAttribute("password");
 			}
 		}
 		

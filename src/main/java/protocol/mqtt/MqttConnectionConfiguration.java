@@ -1,6 +1,8 @@
 package protocol.mqtt;
 
-public class MqttConnectionConfiguration {
+import database.DBRecord;
+
+public class MqttConnectionConfiguration extends DBRecord {
 	private String brokerHost = "mqtt.dioty.co";
 	private int brokerPort = 1883;
 	/* Optional */
@@ -24,16 +26,36 @@ public class MqttConnectionConfiguration {
 	String userId, String password,
 	String rootTopic
 	) {
+		this(brokerHost, brokerPort, userId, password, rootTopic);
+		this.brokerWebSocketsPort = brokerWebSocketsPort;
+	}
+	
+	public MqttConnectionConfiguration(
+	String brokerHost, int brokerPort,
+	String userId, String password,
+	String rootTopic
+	) {
 		this.brokerHost = brokerHost;
 		this.brokerPort = brokerPort;
-		this.brokerWebSocketsPort = brokerWebSocketsPort;
 		this.userId = userId;
 		this.password = password;
 		this.rootTopic = rootTopic;
 	}
 	
-	protected String getUsername() {
+	public String getBrokerHost() {
+		return brokerHost;
+	}
+	
+	public int getBrokerPort() {
+		return brokerPort;
+	}
+	
+	public String getUsername() {
 		return userId;
+	}
+	
+	public String getPasswordStr() {
+		return password;
 	}
 
 	protected char[] getPassword() {

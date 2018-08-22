@@ -1,8 +1,9 @@
 package device;
 
+import database.DBRecord;
 import device.command.IDeviceCommandsCallback;
 
-public class Device {
+public class Device extends DBRecord {
 	public static final int DEVICE_ID_INVALID = 0x00;
 	public static final int DEVICE_ID_BROADCAST = 0xFF;
 	public static final int DEVICE_ID_MIN = DEVICE_ID_INVALID + 1;

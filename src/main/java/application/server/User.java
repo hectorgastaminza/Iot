@@ -1,8 +1,9 @@
 package application.server;
 
+import database.DBRecord;
 import protocol.mqtt.MqttConnectionConfiguration;
 
-public class User {
+public class User extends DBRecord {
 	private String username;
 	private String password;
 	private String email;
@@ -26,6 +27,9 @@ public class User {
 	}
 	public String getEmail() {
 		return email;
+	}
+	public MqttConnectionConfiguration getMqttConfig() {
+		return mqttConfig;
 	}
 
 }

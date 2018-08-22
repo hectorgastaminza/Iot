@@ -3,19 +3,25 @@ package database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import application.server.User;
-import database.mysql.ConnectorMysql;
+import protocol.mqtt.MqttConnectionConfiguration;
 
 import java.sql.ResultSet;
 
 public class DBConnector {
 
+	/* ---------------------------------------------------- */
+	/* ------------------ USER ---------------------------- */
+	/* ---------------------------------------------------- */
+	
 	private static User dbCreateUser(ResultSet rs) throws SQLException {
 		User user = null;
 		
 		if(rs.next()) {
 			user = new User(rs.getString("username"), rs.getString("password"), rs.getString("email"));
+			user.setPk(rs.getInt("pk_user_id"));
 		}
 		
 		return user;
@@ -117,24 +123,18 @@ public class DBConnector {
 		{
 			if(userDataValidator(conn, -1, user)) {
 				String query = "INSERT INTO user (username, password, email) values (?, ?, ?)";
-				PreparedStatement p = conn.prepareStatement(query);
+				PreparedStatement p = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 				p.setString(1, user.getUsername());
 				p.setString(2, user.getPassword());
 				p.setString(3, user.getEmail());
 				retval = p.executeUpdate();
-				
-				/*
-				 * // fill in the prepared statement and
-					pInsertOid.executeUpdate();
-					ResultSet rs = pInsertOid.getGeneratedKeys();
-					if (rs.next()) {
-					  int newId = rs.getInt(1);
-					  oid.setId(newId);
-					}
-				 */
-				
+
 				if(retval > 0) {
 					System.out.println("inserted : " + retval);
+					ResultSet rs = p.getGeneratedKeys();
+					if (rs.next()) {
+						user.setPk(rs.getInt(1));
+					}
 				}
 			}
 		}
@@ -142,22 +142,151 @@ public class DBConnector {
 		return retval;
 	}
 
-	public static int userUpdate(Connection conn, int pk, User user) throws SQLException{
+	public static int userUpdate(Connection conn, User user) throws SQLException{
 		int result = -1;
 		
 		if((conn != null) && (conn.isValid(0)))
 		{
-			if(userDataValidator(conn, pk, user)) {
+			if(userDataValidator(conn, user.getPk(), user)) {
 				String query = "UPDATE user SET username = ?, password = ?, email = ? where pk_user_id = ?";
 				PreparedStatement p = conn.prepareStatement(query);
 				p.setString(1, user.getUsername());
 				p.setString(2, user.getPassword());
 				p.setString(3, user.getEmail());
-				p.setInt(4, pk);
+				p.setInt(4, user.getPk());
 				result = p.executeUpdate();
 			}
 		}
 		
 		return result;
 	}
+
+	
+	/* ---------------------------------------------------- */
+	/* ------------------ CONNECTION ---------------------- */
+	/* ---------------------------------------------------- */
+
+	private static MqttConnectionConfiguration dbCreateMqttConfig(ResultSet rs) throws SQLException {
+		MqttConnectionConfiguration config = null;
+		
+		if(rs.next()) {
+			config = new MqttConnectionConfiguration(
+					rs.getString("host"), 
+					rs.getInt("port"), 
+					rs.getString("username"),
+					rs.getString("password"),
+					rs.getString("root_topic"));
+			config.setPk(rs.getInt("pk_connection_id"));
+		}
+		
+		return config;
+	}
+
+	public static MqttConnectionConfiguration mqttConfigGetByUserPk(Connection conn, int userPk) throws SQLException {
+		MqttConnectionConfiguration retval = null;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "SELECT * FROM connection WHERE pk_user_id=?";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setInt(1, userPk);
+			ResultSet rs = p.executeQuery();
+			
+			retval = dbCreateMqttConfig(rs);
+		}
+		
+		return retval;
+	}
+
+	private static int mqttConfigInsert(Connection conn, int userPk, MqttConnectionConfiguration config) throws SQLException {
+		int retval = -1;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "INSERT INTO connection (pk_user_id, host, port, username, password, root_topic) values (?, ?, ?, ?, ?, ?)";
+			PreparedStatement p = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			p.setInt(1, userPk);
+			p.setString(2, config.getBrokerHost());
+			p.setInt(3, config.getBrokerPort());
+			p.setString(4, config.getUsername());
+			p.setString(5, config.getPasswordStr());
+			p.setString(6, config.getRootTopic());
+			retval = p.executeUpdate();
+
+			if(retval > 0) {
+				ResultSet rs = p.getGeneratedKeys();
+				if (rs.next()) {
+					config.setPk(rs.getInt(1));
+				}
+			}
+		}
+		
+		return retval;
+	}
+	
+	private static int mqttConfigUpdate(Connection conn, MqttConnectionConfiguration config) throws SQLException{
+		int result = -1;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "UPDATE connection "
+					+ "SET host=?, port=?, username=?, password=?, root_topic=? "
+					+ "where pk_connection_id=?";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setString(1, config.getBrokerHost());
+			p.setInt(2, config.getBrokerPort());
+			p.setString(3, config.getUsername());
+			p.setString(4, config.getPasswordStr());
+			p.setString(5, config.getRootTopic());
+			p.setInt(6, config.getPk());
+			result = p.executeUpdate();
+		}
+		
+		return result;
+	}
+	
+	public static int mqttConfigRefresh(Connection conn, int userPk, MqttConnectionConfiguration config) throws SQLException {
+		int retval = -1;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			MqttConnectionConfiguration aux = DBConnector.mqttConfigGetByUserPk(conn, userPk);
+			if(aux != null) {
+				config.setPk(aux.getPk());
+				retval = DBConnector.mqttConfigUpdate(conn, config);
+			}
+			else {
+				retval = DBConnector.mqttConfigInsert(conn, userPk, config);
+			}
+		}
+		
+		return retval;
+	}
+
+	public static int mqttConfigDelete(Connection conn, int userPk) throws SQLException {
+		int result = -1;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "DELETE FROM connection "
+					+ "where pk_user_id=?";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setInt(1, userPk);
+			result = p.executeUpdate();
+		}
+		
+		return result;
+	}
+
+	
+	/* ---------------------------------------------------- */
+	/* ------------------ PLACE --------------------------- */
+	/* ---------------------------------------------------- */
+
+
+	/* ---------------------------------------------------- */
+	/* ------------------ DEVICE -------------------------- */
+	/* ---------------------------------------------------- */
+
+
 }

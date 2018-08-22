@@ -12,10 +12,18 @@ public class DeviceServer implements IStringCommandCallback {
 	private AppConnection appConnection = null;
 	private HashMap<Integer, Place> places = null;
 	
+	public DeviceServer() {
+		this.places = new HashMap<>();
+	}
+	
 	public DeviceServer(AppConnection appConnection) {
+		this();
+		setAppConnection(appConnection);
+	}
+	
+	public void setAppConnection(AppConnection appConnection) {
 		this.appConnection = appConnection;
 		this.appConnection.setStringCommandCallback(this);
-		this.places = new HashMap<>();
 	}
 	
 	public boolean addPlace(Place place) {

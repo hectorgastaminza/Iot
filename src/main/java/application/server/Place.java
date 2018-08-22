@@ -1,11 +1,13 @@
 package application.server;
 
 import java.util.HashMap;
+
+import database.DBRecord;
 import device.Device;
 import device.command.DeviceCommandDispatcher;
 import device.command.DeviceCommandRefreshState;
 
-public class Place {
+public class Place extends DBRecord {
 	private int placeID;
 	private String description;
 	private HashMap<Integer, Device> devices;

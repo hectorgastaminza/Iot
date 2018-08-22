@@ -4,19 +4,20 @@ import device.eDeviceStates;
 import device.command.DeviceCommandRefreshState;
 import device.command.DeviceCommandRequest;
 import device.command.eDeviceCommands;
+import protocol.mqtt.MqttConnectionConfiguration;
 import protocol.mqtt.MqttConnection;
 
 public class AppConnection implements protocol.mqtt.IMqttReceiveCallback, device.command.IDeviceCommandsCallback{
 	private String mqttTopic = "comit";
-	private protocol.mqtt.MqttConnectionConfiguration mqttConfig;
-	private protocol.mqtt.MqttConnection mqttConnection;
+	private MqttConnectionConfiguration mqttConfig;
+	private MqttConnection mqttConnection;
 	private IStringCommandCallback stringCommandCallback = null;
 
-	public AppConnection(protocol.mqtt.MqttConnectionConfiguration mqttConfig) {
+	public AppConnection(MqttConnectionConfiguration mqttConfig) {
 		this.mqttConfig = mqttConfig;
 	}
 	
-	public AppConnection(protocol.mqtt.MqttConnectionConfiguration mqttConfig, IStringCommandCallback stringCommandCallback) {
+	public AppConnection(MqttConnectionConfiguration mqttConfig, IStringCommandCallback stringCommandCallback) {
 		this(mqttConfig);
 		this.stringCommandCallback = stringCommandCallback;
 	}

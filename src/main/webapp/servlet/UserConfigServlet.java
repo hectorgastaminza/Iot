@@ -25,7 +25,7 @@ public class UserConfigServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(SessionValidator.isUserValid(request, response)) {
+		if(SessionValidator.isSessionValid(request, response)) {
 			String username = (String) request.getSession().getAttribute("username");
 			User user = null;
 			try {
@@ -49,39 +49,29 @@ public class UserConfigServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String password = request.getParameter("password");
 		String confirm = request.getParameter("confirm");
+		int pk = (int)request.getSession().getAttribute("userpk");
 
-		if(password.equals(confirm)) {
+		if((password.equals(confirm)) && (pk > 0)) {
 			Connection conn = ConnectorMysql.getConnection();
-			String oldUsername = (String) request.getSession().getAttribute("username");
-			String oldPassword = (String) request.getSession().getAttribute("password");
-			int pk = -1;
+
+			String newUsername = request.getParameter("username");
+			String newEmail = request.getParameter("email");
+			User user = new User(newUsername, password, newEmail);
+			user.setPk(pk);
+
+			int result = -1;
 			try {
-				pk = DBConnector.userGetPk(conn, oldUsername, oldPassword);
+				result = DBConnector.userUpdate(conn, user);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			
-			if(pk > 0) {
-				String newUsername = request.getParameter("username");
-				String newEmail = request.getParameter("email");
-				User user = new User(newUsername, password, newEmail);
-				
-				int result = -1;
-				try {
-					result = DBConnector.userUpdate(conn, pk, user);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				
-				if(result > 0) {
-					request.setAttribute("successMessage", "User data modified.");
-				}
-				else {
-					request.setAttribute("errorMessage", "Error. Invalid data has been entered.");
-				}
+
+			if(result > 0) {
+				request.setAttribute("successMessage", "User data modified.");
+				request.getSession().setAttribute("username", newUsername);
+				request.getSession().setAttribute("password", password);
 			}
-			else
-			{
+			else {
 				request.setAttribute("errorMessage", "Error. Invalid data has been entered.");
 			}
 		}
@@ -89,7 +79,7 @@ public class UserConfigServlet extends HttpServlet {
 		{
 			request.setAttribute("errorMessage", "Passwords are not equals");
 		}
-			
+
 		request.getRequestDispatcher("/userconfig").forward(request, response);
 	}
 

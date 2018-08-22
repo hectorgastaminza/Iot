@@ -16,39 +16,44 @@
 	
 	<div class="container">
 		<div class="row content">
-	    <div class="container">
-	       	<nav class="navbar navbar-expand-lg navbar-light bg-primary">
-	          <a class="navbar-brand" href="https://github.com/hectorgastaminza/Iot" target="_blank">C⊙mI⊙T</a>
-	          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-	            <span class="navbar-toggler-icon"></span>
-	          </button>
-	        </nav>
-    	</div>
-    	<!------ ALERT MESSAGES ---------->
-    	<c:if test="${errorMessage != null }">
-			<div class="alert alert-danger mt-3" role="alert">
-	  			${errorMessage}
-			</div>
-		</c:if>
-		<c:if test="${successMessage != null }">
-			<div class="alert alert-success mt-3" role="alert">
-	  			${successMessage}
-			</div>
-		</c:if>
-	</div>		
+		 	<div class="container col-sm-12">
+		 		<!------ NAVBAR ---------->
+			    <div class="container">
+			       	<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+				        <a class="navbar-brand" href="https://github.com/hectorgastaminza/Iot" target="_blank">C⊙mI⊙T</a>
+				        <form action="/logout.do" method="post">
+			    			<button type="submit" class="btn navbar-btn btn-danger">Log Out</button>
+						</form>
+			        </nav>
+		    	</div>
+		    	<!------ ALERT MESSAGES ---------->
+		    	<c:if test="${errorMessage != null }">
+					<div class="alert alert-danger mt-3" role="alert">
+			  			${errorMessage}
+					</div>
+				</c:if>
+				<c:if test="${successMessage != null }">
+					<div class="alert alert-success mt-3" role="alert">
+			  			${successMessage}
+					</div>
+				</c:if>
+			</div>		
+		</div>
 				
 		<!------ ELEMENTS : See Dropdowns ---------->
-    <div class="row content">
-        <div class="container col-sm-2">
-            <a href="/userconfig.do">User</a><br>
-            <a href="/connection.do">Connection</a><br>
-            <a href="/placecreate.do">New place</a><br>
-            <a href="/devicecreate.do">New device</a><br>
-        </div>
-       
-        <div class="container col-sm-8">
-        </div>
-        
+	    <div class="row content">
+	        <div class="container col-sm-2">
+	            <a href="/userconfig.do">User</a><br>
+	            <a href="/connection.do">Connection</a><br>
+	            <a href="/placecreate.do">New place</a><br>
+	            <a href="/devicecreate.do">New device</a><br>
+	        </div>
+	       
+	        <div class="container col-sm-8">
+	        </div>
+	        
+	    </div>
+	    
     </div>
     
     <!------ BOOTSTRAP INCLUDES -- At the end of body to avoid a slow load -------->
