@@ -1,6 +1,8 @@
 package application.server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import application.common.AppConnection;
 import application.common.IStringCommandCallback;
@@ -24,6 +26,10 @@ public class DeviceServer implements IStringCommandCallback {
 	public void setAppConnection(AppConnection appConnection) {
 		this.appConnection = appConnection;
 		this.appConnection.setStringCommandCallback(this);
+	}
+	
+	public List<Place> getPlaces(){
+		return (new ArrayList<Place>(places.values()));
 	}
 	
 	public boolean addPlace(Place place) {

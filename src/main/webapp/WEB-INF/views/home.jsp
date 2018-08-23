@@ -50,6 +50,51 @@
 	        </div>
 	       
 	        <div class="container col-sm-8">
+	        
+	        	<c:forEach items="${places}" var="place">
+						<div class="card info-panel" style="width: 18rem;">
+							<div class="card-header">
+								${place.placeName}
+							</div>
+							<div class="card-body">
+							    <h5 class="card-title">${place.placeID}</h5>
+							    <p class="card-text">${place.description}</p>
+							    <input id="productId" name="devicePk" type="hidden" value="${place.pk}">
+								<button type="submit" class="btn btn-primary">MM</button>
+							</div>
+							
+								 <c:forEach items="${place.getDevices()}" var="device">
+										<div class="card info-panel" style="width: 18rem;">
+											<div class="card-header">
+												${device.name}
+											</div>
+											<div class="card-body">
+											    <h5 class="card-title">${device.id}</h5>
+											    <p class="card-text">${device.description}</p>
+											    <input id="productId" name="devicePk" type="hidden" value="${device.pk}">
+												<button type="submit" class="btn btn-primary">NNN</button>
+											</div>
+										</div>
+								</c:forEach>
+							
+						</div>
+				</c:forEach>
+	        	<!------
+	        	<c:forEach items="${devices}" var="device">
+						<div class="card info-panel" style="width: 18rem;">
+							<div class="card-header">
+								${device.name}
+							</div>
+							<div class="card-body">
+							    <h5 class="card-title">${device.id}</h5>
+							    <p class="card-text">${device.description}</p>
+							    <input id="productId" name="devicePk" type="hidden" value="${device.pk}">
+								<button type="submit" class="btn btn-primary">NNN</button>
+							</div>
+						</div>
+				</c:forEach>
+	        	-------->
+	        
 	        </div>
 	        
 	    </div>

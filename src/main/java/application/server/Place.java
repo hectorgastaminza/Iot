@@ -1,7 +1,9 @@
 package application.server;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import database.DBRecord;
 import device.Device;
@@ -32,8 +34,8 @@ public class Place extends DBRecord implements Serializable {
 		this.description = description;
 	}
 	
-	public Device[] getDevices() {
-		return devices.values().toArray(new Device[devices.size()]);
+	public List<Device> getDevices() {
+		return (new ArrayList<Device>(devices.values()));
 	}
 	
 	public Device getDevice(int deviceID) {

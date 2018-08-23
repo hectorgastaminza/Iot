@@ -72,6 +72,7 @@ public class HomeServlet extends HttpServlet {
 			}
 		}
 		if(user != null){
+			userPk = user.getPk();
 			if(appConnection == null){
 				MqttConnectionConfiguration mqttConfig;
 				try {
@@ -90,21 +91,27 @@ public class HomeServlet extends HttpServlet {
 			}
 			if(appConnection != null) {
 				/* Refresh Places */
-				List<Device> devices;
+				List<Place> places = null;
+				List<Device> devices = null;
 				try {
-					devices = DBConnector.devicesGetByUserPk(conn, userPk);
-					request.setAttribute("devices", devices);
+					places = DBConnector.placesGetByUserPk(conn, userPk);
+					for (Place place : places) {
+						deviceServer.addPlace(place);
+					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 				/* Refresh Devices */
-				List<Place> places;
 				try {
-					places = DBConnector.placesGetByUserPk(conn, userPk);
-					request.setAttribute("places", places);
+					devices = DBConnector.devicesGetByUserPk(conn, userPk);
+					for (Device device : devices) {
+						deviceServer.addDevice(device);
+					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
+				request.setAttribute("places", places);
+				request.setAttribute("devices", devices);
 			}
 		}
 		try {
