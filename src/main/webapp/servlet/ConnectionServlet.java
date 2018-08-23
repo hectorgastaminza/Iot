@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -28,7 +29,9 @@ public class ConnectionServlet extends HttpServlet {
 			int userPk = (int) request.getSession().getAttribute("userpk");
 			MqttConnectionConfiguration mqttConfig = null;
 			try {
-				mqttConfig = DBConnector.mqttConfigGetByUserPk(ConnectorMysql.getConnection(), userPk);
+				Connection conn = ConnectorMysql.getConnection();
+				mqttConfig = DBConnector.mqttConfigGetByUserPk(conn, userPk);
+				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -70,7 +73,9 @@ public class ConnectionServlet extends HttpServlet {
 			
 			int result = -1;
 			try {
-				result = DBConnector.mqttConfigRefresh(ConnectorMysql.getConnection(), userPk, mqttConfig);
+				Connection conn = ConnectorMysql.getConnection();
+				result = DBConnector.mqttConfigRefresh(conn, userPk, mqttConfig);
+				conn.close();				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

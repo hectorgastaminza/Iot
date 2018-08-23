@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -25,7 +26,10 @@ public class SessionValidator {
 			
 			if((username != null) && (password != null)) {
 				try {
-					int result = DBConnector.userGetPk(ConnectorMysql.getConnection(), username, password);
+					Connection conn = ConnectorMysql.getConnection();
+					int result = DBConnector.userGetPk(conn, username, password);
+					conn.close();	
+					
 					if(result > 0) {
 						valid = true;
 						request.getSession().setAttribute("userpk", result);

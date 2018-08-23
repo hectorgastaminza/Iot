@@ -37,12 +37,14 @@ public class SignupServlet extends HttpServlet {
 
 		if(password.equals(confirm)) {
 			String username = request.getParameter("username");
-			Connection conn = ConnectorMysql.getConnection();
 			String email = request.getParameter("email");
 			User user = new User(username, password, email);
-
+			
 			try {
+				Connection conn = ConnectorMysql.getConnection();
 				int result = DBConnector.userInsert(conn, user);
+				conn.close();
+				
 				if(result > 0) {
 					request.setAttribute("successMessage", "User created. Please login");
 				} 

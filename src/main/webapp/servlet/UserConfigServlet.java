@@ -29,7 +29,9 @@ public class UserConfigServlet extends HttpServlet {
 			String username = (String) request.getSession().getAttribute("username");
 			User user = null;
 			try {
-				user = DBConnector.userGetByUsername(ConnectorMysql.getConnection(), username);
+				Connection conn = ConnectorMysql.getConnection();
+				user = DBConnector.userGetByUsername(conn, username);
+				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -52,8 +54,6 @@ public class UserConfigServlet extends HttpServlet {
 		int pk = (int)request.getSession().getAttribute("userpk");
 
 		if((password.equals(confirm)) && (pk > 0)) {
-			Connection conn = ConnectorMysql.getConnection();
-
 			String newUsername = request.getParameter("username");
 			String newEmail = request.getParameter("email");
 			User user = new User(newUsername, password, newEmail);
@@ -61,7 +61,9 @@ public class UserConfigServlet extends HttpServlet {
 
 			int result = -1;
 			try {
+				Connection conn = ConnectorMysql.getConnection();
 				result = DBConnector.userUpdate(conn, user);
+				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

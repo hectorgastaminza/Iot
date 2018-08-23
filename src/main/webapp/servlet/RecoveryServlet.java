@@ -45,12 +45,13 @@ public class RecoveryServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
-		Connection conn = ConnectorMysql.getConnection();
 		
 		try {
 			User user = null;
 			
+			Connection conn = ConnectorMysql.getConnection();
 			user = DBConnector.userGetByEmail(conn, email);
+			conn.close();
 			
 			if(user != null) {
 				boolean result = sendRecoveryEmail(user);
@@ -59,12 +60,10 @@ public class RecoveryServlet extends HttpServlet {
 					request.getRequestDispatcher("/recovery").forward(request, response);
 				}
 			}
-			else
-			{
+			else {
 				request.setAttribute("errorMessage", "This email has not been registered");
 				request.getRequestDispatcher("/recovery").forward(request, response);
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (MessagingException e) {

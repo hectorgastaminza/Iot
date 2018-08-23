@@ -1,5 +1,6 @@
 package application.server;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import database.DBRecord;
@@ -7,7 +8,8 @@ import device.Device;
 import device.command.DeviceCommandDispatcher;
 import device.command.DeviceCommandRefreshState;
 
-public class Place extends DBRecord {
+public class Place extends DBRecord implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int placeID;
 	private String placeName;
 	private String description;

@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS connection (
 )  ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS place (
-  pk_place_id int NOT NULL AUTO_INCREMENT,
+  pk_place_iddevice int NOT NULL AUTO_INCREMENT,
   pk_user_id int NOT NULL,
   place_id MEDIUMINT NOT NULL,
   place_name VARCHAR(64) NOT NULL,
@@ -44,6 +44,8 @@ CREATE TABLE IF NOT EXISTS device (
   device_id MEDIUMINT NOT NULL,
   device_name VARCHAR(64) NOT NULL,
   device_description VARCHAR(128),
+  device_state int DEFAULT 0,
+  device_value int DEFAULT 0,
   PRIMARY KEY (pk_device_id),
   FOREIGN KEY (pk_user_id) REFERENCES user(pk_user_id)
 ) ENGINE=InnoDB;
@@ -83,7 +85,7 @@ VALUES (@user_pk, '8', '5', 'Generic', 'Generic device');
 INSERT INTO device (pk_user_id, place_id, device_id, device_name, device_description)
 VALUES (@user_pk, '20', '9', 'Raspberry', 'Raspberry device');
 
-SELECT * FROM place WHERE pk_user_id = @user_pk;
+SELECT * FROM device WHERE pk_user_id = @user_pk;
 SET @place_id = 8;
 SELECT * FROM place WHERE pk_user_id = @user_pk AND place_id = @place_id;
 SET @device_id = 5;

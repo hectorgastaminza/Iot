@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import application.server.Place;
 import application.server.User;
@@ -286,8 +287,8 @@ public class DBConnector {
 	/* ------------------ PLACE --------------------------- */
 	/* ---------------------------------------------------- */
 
-	private static ArrayList<Place> dbCreatePlaces(ResultSet rs) throws SQLException {
-		ArrayList<Place> places = new ArrayList<>();;
+	private static List<Place> dbCreatePlaces(ResultSet rs) throws SQLException {
+		List<Place> places = new ArrayList<>();;
 		
 		while(rs.next()) {
 			Place place = new Place(rs.getInt("place_id"));
@@ -300,8 +301,8 @@ public class DBConnector {
 		return places;
 	}
 
-	public static ArrayList<Place> placesGetByUserPk(Connection conn, int userPk) throws SQLException {
-		ArrayList<Place> retval = null;
+	public static List<Place> placesGetByUserPk(Connection conn, int userPk) throws SQLException {
+		List<Place> retval = null;
 		
 		if((conn != null) && (conn.isValid(0)))
 		{
@@ -336,8 +337,8 @@ public class DBConnector {
 	/* ------------------ DEVICE -------------------------- */
 	/* ---------------------------------------------------- */
 
-	private static ArrayList<Device> dbCreateDevices(ResultSet rs) throws SQLException {
-		ArrayList<Device> devices = new ArrayList<>();;
+	private static List<Device> dbCreateDevices(ResultSet rs) throws SQLException {
+		List<Device> devices = new ArrayList<>();;
 		
 		while(rs.next()) {
 			Device device = new Device(rs.getInt("place_id"), rs.getInt("device_id"));
@@ -350,8 +351,8 @@ public class DBConnector {
 		return devices;
 	}
 
-	public static ArrayList<Device> devicesGetByUserPk(Connection conn, int userPk) throws SQLException {
-		ArrayList<Device> retval = null;
+	public static List<Device> devicesGetByUserPk(Connection conn, int userPk) throws SQLException {
+		List<Device> retval = null;
 		
 		if((conn != null) && (conn.isValid(0)))
 		{

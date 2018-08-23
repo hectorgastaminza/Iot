@@ -1,6 +1,10 @@
 package database;
 
-public class DBRecord {
+import java.io.Serializable;
+
+public class DBRecord implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private int pk;
 
 	public DBRecord() {

@@ -1,8 +1,12 @@
 package protocol.mqtt;
 
+import java.io.Serializable;
+
 import database.DBRecord;
 
-public class MqttConnectionConfiguration extends DBRecord {
+public class MqttConnectionConfiguration extends DBRecord implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private String brokerHost = "mqtt.dioty.co";
 	private int brokerPort = 1883;
 	/* Optional */

@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -36,7 +37,9 @@ public class LoginServlet extends HttpServlet {
 		
 		int userID = 0;
 		try {
-			userID = DBConnector.userGetPk(ConnectorMysql.getConnection(), username, password);
+			Connection conn = ConnectorMysql.getConnection();
+			userID = DBConnector.userGetPk(conn, username, password);
+			conn.close();	
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

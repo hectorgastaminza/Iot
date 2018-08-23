@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,9 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import application.common.AppConnection;
 import application.server.DeviceServer;
+import application.server.Place;
 import application.server.User;
 import database.DBConnector;
 import database.mysql.ConnectorMysql;
+import device.Device;
 import protocol.mqtt.MqttConnectionConfiguration;
 
 /**
@@ -87,9 +90,27 @@ public class HomeServlet extends HttpServlet {
 			}
 			if(appConnection != null) {
 				/* Refresh Places */
-				
+				List<Device> devices;
+				try {
+					devices = DBConnector.devicesGetByUserPk(conn, userPk);
+					request.setAttribute("devices", devices);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				/* Refresh Devices */
+				List<Place> places;
+				try {
+					places = DBConnector.placesGetByUserPk(conn, userPk);
+					request.setAttribute("places", places);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
+		}
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 }

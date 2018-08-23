@@ -1,9 +1,13 @@
 package application.server;
 
+import java.io.Serializable;
+
 import database.DBRecord;
 import protocol.mqtt.MqttConnectionConfiguration;
 
-public class User extends DBRecord {
+public class User extends DBRecord implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private String username;
 	private String password;
 	private String email;
