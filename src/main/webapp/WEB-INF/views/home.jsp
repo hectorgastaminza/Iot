@@ -1,85 +1,61 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="/styles/comiot.css" type="text/css">
-    <title>COMIOT</title>
-  </head>
-  <body>
-    <!------ WEB DESIGN ---------->
-	
-	<div class="container">
-		<div class="row content">
-		 	<div class="container col-sm-12">
-		 		<!------ NAVBAR ---------->
-			    <div class="container">
-			       	<nav class="navbar navbar-expand-lg navbar-light bg-primary">
-				        <a class="navbar-brand" href="https://github.com/hectorgastaminza/Iot" target="_blank">C⊙mI⊙T</a>
-				        <form action="/logout.do" method="post">
-			    			<button type="submit" class="btn navbar-btn btn-danger">Log Out</button>
-						</form>
-			        </nav>
-		    	</div>
-		    	<!------ ALERT MESSAGES ---------->
-		    	<c:if test="${errorMessage != null }">
-					<div class="alert alert-danger mt-3" role="alert">
-			  			${errorMessage}
-					</div>
-				</c:if>
-				<c:if test="${successMessage != null }">
-					<div class="alert alert-success mt-3" role="alert">
-			  			${successMessage}
-					</div>
-				</c:if>
-			</div>		
-		</div>
-				
-		<!------ ELEMENTS : See Dropdowns ---------->
-	    <div class="row content">
-	        <div class="container col-sm-2">
-	            <a href="/userconfig.do">User</a><br>
-	            <a href="/connection.do">Connection</a><br>
-	            <a href="/placecreate.do">New place</a><br>
-	            <a href="/devicecreate.do">New device</a><br>
-	        </div>
-	       
-	        <div class="container col-sm-8">
-	        
-	        	<c:forEach items="${places}" var="place">
-						<div class="card info-panel" style="width: 18rem;">
-							<div class="card-header">
-								${place.placeName}
-							</div>
-							<div class="card-body">
-							    <h5 class="card-title">${place.placeID}</h5>
-							    <p class="card-text">${place.description}</p>
-							    <input id="productId" name="devicePk" type="hidden" value="${place.pk}">
-								<button type="submit" class="btn btn-primary">MM</button>
-							</div>
-							
-								 <c:forEach items="${place.getDevices()}" var="device">
-										<div class="card info-panel" style="width: 18rem;">
-											<div class="card-header">
-												${device.name}
-											</div>
-											<div class="card-body">
-											    <h5 class="card-title">${device.id}</h5>
-											    <p class="card-text">${device.description}</p>
-											    <input id="productId" name="devicePk" type="hidden" value="${device.pk}">
-												<button type="submit" class="btn btn-primary">NNN</button>
-											</div>
-										</div>
-								</c:forEach>
-							
-						</div>
-				</c:forEach>
-	        	<!------
+<%@ include file="../common/header.jspf" %>
+<%@ include file="../common/navigation.jspf" %>
+<!------ WEB DESIGN ---------->
+
+
+
+<!------ ELEMENTS : See Dropdowns ---------->
+<div class="row content">
+	<div class="d-flex flex-row col-sm-8">
+
+		<c:forEach items="${places}" var="place">
+			<div class="d-flex flex-row place">
+				<div class="well">${place.placeName}</div>
+				<p>${place.placeID}</p>
+				<p>${place.description}</p>
+				<input id="placePk" name="placePk" type="hidden" value="${place.pk}">
+			</div>
+			<c:forEach items="${place.getDevices()}" var="device">
+				<div class="d-flex device">
+					<div class="card-header">${device.name}</div>
+					<div class="card-body">${device.state}</div>
+					<div class="card-body">${device.value}</div>
+					<div class="card-footer">Footer</div>
+					<input id="devicePk" name="devicePk" type="hidden"
+						value="${device.pk}">
+					<button type="submit" class="btn btn-primary">NNN</button>
+					
+			<!-- CREDIT CARD FORM STARTS HERE -->
+            <div class="panel panel-default credit-card-box">
+                <div class="panel-heading display-table" >
+                    <div class="row display-tr" >
+                        <h3 class="panel-title display-td" >${device.name}</h3>
+                    </div>                    
+                </div>
+                <div class="panel-body">
+                    <form role="form" id="payment-form" method="POST" action="javascript:void(0);">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="cardNumber">CARD NUMBER</label>
+                                    <div class="input-group">
+										<label for="cardExpiry"><span class="hidden-xs">${device.state}</span><span class="visible-xs-inline">EXP</span> DATE</label>
+                                        <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                    </div>
+                                </div>                            
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>            
+            <!-- CREDIT CARD FORM ENDS HERE -->
+					
+					
+				</div>
+			</c:forEach>
+			<!------ <button type="submit" class="btn btn-primary">MM</button> -------->
+		</c:forEach>
+		<!------
 	        	<c:forEach items="${devices}" var="device">
 						<div class="card info-panel" style="width: 18rem;">
 							<div class="card-header">
@@ -93,17 +69,24 @@
 							</div>
 						</div>
 				</c:forEach>
-	        	-------->
-	        
-	        </div>
-	        
-	    </div>
-	    
-    </div>
-    
-    <!------ BOOTSTRAP INCLUDES -- At the end of body to avoid a slow load -------->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-  </body>
-</html>
+	        	-------->	        	
+	</div>
+</div>
+
+<c:forEach items="${places}" var="place">
+	<c:forEach items="${place.getDevices()}" var="device">
+		<div class="card info-panel" style="width: 18rem;">
+			<div class="card-header">${device.name}</div>
+			<div class="card-body">
+				<h5 class="card-title">${device.id}</h5>
+				<p class="card-text">${device.description}</p>
+				<input id="productId" name="devicePk" type="hidden"
+					value="${device.pk}">
+				<button type="submit" class="btn btn-primary">NNN</button>
+			</div>
+		</div>
+	</c:forEach>
+	<!------ <button type="submit" class="btn btn-primary">MM</button> -------->
+</c:forEach>
+
+<%@ include file="../common/footer.jspf" %>

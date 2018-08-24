@@ -5,6 +5,7 @@ public enum eDeviceStates {
     OFF(0x1),
     ON(0x2),
     ON_VALUE(0x3);
+	private static eDeviceStates[] states = eDeviceStates.values();
 	
 	private int value;
 	
@@ -16,4 +17,22 @@ public enum eDeviceStates {
 	public int getValue() {
 		return value;
 	}
+	
+	public Boolean isEqual(int value) {
+		return (this.value == value);
+	}
+	
+    public static eDeviceStates getFromValue(int _id)
+    {
+    	eDeviceStates retval = eDeviceStates.NONE;
+    	
+        for(int i = 0; i < states.length; i++)
+        {
+            if(states[i].isEqual(_id)) {
+            	retval = states[i];
+            	break;
+            }
+        }
+        return retval;
+    }
 }

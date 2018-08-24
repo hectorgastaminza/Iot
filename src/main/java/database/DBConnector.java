@@ -10,6 +10,7 @@ import java.util.List;
 import application.server.Place;
 import application.server.User;
 import device.Device;
+import device.eDeviceStates;
 import protocol.mqtt.MqttConnectionConfiguration;
 
 import java.sql.ResultSet;
@@ -344,6 +345,7 @@ public class DBConnector {
 			Device device = new Device(rs.getInt("place_id"), rs.getInt("device_id"));
 			device.setName(rs.getString("device_name"));
 			device.setDescription(rs.getString("device_description"));
+			device.setState(eDeviceStates.getFromValue(rs.getInt("device_state")), rs.getInt("device_value"));
 			device.setPk(rs.getInt("pk_device_id"));
 			devices.add(device);
 		}
