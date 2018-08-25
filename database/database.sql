@@ -79,11 +79,13 @@ INSERT INTO place (pk_user_id, place_id, place_name, place_description)
 VALUES (@user_pk, '20', 'Backyard', 'This is a description.');
 
 SELECT * FROM place WHERE pk_user_id = @user_pk;
+SELECT * FROM device WHERE pk_user_id = @user_pk;
 
 INSERT INTO device (pk_user_id, place_id, device_id, device_name, device_description)
 VALUES (@user_pk, '8', '5', 'Generic', 'Generic device');
 INSERT INTO device (pk_user_id, place_id, device_id, device_name, device_description)
 VALUES (@user_pk, '20', '9', 'Raspberry', 'Raspberry device');
+UPDATE device SET place_id = '8' where pk_user_id = @user_pk;
 
 SELECT * FROM device WHERE pk_user_id = @user_pk;
 SET @place_id = 8;

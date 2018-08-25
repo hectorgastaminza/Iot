@@ -1,4 +1,4 @@
-.menu-title{
+.menu-title .header {
     margin-top: 10px;
     font-family: monospace;
     border-radius: 6px;
@@ -6,9 +6,17 @@
     text-align: center;
 }
 
-.place{
-
+.place .header{
+    margin-top: 10px;
+    font-family: monospace;
+    text-align: center;
 }
 
-.device{
+.device .header{
+	margin: 20px;
+	width: 20rem;
+}
+
+.body {
+    background: beige;
 }

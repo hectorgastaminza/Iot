@@ -294,7 +294,7 @@ public class DBConnector {
 		while(rs.next()) {
 			Place place = new Place(rs.getInt("place_id"));
 			place.setPlaceName(rs.getString("place_name"));
-			place.setPlaceName(rs.getString("place_description"));
+			place.setDescription(rs.getString("place_description"));
 			place.setPk(rs.getInt("pk_place_id"));
 			places.add(place);
 		}
