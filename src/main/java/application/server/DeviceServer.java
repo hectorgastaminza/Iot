@@ -3,6 +3,7 @@ package application.server;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 import application.common.AppConnection;
 import application.common.IStringCommandCallback;
@@ -87,9 +88,13 @@ public class DeviceServer implements IStringCommandCallback {
 				if(places.containsKey(deviceCommandRefreshState.getPlaceID())) {
 					Place place = places.get(deviceCommandRefreshState.getPlaceID());
 					retval = place.processDeviceCommandRefreshState(deviceCommandRefreshState);
-				
+					
 					if(retval) {
 						// Refresh UI
+						System.out.println("Device: " + deviceCommandRefreshState.getDeviceID() + 
+								" | Place: " + deviceCommandRefreshState.getPlaceID() +
+								" | new state: " + deviceCommandRefreshState.getState()
+								);
 					}
 				}
 			}
@@ -117,7 +122,15 @@ public class DeviceServer implements IStringCommandCallback {
 				DeviceControl.showPlaceStatus(place);
 			}
 			
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("Press 0 to exit");
+			int key = -1;
+			while(key != 0) {
+				key = scanner.nextInt();
+			}
+			
 			System.out.println("Closing connection... almost done... waiting for disconnection...");
+			scanner.close();
 			connection = disconnect();
 			System.out.println("Disconnection : " + ((connection) ? "OK" : "FAIL"));
 		}

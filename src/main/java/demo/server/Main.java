@@ -26,6 +26,10 @@ public class Main {
 		/* Load devices */
 		Device device = new Device(eDemoValues.PLACE_ID_GENERIC.getValue(), eDemoValues.DEVICE_ID_GENERIC.getValue());
 		deviceServer.addDevice(device);
+		device = new Device(eDemoValues.PLACE_ID_GENERIC.getValue(), 99);
+		deviceServer.addDevice(device);
+		device = new Device(eDemoValues.PLACE_ID_GENERIC.getValue(), 100);
+		deviceServer.addDevice(device);
 		device = new Device(eDemoValues.PLACE_ID_RASPBERRY.getValue(), eDemoValues.DEVICE_ID_RASPBERRY.getValue());
 		deviceServer.addDevice(device);
 		/* Launch */

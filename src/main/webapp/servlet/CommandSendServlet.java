@@ -63,7 +63,7 @@ public class CommandSendServlet extends HttpServlet {
 			}
 		}
 		
-		request.getRequestDispatcher("/home").forward(request, response);
+		request.getRequestDispatcher("/home.do").forward(request, response);
 	}
 
 	/**

@@ -1,9 +1,9 @@
 package demo;
 
 public enum eDemoValues {
-	PLACE_ID_GENERIC(8),
+	PLACE_ID_GENERIC(1),
 	DEVICE_ID_GENERIC(5),
-	PLACE_ID_RASPBERRY(20),
+	PLACE_ID_RASPBERRY(1),
 	DEVICE_ID_RASPBERRY(9);
 
 	private int value;

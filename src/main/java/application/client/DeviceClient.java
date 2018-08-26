@@ -25,7 +25,9 @@ public class DeviceClient implements IStringCommandCallback {
 		
 		if(commands.length > 0) {
 			for (DeviceCommandRequest deviceCommandRequest : commands) {
-				DeviceCommandDispatcher.processCommandRequest(device, deviceCommandRequest);
+				if((device.getId() == deviceCommandRequest.getDeviceID()) && (device.getPlaceID() == deviceCommandRequest.getPlaceID())){
+					DeviceCommandDispatcher.processCommandRequest(device, deviceCommandRequest);
+				}
 			}
 			retval = true;
 		}
