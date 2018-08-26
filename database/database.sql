@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS connection (
 )  ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS place (
-  pk_place_iddevice int NOT NULL AUTO_INCREMENT,
+  pk_place_id int NOT NULL AUTO_INCREMENT,
   pk_user_id int NOT NULL,
   place_id MEDIUMINT NOT NULL,
   place_name VARCHAR(64) NOT NULL,
@@ -85,7 +85,7 @@ INSERT INTO device (pk_user_id, place_id, device_id, device_name, device_descrip
 VALUES (@user_pk, '8', '5', 'Generic', 'Generic device');
 INSERT INTO device (pk_user_id, place_id, device_id, device_name, device_description)
 VALUES (@user_pk, '20', '9', 'Raspberry', 'Raspberry device');
-UPDATE device SET place_id = '8' where pk_user_id = @user_pk;
+UPDATE place SET place_id = '1' where pk_place_id = 1;
 
 SELECT * FROM device WHERE pk_user_id = @user_pk;
 SET @place_id = 8;

@@ -12,7 +12,7 @@
 	<div class="row" style = "margin: 5px">
 		<c:forEach items="${place.getDevices()}" var="device">
 			<div class="card device bg-light border-secondary" style = "margin: 5px; width: 16rem; text-align: center;">
-				<div class="card-header border-secondary" style ="text-align: left;">${device.name}</div>
+				<a class="card-header border-secondary" style ="text-align: left;" href="/devicecreate.do?update=${device.pk}">${device.name}</a>
 				<div class="card-body border-secondary">
 					<c:choose>
 						<c:when test="${(device.state == 'NONE')}">
@@ -31,9 +31,19 @@
 				</div>
 				<p class="card-text">[ Place : ${device.getPlaceID()} | ID : ${device.getId()} ]</p>
 				<div class="card-foot border-secondary">
-					<input id="productId" name="devicePk" type="hidden"
-						value="${device.pk}">
+					<input id="devicePk" name="devicePk" type="hidden" value="${device.pk}">
 					<button type="submit" class="btn btn-primary">NNN</button>
+					<div class="btn-group">
+						<button type="button"
+							class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class="sr-only">Toggle Dropdown</span>
+						</button>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#">ON</a> 
+							<a class="dropdown-item" href="#">OFF</a>
+						</div>
+					</div>
 				</div>
 			</div>
 		</c:forEach>

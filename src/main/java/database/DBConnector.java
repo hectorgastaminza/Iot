@@ -369,6 +369,25 @@ public class DBConnector {
 		return retval;
 	}
 	
+	public static Device deviceGetByPk(Connection conn, int devicePk) throws SQLException {
+		Device retval = null;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "SELECT * FROM device WHERE pk_device_id=? ORDER BY device_id ASC";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setInt(1, devicePk);
+			ResultSet rs = p.executeQuery();
+			
+			List<Device> aux = dbCreateDevices(rs);
+			if(aux != null) {
+				retval = aux.get(0);
+			}
+		}
+		
+		return retval;
+	}
+	
 	public static int deviceDelete(Connection conn, int devicePk) throws SQLException {
 		int result = -1;
 		
@@ -383,5 +402,47 @@ public class DBConnector {
 		
 		return result;
 	}
+	
+	public static int deviceInsert(Connection conn, int userPk, Device device) throws SQLException {
+		int retval = -1;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "INSERT INTO device (pk_user_id, device_id, device_name, device_description) values (?, ?, ?, ?)";
+			PreparedStatement p = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			p.setInt(1, userPk);
+			p.setInt(2, device.getId());
+			p.setString(3, device.getName());
+			p.setString(4, device.getDescription());
+			retval = p.executeUpdate();
 
+			if(retval > 0) {
+				ResultSet rs = p.getGeneratedKeys();
+				if (rs.next()) {
+					device.setPk(rs.getInt(1));
+				}
+			}
+		}
+		
+		return retval;
+	}
+	
+	public static int deviceUpdate(Connection conn, Device device) throws SQLException{
+		int result = -1;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "UPDATE device "
+					+ "SET device_id=?, device_name=?, device_description=? "
+					+ "where pk_device_id=?";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setInt(1, device.getId());
+			p.setString(2, device.getName());
+			p.setString(3, device.getDescription());
+			p.setInt(4, device.getPk());
+			result = p.executeUpdate();
+		}
+		
+		return result;
+	}
 }
