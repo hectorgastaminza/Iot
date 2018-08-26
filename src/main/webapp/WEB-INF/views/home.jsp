@@ -32,16 +32,15 @@
 				<p class="card-text">[ Place : ${device.getPlaceID()} | ID : ${device.getId()} ]</p>
 				<div class="card-foot border-secondary">
 					<input id="devicePk" name="devicePk" type="hidden" value="${device.pk}">
-					<button type="submit" class="btn btn-primary">NNN</button>
-					<div class="btn-group">
+					<div class="btn-group" style = "margin: 2px;">
 						<button type="button"
-							class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split"
+							class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="sr-only">Toggle Dropdown</span>
+							<span class="sr-only">Toggle Dropdown</span> Send
 						</button>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">ON</a> 
-							<a class="dropdown-item" href="#">OFF</a>
+							<a class="dropdown-item" href="/commandsend.do?on=${device.getId()}">ON</a> 
+							<a class="dropdown-item" href="/commandsend.do?off=${device.getId()}">OFF</a>
 						</div>
 					</div>
 				</div>
