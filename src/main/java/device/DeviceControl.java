@@ -13,6 +13,7 @@ public class DeviceControl {
 		int option = -1;
 		int exit = 0;
 		eDeviceCommands command = eDeviceCommands.NONE;
+		device.setDebugMessages(true);
 
 		while (option != exit) {
 			command = eDeviceCommands.NONE;

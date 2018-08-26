@@ -54,12 +54,12 @@ public class Device extends DBRecord implements Serializable {
 	public void setState(eDeviceStates state) {
 		this.state = state;
 		
-		/*
-		System.out.println("Device: " + id + 
-				" | Place: " + place +
-				" | new state: " + state
-				);
-				*/
+		if(debugMessages) {
+			System.out.println("Device: " + id + 
+					" | Place: " + place +
+					" | new state: " + state
+					);
+		}
 		
 		refreshState();
 	}
@@ -125,5 +125,10 @@ public class Device extends DBRecord implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	private boolean debugMessages = false;
+	public void setDebugMessages(boolean debug) {
+		debugMessages = debug;
 	}
 }
