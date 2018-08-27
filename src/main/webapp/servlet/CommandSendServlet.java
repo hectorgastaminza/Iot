@@ -46,18 +46,12 @@ public class CommandSendServlet extends HttpServlet {
 				
 				if(param.getName().equals("on")){
 					int deviceId = Integer.parseInt(params.get(0).getValue());
-					AppConnection appConnection = getAppConnection(userPk);
-					appConnection.connect();
-					appConnection.commandRequest(1, deviceId, eDeviceCommands.ON, 0);
-					appConnection.disconnect();
+					sendAppCommand(userPk, deviceId, eDeviceCommands.ON);
 				}
 				else {
 					if(param.getName().equals("off")){
 						int deviceId = Integer.parseInt(params.get(0).getValue());
-						AppConnection appConnection = getAppConnection(userPk);
-						appConnection.connect();
-						appConnection.commandRequest(1, deviceId, eDeviceCommands.OFF, 0);
-						appConnection.disconnect();
+						sendAppCommand(userPk, deviceId, eDeviceCommands.OFF);
 					}
 				}
 			}
@@ -71,6 +65,15 @@ public class CommandSendServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+	}
+	
+	private void sendAppCommand(int userPk, int deviceId, eDeviceCommands command) {
+		AppConnection appConnection = getAppConnection(userPk);
+		if(appConnection != null) {
+			appConnection.connect();
+			appConnection.commandRequest(1, deviceId, command, 0);
+			appConnection.disconnect();
+		}
 	}
 	
 	private AppConnection getAppConnection(int userPk) {

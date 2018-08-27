@@ -73,6 +73,27 @@ public class DBConnector {
 		return retval;
 	}
 	
+	public static List<Integer> usersGetPk(Connection conn) throws SQLException {
+		List<Integer> users = null;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "SELECT pk_user_id FROM user";
+			PreparedStatement p = conn.prepareStatement(query);
+			ResultSet rs = p.executeQuery();
+			
+			if(rs.next()) {
+				users = new ArrayList<>();
+				users.add(rs.getInt("pk_user_id"));
+				while (rs.next()) {
+					users.add(rs.getInt("pk_user_id"));
+				}
+			}
+		}
+		
+		return users;
+	}
+	
 	public static User userGetByPk(Connection conn, int pk) throws SQLException {
 		User user = null;
 		
@@ -440,6 +461,28 @@ public class DBConnector {
 			p.setString(2, device.getName());
 			p.setString(3, device.getDescription());
 			p.setInt(4, device.getPk());
+			result = p.executeUpdate();
+		}
+		
+		return result;
+	}
+	
+	public static int deviceUpdateState(Connection conn, int userPk, Device device) throws SQLException{
+		int result = -1;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "UPDATE device "
+					+ "SET device_state=?, device_value=? "
+					+ "where pk_user_id=? and "
+					+ "device_id=? and "
+					+ "place_id=?";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setInt(1, device.getState().getValue());
+			p.setInt(2, device.getValue());
+			p.setInt(3, userPk);
+			p.setInt(4, device.getId());
+			p.setInt(5, device.getPlaceID());
 			result = p.executeUpdate();
 		}
 		

@@ -34,7 +34,6 @@ public class MqttConnection implements MqttCallback {
 	
 	public boolean connect() {
 		mqttListener = new MqttListener(mqttTopic, mqttConfig, this);
-		mqttPublisher = new MqttPublisher(mqttConfig);
 		return true;
 	}
 	
@@ -59,6 +58,9 @@ public class MqttConnection implements MqttCallback {
 	}
 	
 	public boolean MqttSend(String data) {
+		if(mqttPublisher == null) {
+			mqttPublisher = new MqttPublisher(mqttConfig);
+		}
 		return this.mqttPublisher.publish(mqttTopic, data);
 	}
 

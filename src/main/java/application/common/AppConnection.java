@@ -27,16 +27,16 @@ public class AppConnection implements protocol.mqtt.IMqttReceiveCallback, device
 	}
 	
 	public boolean connect() {
-		if(mqttConnection == null) {
+		if((mqttConnection == null) && (mqttConfig != null)) {
 			mqttConnection = new MqttConnection(mqttConfig, this);
 			mqttConnection.mqttTopicSet(mqttTopic);
 		}
 		
-	    return mqttConnection.connect();
+	    return (mqttConnection == null) ? false : mqttConnection.connect();
 	}
 	
 	public boolean disconnect() {
-		return mqttConnection.disconnect();
+		return (mqttConnection == null) ? false : mqttConnection.disconnect();
 	}
 
 	@Override

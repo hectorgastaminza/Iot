@@ -14,6 +14,8 @@ import device.command.DeviceCommandRefreshState;
 public class DeviceServer implements IStringCommandCallback {
 	private AppConnection appConnection = null;
 	private HashMap<Integer, Place> places = null;
+	private int userId = -1; 
+	private IDeviceStatusRefreshCallback deviceStatusRefreshCallback = null;
 	
 	public DeviceServer() {
 		this.places = new HashMap<>();
@@ -22,6 +24,22 @@ public class DeviceServer implements IStringCommandCallback {
 	public DeviceServer(AppConnection appConnection) {
 		this();
 		setAppConnection(appConnection);
+	}
+	
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	
+	public IDeviceStatusRefreshCallback getDeviceStatusRefreshCallback() {
+		return deviceStatusRefreshCallback;
+	}
+
+	public void setDeviceStatusRefreshCallback(IDeviceStatusRefreshCallback deviceStatusRefreshCallback) {
+		this.deviceStatusRefreshCallback = deviceStatusRefreshCallback;
 	}
 	
 	public void setAppConnection(AppConnection appConnection) {
@@ -95,6 +113,10 @@ public class DeviceServer implements IStringCommandCallback {
 								" | Place: " + deviceCommandRefreshState.getPlaceID() +
 								" | new state: " + deviceCommandRefreshState.getState()
 								);
+						//
+						if(deviceStatusRefreshCallback != null) {
+							deviceStatusRefreshCallback.deviceRefreshStatusCallback(userId, deviceCommandRefreshState);
+						}
 					}
 				}
 			}
@@ -103,12 +125,12 @@ public class DeviceServer implements IStringCommandCallback {
 		return retval;
 	}
 	
-	public boolean connect() {
-		return appConnection.connect();
+	public boolean connect() {	
+		return (appConnection != null) ? appConnection.connect() : false;
 	}
 	
 	public boolean disconnect() {
-		return appConnection.disconnect();
+		return (appConnection != null) ? appConnection.disconnect() : false;
 	}
 	
 	public void serverLaunch() {
