@@ -1,22 +1,22 @@
 .menu-title .header {
-    margin-top: 10px;
-    font-family: monospace;
-    border-radius: 6px;
-    background: #CCC;
-    text-align: center;
+	margin-top: 10px;
+	font-family: monospace;
+	border-radius: 6px;
+	background: #CCC;
+	text-align: center;
 }
 
-.place .header{
-    margin-top: 10px;
-    font-family: monospace;
-    text-align: center;
+.place .header {
+	margin-top: 10px;
+	font-family: monospace;
+	text-align: center;
 }
 
-.device .header{
+.device .header {
 	margin: 20px;
 	width: 20rem;
 }
 
 .body {
-    background: beige;
+	background: beige;
 }

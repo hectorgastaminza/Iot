@@ -1,5 +1,5 @@
-<%@ include file="../common/header.jspf" %>
-<%@ include file="../common/navigation.jspf" %>
+<%@ include file="../common/header.jspf"%>
+<%@ include file="../common/navigation.jspf"%>
 <!------ WEB DESIGN ---------->
 
 <!------ ELEMENTS : See Dropdowns ---------->
@@ -54,4 +54,4 @@
 	<div class="container col-sm-1"></div>
 </div>
 
-<%@ include file="../common/footer.jspf" %>
+<%@ include file="../common/footer.jspf"%>

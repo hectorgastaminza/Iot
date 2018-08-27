@@ -1,5 +1,5 @@
-<%@ include file="../common/header.jspf" %>
-<%@ include file="../common/navigation.jspf" %>
+<%@ include file="../common/header.jspf"%>
+<%@ include file="../common/navigation.jspf"%>
 <link rel="stylesheet" href="/styles/comiot.css" type="text/css">
 <!------ WEB DESIGN ---------->
 
@@ -48,7 +48,7 @@
 		</form>
 	</div>
 
-	<div class="container col-sm-1" style = "margin: 5px; top: 50%;">
+	<div class="container col-sm-1" style="margin: 5px; top: 50%;">
 		<c:if test="${(device != null)}">
 			<a href="/devicecreate.do?delete=${device.pk}" class="btn btn-danger"
 				role="button">Delete</a>
@@ -57,4 +57,4 @@
 </div>
 
 
-<%@ include file="../common/footer.jspf" %>
+<%@ include file="../common/footer.jspf"%>
