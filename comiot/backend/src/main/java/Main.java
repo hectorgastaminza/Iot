@@ -1,5 +1,3 @@
-package demo.server;
-
 import java.util.Scanner;
 
 import application.server.Server;
