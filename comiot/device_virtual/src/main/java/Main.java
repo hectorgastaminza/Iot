@@ -1,4 +1,3 @@
-package demo.client;
 
 import application.client.DeviceClient;
 import application.common.AppConnection;

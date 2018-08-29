@@ -1,4 +1,3 @@
-package demo.raspberry;
 
 import application.client.DeviceClient;
 import application.common.AppConnection;

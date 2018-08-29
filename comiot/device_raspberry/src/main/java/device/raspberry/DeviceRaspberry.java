@@ -23,6 +23,10 @@ import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import com.pi4j.io.gpio.event.PinEventType;
 
 public class DeviceRaspberry extends device.Device {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/** 
 	 * http://pi4j.com/usage.html
 	 */
