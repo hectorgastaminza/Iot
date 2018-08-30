@@ -1,4 +1,4 @@
-package device.raspberry;
+package comiot.client.raspberry.device;
 
 import device.eDeviceStates;
 

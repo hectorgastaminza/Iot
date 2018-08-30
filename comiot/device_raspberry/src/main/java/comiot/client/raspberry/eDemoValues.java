@@ -1,4 +1,4 @@
-package demo;
+package comiot.client.raspberry;
 
 public enum eDemoValues {
 	PLACE_ID_GENERIC(1),

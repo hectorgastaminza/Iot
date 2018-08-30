@@ -1,15 +1,21 @@
+package comiot.client.raspberry;
 
 import application.client.DeviceClient;
 import application.common.AppConnection;
-import demo.eDemoValues;
+import comiot.client.raspberry.device.DeviceRaspberry;
 import device.Device;
 import protocol.mqtt.MqttConnectionConfiguration;
 
 public class Main {
-
+	/**
+	 * See
+	 * https://docs.oracle.com/javase/tutorial/essential/environment/cmdLineArgs.html
+	 * @param args
+	 */
+	
 	public static void main(String[] args) {
-		int placeId = eDemoValues.PLACE_ID_GENERIC.getValue();
-		int deviceId = eDemoValues.DEVICE_ID_GENERIC.getValue();
+		int placeId = eDemoValues.PLACE_ID_RASPBERRY.getValue();
+		int deviceId = eDemoValues.DEVICE_ID_RASPBERRY.getValue();
 		
 		if(args.length > 0) {
 			try {
@@ -24,11 +30,11 @@ public class Main {
 			}
 		}
 		
-		Device device = new Device(placeId, deviceId);
+		Device device = new DeviceRaspberry(placeId, deviceId, 0);
 		AppConnection appConnection = new AppConnection(new MqttConnectionConfiguration());
 		
 		System.out.println("Welcome to COMIOT");
-		System.out.println("Starting DEMO client");
+		System.out.println("Starting RASPBERRY client");
 		
 		DeviceClient.clientLaunch(device, appConnection);
 		

@@ -1,3 +1,5 @@
+package comiot.backend;
+
 import java.util.Scanner;
 
 import application.server.Server;
