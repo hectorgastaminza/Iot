@@ -27,6 +27,31 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+			
+				<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-maven-plugin -->
+				<plugin>
+					<!-- mvn package spring-boot:repackage  -->
+					<!-- mvn package spring-boot:run  -->
+					<!-- https://www.baeldung.com/executable-jar-with-maven -->
+				    <groupId>org.springframework.boot</groupId>
+				    <artifactId>spring-boot-maven-plugin</artifactId>
+				    <executions>
+				        <execution>
+				            <goals>
+				                <goal>repackage</goal>
+				            </goals>
+				            <configuration>
+				                <classifier>spring-boot</classifier>
+				                <!--
+				                <mainClass>
+				                  org.baeldung.executable.ExecutableMavenJar
+				                </mainClass>
+				                -->
+				            </configuration>
+				        </execution>
+				    </executions>
+				</plugin>	
+						
 				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -39,27 +64,6 @@
 					</configuration>
 				</plugin>
 
-				<plugin>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<executions>
-						<execution>
-							<phase>package</phase>
-							<goals>
-								<goal>single</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<archive>
-							<manifest>
-								<addClasspath>true</addClasspath>
-							</manifest>
-						</archive>
-						<descriptorRefs>
-							<descriptorRef>jar-with-dependencies</descriptorRef>
-						</descriptorRefs>
-					</configuration>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
