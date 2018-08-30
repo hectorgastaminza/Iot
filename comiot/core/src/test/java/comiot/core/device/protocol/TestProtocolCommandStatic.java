@@ -1,3 +1,4 @@
+package comiot.core.device.protocol;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
