@@ -1,6 +1,5 @@
 <%@ include file="../common/header.jspf"%>
 <%@ include file="../common/navigation.jspf"%>
-<link rel="stylesheet" href="/styles/comiot.css" type="text/css">
 <!------ WEB DESIGN ---------->
 
 <!------ ELEMENTS : See Dropdowns ---------->

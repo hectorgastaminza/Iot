@@ -1,7 +1,5 @@
 <%@ include file="../common/header.jspf"%>
 <%@ include file="../common/navigationLogin.jspf"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!------ WEB DESIGN ---------->
 
 <div class="container">
