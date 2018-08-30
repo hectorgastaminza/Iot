@@ -1,0 +1,44 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<div class="row content">
+	<!------ NAVBAR ---------->
+	<div class="container col-sm-12">
+
+		<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+			<a class="navbar-brand" href="/home.do">C⊙mI⊙T</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarTogglerDemo02"
+				aria-controls="navbarTogglerDemo02" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+					<li class="nav-item"><a class="nav-link"
+						href="/devicecreate.do">New device</a></li>
+					<!--
+					<li class="nav-item"><a class="nav-link"
+						href="/placecreate.do">New place</a></li>
+					 -->
+					<li class="nav-item"><a class="nav-link" href="/connection.do">Connection</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="/userconfig.do">User</a></li>
+					<li class="nav-item"><a
+						class="nav-link text-danger navbar-right" href="/logout.do">Log
+							Out<span class="sr-only">(current)</span>
+					</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+	<!------ ALERT MESSAGES ---------->
+	<c:if test="${errorMessage != null }">
+		<div class="alert alert-danger mt-3" role="alert">
+			${errorMessage}</div>
+	</c:if>
+	<c:if test="${successMessage != null }">
+		<div class="alert alert-success mt-3" role="alert">
+			${successMessage}</div>
+	</c:if>
+</div>
