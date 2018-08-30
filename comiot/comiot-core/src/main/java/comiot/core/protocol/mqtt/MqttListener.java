@@ -52,15 +52,23 @@ public class MqttListener {
 
 			setCallback(callback);
 			
-			mqttClient.subscribe(configuration.getRootTopic() + topic);
-			System.out.println("Subscribed. Listening");
+			if(mqttClient.isConnected()) {
+				mqttClient.subscribe(configuration.getRootTopic() + topic);
+				System.out.println("Subscribed. Listening");
+			}
+			else
+			{
+				System.out.println("Invalid connection.");
+			}
 			
 		} catch (MqttException me) {
+			/*
 			System.out.println("Mqtt reason " + me.getReasonCode());
 			System.out.println("Mqtt msg " + me.getMessage());
 			System.out.println("Mqtt loc " + me.getLocalizedMessage());
 			System.out.println("Mqtt cause " + me.getCause());
 			System.out.println("Mqtt excep " + me);
+			*/
 		}
 	}
 	
