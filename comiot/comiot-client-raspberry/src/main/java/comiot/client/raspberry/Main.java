@@ -1,10 +1,10 @@
 package comiot.client.raspberry;
 
-import application.client.DeviceClient;
-import application.common.AppConnection;
 import comiot.client.raspberry.device.DeviceRaspberry;
-import device.Device;
-import protocol.mqtt.MqttConnectionConfiguration;
+import comiot.core.application.client.DeviceClient;
+import comiot.core.application.common.AppConnection;
+import comiot.core.device.Device;
+import comiot.core.protocol.mqtt.MqttConnectionConfiguration;
 
 public class Main {
 	/**

@@ -1,7 +1,5 @@
 package comiot.client.raspberry.device;
 
-import device.eDeviceStates;
-
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPin;
@@ -16,13 +14,16 @@ import com.pi4j.io.gpio.trigger.GpioCallbackTrigger;
 import com.pi4j.io.gpio.trigger.GpioPulseStateTrigger;
 import com.pi4j.io.gpio.trigger.GpioSetStateTrigger;
 import com.pi4j.io.gpio.trigger.GpioSyncStateTrigger;
+
+import comiot.core.device.eDeviceStates;
+
 import com.pi4j.io.gpio.event.GpioPinListener;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import com.pi4j.io.gpio.event.PinEventType;
 
-public class DeviceRaspberry extends device.Device {
+public class DeviceRaspberry extends comiot.core.device.Device {
 	/**
 	 * 
 	 */

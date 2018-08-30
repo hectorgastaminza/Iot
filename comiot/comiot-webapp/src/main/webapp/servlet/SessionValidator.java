@@ -7,8 +7,9 @@ import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import database.DBConnector;
-import database.mysql.ConnectorMysql;
+
+import comiot.core.database.DBConnector;
+import comiot.core.database.mysql.ConnectorMysql;
 
 public class SessionValidator {
        

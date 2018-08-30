@@ -3,8 +3,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import device.command.DeviceCommandRequest;
-import device.command.eDeviceCommands;
+import comiot.core.device.command.DeviceCommandRequest;
+import comiot.core.device.command.eDeviceCommands;
 
 class TestDeviceCommand {
 	

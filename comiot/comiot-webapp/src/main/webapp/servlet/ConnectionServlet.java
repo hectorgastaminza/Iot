@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import database.DBConnector;
-import database.mysql.ConnectorMysql;
-import protocol.mqtt.MqttConnectionConfiguration;
+import comiot.core.database.DBConnector;
+import comiot.core.database.mysql.ConnectorMysql;
+import comiot.core.protocol.mqtt.MqttConnectionConfiguration;
 
 /**
  * Servlet implementation class ConnectionServlet

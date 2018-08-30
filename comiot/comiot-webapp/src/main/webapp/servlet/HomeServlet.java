@@ -11,14 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import application.common.AppConnection;
-import application.server.DeviceServer;
-import application.server.Place;
-import application.server.User;
-import database.DBConnector;
-import database.mysql.ConnectorMysql;
-import device.Device;
-import protocol.mqtt.MqttConnectionConfiguration;
+import comiot.core.application.common.AppConnection;
+import comiot.core.application.server.DeviceServer;
+import comiot.core.application.server.Place;
+import comiot.core.application.server.User;
+import comiot.core.database.DBConnector;
+import comiot.core.database.mysql.ConnectorMysql;
+import comiot.core.device.Device;
+import comiot.core.protocol.mqtt.MqttConnectionConfiguration;
 
 /**
  * Servlet implementation class HomeServlet

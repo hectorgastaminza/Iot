@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
-import database.DBConnector;
-import database.mysql.ConnectorMysql;
-import device.Device;
+import comiot.core.database.DBConnector;
+import comiot.core.database.mysql.ConnectorMysql;
+import comiot.core.device.Device;
 
 /**
  * Servlet implementation class DeviceCreateServlet

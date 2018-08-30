@@ -2,7 +2,7 @@ package comiot.backend;
 
 import java.util.Scanner;
 
-import application.server.Server;
+import comiot.core.application.server.Server;
 
 public class Main {
 	

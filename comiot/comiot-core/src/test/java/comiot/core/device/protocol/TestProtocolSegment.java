@@ -3,13 +3,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import device.protocol.ProtocolSegment;
+import comiot.core.device.protocol.ProtocolSegment;
 
 class TestProtocolSegment {
 
 	@Test
 	void test() {
-		device.protocol.ProtocolSegment sut = new ProtocolSegment("I", 2, "Id");
+		comiot.core.device.protocol.ProtocolSegment sut = new ProtocolSegment("I", 2, "Id");
 		String cmdTest = "I55T04V000A";
 		
 		assertTrue(sut.isContained("I55"));

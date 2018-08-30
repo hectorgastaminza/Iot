@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import database.DBConnector;
-import database.mysql.ConnectorMysql;
+import comiot.core.database.DBConnector;
+import comiot.core.database.mysql.ConnectorMysql;
 
 @WebServlet(urlPatterns="/login.do")
 public class LoginServlet extends HttpServlet {

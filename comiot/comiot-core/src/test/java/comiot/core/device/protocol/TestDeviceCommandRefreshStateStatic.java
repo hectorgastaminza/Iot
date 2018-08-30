@@ -3,7 +3,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import device.command.DeviceCommandRefreshState;
+import comiot.core.device.command.DeviceCommandRefreshState;
 
 class TestDeviceCommandRefreshStateStatic {
 

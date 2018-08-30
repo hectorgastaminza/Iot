@@ -3,15 +3,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import device.protocol.ProtocolCommand;
-import device.protocol.ProtocolSegment;
+import comiot.core.device.protocol.ProtocolCommand;
+import comiot.core.device.protocol.ProtocolSegment;
 
 class TestProtocolCommandStatic {
 
 	@Test
 	void test() {
 
-		device.protocol.ProtocolCommand command = new ProtocolCommand(new ProtocolSegment[] {
+		comiot.core.device.protocol.ProtocolCommand command = new ProtocolCommand(new ProtocolSegment[] {
 				new ProtocolSegment("I", 2, "Id"),
 				new ProtocolSegment("T", 2, "Command"),
 				new ProtocolSegment("V", 4, "Value"),

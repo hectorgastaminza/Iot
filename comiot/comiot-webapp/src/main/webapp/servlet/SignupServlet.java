@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import application.server.User;
-import database.DBConnector;
-import database.mysql.ConnectorMysql;
+import comiot.core.application.server.User;
+import comiot.core.database.DBConnector;
+import comiot.core.database.mysql.ConnectorMysql;
 
 /**
  * Servlet implementation class CreateUserServlet
