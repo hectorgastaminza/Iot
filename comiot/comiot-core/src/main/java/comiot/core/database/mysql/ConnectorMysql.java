@@ -6,7 +6,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class ConnectorMysql {
 	private static final String DATABASE_URL = "localhost";
-	private static final String DATABASE_NAME = "comiot?useSSL=FALSE";
+	private static final String DATABASE_NAME = "comiot?allowPublicKeyRetrieval=true&useSSL=FALSE";
 	private static final String USERNAME = "comiot";
 	private static final String PASSWORD = "123456";
 	
