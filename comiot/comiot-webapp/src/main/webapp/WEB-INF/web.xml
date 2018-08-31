@@ -8,6 +8,7 @@
 	<welcome-file-list>
 		<welcome-file>login.do</welcome-file>
 	</welcome-file-list>
+	
 	<servlet>
 		<servlet-name>login</servlet-name>
 		<jsp-file>/WEB-INF/views/login.jsp</jsp-file>
@@ -16,6 +17,7 @@
 		<servlet-name>login</servlet-name>
 		<url-pattern>/login/*</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>signup</servlet-name>
 		<jsp-file>/WEB-INF/views/signup.jsp</jsp-file>
@@ -24,6 +26,7 @@
 		<servlet-name>signup</servlet-name>
 		<url-pattern>/signup/*</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>recovery</servlet-name>
 		<jsp-file>/WEB-INF/views/recovery.jsp</jsp-file>
@@ -32,14 +35,16 @@
 		<servlet-name>recovery</servlet-name>
 		<url-pattern>/recovery/*</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>home</servlet-name>
-		<jsp-file>/WEB-INF/views/home.jsp</jsp-file>
+		<servlet-class>servlet.HomeServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>home</servlet-name>
-		<url-pattern>/home/*</url-pattern>
+		<url-pattern>/app/home/*</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>userconfig</servlet-name>
 		<jsp-file>/WEB-INF/views/userconfig.jsp</jsp-file>
@@ -48,6 +53,7 @@
 		<servlet-name>userconfig</servlet-name>
 		<url-pattern>/userconfig/*</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>connection</servlet-name>
 		<jsp-file>/WEB-INF/views/connection.jsp</jsp-file>
@@ -56,6 +62,7 @@
 		<servlet-name>connection</servlet-name>
 		<url-pattern>/connection/*</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>devicecreate</servlet-name>
 		<jsp-file>/WEB-INF/views/devicecreate.jsp</jsp-file>
@@ -64,6 +71,7 @@
 		<servlet-name>devicecreate</servlet-name>
 		<url-pattern>/devicecreate/*</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>placecreate</servlet-name>
 		<jsp-file>/WEB-INF/views/placecreate.jsp</jsp-file>
@@ -72,4 +80,13 @@
 		<servlet-name>placecreate</servlet-name>
 		<url-pattern>/placecreate/*</url-pattern>
 	</servlet-mapping>
+	
+	<filter>
+		<filter-name>loginFilter</filter-name>
+		<filter-class>servlet.LoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>/app/*</url-pattern>
+	</filter-mapping>
 </web-app>

@@ -8,10 +8,12 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@WebFilter("/app/*")
 public class LoginFilter implements Filter{
 
 	@Override
@@ -22,9 +24,7 @@ public class LoginFilter implements Filter{
 		HttpServletResponse response = (HttpServletResponse)res;
 		HttpSession session = request.getSession(false);
 		
-		String validsession = (String)session.getAttribute("validsession");
-		
-		if((validsession != null) && (validsession.equals(session.getId()))) {
+		if(session != null && session.getAttribute("username") != null){
 			chain.doFilter(req, res);
 		}
 		else {

@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
 		if (userID > 0) {
 		    session.setAttribute("username", username);
 		    session.setAttribute("password", password);
-			response.sendRedirect("/home.do");
+			response.sendRedirect("/app/home");
 		}
 		else {
 			request.setAttribute("errorMessage", "Invalid Credentials");
