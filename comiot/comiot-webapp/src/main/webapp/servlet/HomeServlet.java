@@ -38,7 +38,7 @@ public class HomeServlet extends HttpServlet {
 		}
 		else {
 			request.setAttribute("errorMessage", "Invalid Credentials");
-			request.getRequestDispatcher("/login.do").forward(request, response);
+			request.getRequestDispatcher("/login").forward(request, response);
 		}
 	}
 

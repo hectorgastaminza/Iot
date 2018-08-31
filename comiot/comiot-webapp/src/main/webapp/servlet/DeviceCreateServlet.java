@@ -58,7 +58,7 @@ public class DeviceCreateServlet extends HttpServlet {
 							Connection conn = ConnectorMysql.getConnection();
 							DBConnector.deviceDelete(conn, devicePk);
 							conn.close();
-							// request.getRequestDispatcher("/login.do").forward(request, response);
+							// request.getRequestDispatcher("/login").forward(request, response);
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
@@ -67,7 +67,7 @@ public class DeviceCreateServlet extends HttpServlet {
 			}
 		}
 		
-		request.getRequestDispatcher("/devicecreate").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/devicecreate.jsp").forward(request, response);
 	}
 
 	/**
@@ -117,6 +117,6 @@ public class DeviceCreateServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		request.getRequestDispatcher("/devicecreate").forward(request, response);
+		request.getRequestDispatcher("/app/devicecreate").forward(request, response);
 	}
 }

@@ -14,7 +14,7 @@
 			<div class="card device bg-light border-secondary"
 				style="margin: 5px; width: 16rem; text-align: center;">
 				<a class="card-header border-secondary" style="text-align: left;"
-					href="/devicecreate.do?update=${device.pk}">${device.name}</a>
+					href="/app/devicecreate?update=${device.pk}">${device.name}</a>
 				<div class="card-body border-secondary">
 					<c:choose>
 						<c:when test="${(device.state == 'NONE')}">
@@ -44,9 +44,9 @@
 						</button>
 						<div class="dropdown-menu">
 							<a class="dropdown-item"
-								href="/commandsend.do?on=${device.getId()}">ON</a> <a
+								href="/app/commandsend?on=${device.getId()}">ON</a> <a
 								class="dropdown-item"
-								href="/commandsend.do?off=${device.getId()}">OFF</a>
+								href="/app/commandsend?off=${device.getId()}">OFF</a>
 						</div>
 					</div>
 				</div>

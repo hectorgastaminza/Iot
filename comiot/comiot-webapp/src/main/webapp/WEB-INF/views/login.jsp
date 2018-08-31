@@ -7,7 +7,7 @@
 		<div class="alert alert-danger mt-3" role="alert">
 			${errorMessage}</div>
 	</c:if>
-	<form action="/login.do" method="post">
+	<form action="/login" method="post">
 		<div class="form-group row">
 			<label for="username" class="col-sm-2 col-form-label">Username</label>
 			<div class="col-sm-10">

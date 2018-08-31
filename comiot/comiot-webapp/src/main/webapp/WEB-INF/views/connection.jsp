@@ -9,7 +9,7 @@
 	<div class="container col-sm-8">
 		<h1 class="menu-title">MQTT CONFIGURATION</h1>
 
-		<form action="/connection.do" method="post">
+		<form action="/app/connection" method="post">
 			<div class="form-group row">
 				<label for="host" class="col-sm-2 col-form-label">Broker</label>
 				<div class="col-sm-10">

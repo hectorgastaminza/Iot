@@ -9,7 +9,7 @@
 	<div class="container col-sm-8">
 		<h1 class="menu-title">USER CONFIGURATION</h1>
 
-		<form action="/userconfig.do" method="post">
+		<form action="/app/userconfig" method="post">
 			<div class="form-group row" style="">
 				<label for="email" class="col-sm-2 col-form-label">Email
 					address</label>

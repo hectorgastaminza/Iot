@@ -11,7 +11,7 @@
 		<div class="alert alert-success mt-3" role="alert">
 			${successMessage}</div>
 	</c:if>
-	<form action="/recovery.do" method="post">
+	<form action="/recovery" method="post">
 		<div class="form-group row">
 			<label for="email" class="col-sm-2 col-form-label">Email
 				address</label>

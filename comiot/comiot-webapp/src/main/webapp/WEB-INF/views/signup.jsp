@@ -11,7 +11,7 @@
 		<div class="alert alert-success mt-3" role="alert">
 			${successMessage}</div>
 	</c:if>
-	<form action="/signup.do" method="post">
+	<form action="/signup" method="post">
 		<div class="form-group row" style="">
 			<label for="email" class="col-sm-2 col-form-label">Email
 				address</label>

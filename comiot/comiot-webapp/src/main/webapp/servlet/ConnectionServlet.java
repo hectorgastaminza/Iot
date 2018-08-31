@@ -42,11 +42,11 @@ public class ConnectionServlet extends HttpServlet {
 				request.setAttribute("mqttpassword", mqttConfig.getPasswordStr());
 				request.setAttribute("mqtttopic", mqttConfig.getRootTopic());
 			}
-			request.getRequestDispatcher("/connection").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/connection.jsp").forward(request, response);
 		}
 		else {
 			request.setAttribute("errorMessage", "Invalid Credentials");
-			request.getRequestDispatcher("/login.do").forward(request, response);
+			request.getRequestDispatcher("/login").forward(request, response);
 		}
 	}
 
@@ -82,17 +82,17 @@ public class ConnectionServlet extends HttpServlet {
 
 			if(result > 0) {
 				request.setAttribute("successMessage", "Connection data modified.");
-				response.sendRedirect("/home");
+				response.sendRedirect("/app/home");
 			}
 			else {
 				request.setAttribute("errorMessage", "Error. Invalid data has been entered.");
-				request.getRequestDispatcher("/connection").forward(request, response);
+				request.getRequestDispatcher("/app/connection").forward(request, response);
 			}
 		}
 		else
 		{
 			request.setAttribute("errorMessage", "Error. Invalid data has been entered.");
-			request.getRequestDispatcher("/connection").forward(request, response);
+			request.getRequestDispatcher("/app/connection").forward(request, response);
 		}
 	}
 

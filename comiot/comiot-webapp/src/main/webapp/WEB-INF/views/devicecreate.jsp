@@ -15,7 +15,7 @@
 				<h1 class="menu-title">UPDATE DEVICE</h1>
 			</c:otherwise>
 		</c:choose>
-		<form action="/devicecreate.do" method="post">
+		<form action="/app/devicecreate" method="post">
 			<div class="form-group row">
 				<label for="name" class="col-sm-2 col-form-label">Name</label>
 				<div class="col-sm-10">
@@ -49,7 +49,7 @@
 
 	<div class="container col-sm-1" style="margin: 5px; top: 50%;">
 		<c:if test="${(device != null)}">
-			<a href="/devicecreate.do?delete=${device.pk}" class="btn btn-danger"
+			<a href="/app/devicecreate?delete=${device.pk}" class="btn btn-danger"
 				role="button">Delete</a>
 		</c:if>
 	</div>

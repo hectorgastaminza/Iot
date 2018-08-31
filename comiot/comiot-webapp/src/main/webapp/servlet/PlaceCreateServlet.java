@@ -18,7 +18,7 @@ public class PlaceCreateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/placecreate").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/placecreate.jsp").forward(request, response);
 	}
 
 	/**

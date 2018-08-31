@@ -37,11 +37,11 @@ public class UserConfigServlet extends HttpServlet {
 			}
 			request.setAttribute("username", user.getUsername());
 			request.setAttribute("email", user.getEmail());
-			request.getRequestDispatcher("/userconfig").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/userconfig.jsp").forward(request, response);
 		}
 		else {
 			request.setAttribute("errorMessage", "Invalid Credentials");
-			request.getRequestDispatcher("/login.do").forward(request, response);
+			request.getRequestDispatcher("/login").forward(request, response);
 		}
 	}
 
@@ -82,7 +82,7 @@ public class UserConfigServlet extends HttpServlet {
 			request.setAttribute("errorMessage", "Passwords are not equals");
 		}
 
-		request.getRequestDispatcher("/userconfig").forward(request, response);
+		request.getRequestDispatcher("/app/userconfig").forward(request, response);
 	}
 
 }
