@@ -21,7 +21,7 @@ public class DeviceRaspberryDS18B20 extends Device implements ActionListener{
 	public static final int READ_TEMP_PERIOD_MAX = 10;
 	
 	private final int TEMPERATURE_INVALID_VALUE = -1;
-	private final String deviceDir = "/sys/bus/w1/devices/28-00*/w1_slave";
+	private final String deviceDir = "/sys/bus/w1/devices/28-*/w1_slave";
     private int temperatureLastValid = TEMPERATURE_INVALID_VALUE;
     private Timer readingTimer;
 
