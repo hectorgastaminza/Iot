@@ -117,6 +117,6 @@ public class DeviceCreateServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		request.getRequestDispatcher("/app/devicecreate").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/devicecreate.jsp").forward(request, response);
 	}
 }

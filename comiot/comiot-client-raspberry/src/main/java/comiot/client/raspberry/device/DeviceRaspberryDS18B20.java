@@ -64,15 +64,14 @@ public class DeviceRaspberryDS18B20 extends Device implements ActionListener{
     
 	void readTemperature() {
 		try {
-			temperatureLastValid++;
-			/*
+
 			String temporatureStringValue = getTemporatureStringValue();
 			int temperatureNewValue = parseValue(temporatureStringValue);
 			if(temperatureNewValue > TEMPERATURE_INVALID_VALUE)
 			{
 				temperatureLastValid = temperatureNewValue;
 			}
-			*/
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
