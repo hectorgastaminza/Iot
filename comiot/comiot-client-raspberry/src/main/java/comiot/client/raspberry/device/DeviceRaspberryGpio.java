@@ -2,43 +2,36 @@ package comiot.client.raspberry.device;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
-import com.pi4j.io.gpio.GpioPin;
-import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
-import com.pi4j.io.gpio.PinDirection;
-import com.pi4j.io.gpio.PinMode;
+import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.PinPullResistance;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
-import com.pi4j.io.gpio.trigger.GpioCallbackTrigger;
-import com.pi4j.io.gpio.trigger.GpioPulseStateTrigger;
-import com.pi4j.io.gpio.trigger.GpioSetStateTrigger;
-import com.pi4j.io.gpio.trigger.GpioSyncStateTrigger;
-
 import comiot.core.device.eDeviceStates;
 
-import com.pi4j.io.gpio.event.GpioPinListener;
-import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
-import com.pi4j.io.gpio.event.GpioPinEvent;
-import com.pi4j.io.gpio.event.GpioPinListenerDigital;
-import com.pi4j.io.gpio.event.PinEventType;
-
-public class DeviceRaspberry extends comiot.core.device.Device {
+public class DeviceRaspberryGpio extends comiot.core.device.Device {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	public static final int PIN_FIRST = 0;
+	public static final int PIN_LAST = 31;
+	
 	/** 
 	 * http://pi4j.com/usage.html
+	 * http://pi4j.com/apidocs/com/pi4j/io/gpio/RaspiPin.html
 	 */
 	final GpioController gpio;
 	GpioPinDigitalOutput myLed;
 
-	public DeviceRaspberry(int place, int id, int pin) {
+	public DeviceRaspberryGpio(int place, int id, int pin) {
 		super(place, id);
+		Pin myPin = ((pin >= PIN_FIRST) && (pin <= PIN_LAST)) ? RaspiPin.getPinByAddress(pin) : RaspiPin.GPIO_04;
+		
 		gpio = GpioFactory.getInstance();
 		// provision gpio pins #04 as an output pin and make sure is is set to LOW at startup
-		myLed = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "My LED", PinState.LOW);
+		myLed = gpio.provisionDigitalOutputPin(myPin, "My LED", PinState.LOW);
 		// configure the pin shutdown behavior; these settings will be
 		// automatically applied to the pin when the application is terminated
 		// ensure that the LED is turned OFF when the application is shutdown

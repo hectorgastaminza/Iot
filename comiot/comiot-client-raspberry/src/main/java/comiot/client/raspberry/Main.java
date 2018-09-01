@@ -1,6 +1,10 @@
 package comiot.client.raspberry;
 
-import comiot.client.raspberry.device.DeviceRaspberry;
+import java.util.Scanner;
+
+import com.pi4j.io.serial.RaspberryPiSerial;
+
+import comiot.client.raspberry.device.DeviceRaspberryGpio;
 import comiot.core.application.client.DeviceClient;
 import comiot.core.application.common.AppConnection;
 import comiot.core.device.Device;
@@ -14,31 +18,43 @@ public class Main {
 	 */
 	
 	public static void main(String[] args) {
-		int placeId = eDemoValues.PLACE_ID_RASPBERRY.getValue();
-		int deviceId = eDemoValues.DEVICE_ID_RASPBERRY.getValue();
+		final int placeId = eDemoValues.PLACE_ID_RASPBERRY.getValue();
+		final String msgGetDeviceId = "Please introduce device ID: ";
+		final String msgGetGpioPin = "Please gpio pin number: ";
 		
-		if(args.length > 0) {
+		System.out.println("\nWelcome to COMIOT\n");
+		
+		int deviceId = enterValue(msgGetDeviceId, Device.DEVICE_ID_MIN, Device.DEVICE_ID_MAX);
+		int pinId = enterValue(msgGetGpioPin, DeviceRaspberryGpio.PIN_FIRST, DeviceRaspberryGpio.PIN_LAST);
+
+		System.out.println("\nStarting RASPBERRY client");
+
+		Device device = new DeviceRaspberryGpio(placeId, deviceId, pinId);
+		AppConnection appConnection = new AppConnection(new MqttConnectionConfiguration());
+		
+		DeviceClient.clientLaunch(device, appConnection);
+
+		System.out.println("\nClosing application... almost done...");
+		System.out.println("Bye!");
+	}
+	
+	
+	/* TODO: fix bug when scanner is closed */
+	static private int enterValue(String msg, int min, int max) {
+		int retval = -1;
+		Scanner scanner = new Scanner(System.in);
+		
+		while ((retval < min) || (retval > max)) {
+			System.out.println(msg);
 			try {
-				int auxDeviceId = Integer.parseInt(args[0]);
-				if((auxDeviceId >= Device.DEVICE_ID_MIN) && (auxDeviceId <= Device.DEVICE_ID_MAX)){
-					deviceId = auxDeviceId;
-				}
+				retval = scanner.nextInt();
 			}
 			catch (Exception e) {
-				// TODO: handle exception
 				System.out.println("ERROR : Invalid parameters!");
 			}
 		}
 		
-		Device device = new DeviceRaspberry(placeId, deviceId, 0);
-		AppConnection appConnection = new AppConnection(new MqttConnectionConfiguration());
-		
-		System.out.println("Welcome to COMIOT");
-		System.out.println("Starting RASPBERRY client");
-		
-		DeviceClient.clientLaunch(device, appConnection);
-		
-		System.out.println("Closing application... almost done...");
-		System.out.println("Bye!");
+		return retval;
 	}
+
 }
