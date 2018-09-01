@@ -21,7 +21,7 @@ public class DeviceRaspberryDS18B20 extends Device implements ActionListener{
 	public static final int READ_TEMP_PERIOD_MAX = 10;
 	
 	private final int TEMPERATURE_INVALID_VALUE = -1;
-	private final String deviceDir = "/sys/bus/w1/devices/28-*/w1_slave";
+	private final String deviceDir = "/sys/bus/w1/devices/28-*";
     private int temperatureLastValid = TEMPERATURE_INVALID_VALUE;
     private Timer readingTimer;
 
@@ -78,7 +78,7 @@ public class DeviceRaspberryDS18B20 extends Device implements ActionListener{
 	}
 	
     public String getTemporatureStringValue() throws IOException {
-        return new String(Files.readAllBytes(new File(deviceDir).toPath()));
+        return new String(Files.readAllBytes(new File(deviceDir, "w1_slave").toPath()));
     }
     
     private final Pattern TEMP_VALUE_PATTERN = Pattern.compile("(?s).*crc=[0-9a-f]+ (?<success>[A-Z]+).*t=(?<temp>-?[0-9]+)");
