@@ -38,31 +38,22 @@ public class DeviceRaspberryGpio extends comiot.core.device.Device {
 		myLed.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
 	}
 	
-	public boolean reset() {
-		setState(eDeviceStates.NONE);
-		return true;
-	}
-	
+	@Override
 	public boolean on() {
-        myLed.high();
-        setState(eDeviceStates.ON);
-		return true;
+		myLed.high();
+		return super.on();
 	}
 	
+	@Override
 	public boolean off() {
 		myLed.low();
-		setState(eDeviceStates.OFF);
-		return true;
+		return super.off();
 	}
 	
-	public boolean up() {
-		setState(eDeviceStates.ON_VALUE);
-		return true;
-	}
-	
-	public boolean down() {
-		setState(eDeviceStates.ON_VALUE);
-		return true;
+	@Override
+	public boolean reset() {
+		myLed.low();
+		return super.reset();
 	}
 	
 	@Override

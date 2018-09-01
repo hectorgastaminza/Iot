@@ -2,8 +2,7 @@ package comiot.client.raspberry;
 
 import java.util.Scanner;
 
-import com.pi4j.io.serial.RaspberryPiSerial;
-
+import comiot.client.raspberry.device.DeviceRaspberryDS18B20;
 import comiot.client.raspberry.device.DeviceRaspberryGpio;
 import comiot.core.application.client.DeviceClient;
 import comiot.core.application.common.AppConnection;
@@ -18,26 +17,56 @@ public class Main {
 	 */
 	
 	public static void main(String[] args) {
-		final int placeId = eDemoValues.PLACE_ID_RASPBERRY.getValue();
-		final String msgGetDeviceId = "Please introduce device ID: ";
-		final String msgGetGpioPin = "Please gpio pin number: ";
-		
 		System.out.println("\nWelcome to COMIOT\n");
-		
-		int deviceId = enterValue(msgGetDeviceId, Device.DEVICE_ID_MIN, Device.DEVICE_ID_MAX);
-		int pinId = enterValue(msgGetGpioPin, DeviceRaspberryGpio.PIN_FIRST, DeviceRaspberryGpio.PIN_LAST);
 
-		System.out.println("\nStarting RASPBERRY client");
+		Device device = selectDeviceRaspberry();
 
-		Device device = new DeviceRaspberryGpio(placeId, deviceId, pinId);
-		AppConnection appConnection = new AppConnection(new MqttConnectionConfiguration());
-		
-		DeviceClient.clientLaunch(device, appConnection);
+		if(device != null) {
+			System.out.println("\nStarting RASPBERRY client");
+			AppConnection appConnection = new AppConnection(new MqttConnectionConfiguration());
+			DeviceClient.clientLaunch(device, appConnection);
+		}
 
 		System.out.println("\nClosing application... almost done...");
 		System.out.println("Bye!");
 	}
 	
+	
+	static private Device selectDeviceRaspberry() {
+		int placeId = eDemoValues.PLACE_ID_RASPBERRY.getValue();
+		Device device = null;
+		
+		String msgSelectDevice = "Please select device: ";
+		String msgGetDeviceId = "Please introduce device ID: ";
+		
+		System.out.println("Raspberry devices:");
+		System.out.println("1 - Gpio (General purpose In/Out)");
+		System.out.println("2 - DS18B20 Digital temperature sensor");
+		System.out.println("0 - Exit");
+		
+		int selected = enterValue(msgSelectDevice, 0, 2);
+		
+		if(selected != 0) {
+			int deviceId = enterValue(msgGetDeviceId, Device.DEVICE_ID_MIN, Device.DEVICE_ID_MAX);
+			
+			switch (selected) {
+			case 1:
+				String msgGetGpioPin = "Please introduce gpio pin number: ";
+				int pinId = enterValue(msgGetGpioPin, DeviceRaspberryGpio.PIN_FIRST, DeviceRaspberryGpio.PIN_LAST);			
+				device = new DeviceRaspberryGpio(placeId, deviceId, pinId);
+				break;
+			case 2:
+				String msgPeriod = "Please introduce temperature reading frecuency in minutes (from 1 to 10): ";
+				int period = enterValue(msgPeriod, DeviceRaspberryDS18B20.READ_TEMP_PERIOD_MIN, DeviceRaspberryDS18B20.READ_TEMP_PERIOD_MAX);			
+				device = new DeviceRaspberryDS18B20(placeId, deviceId, period);
+				break;
+			default:
+				break;
+			}
+		}
+		
+		return device;
+	}
 	
 	/* TODO: fix bug when scanner is closed */
 	static private int enterValue(String msg, int min, int max) {
