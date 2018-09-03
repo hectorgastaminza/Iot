@@ -11,8 +11,6 @@ CREATE TABLE IF NOT EXISTS user (
   email VARCHAR(128) NOT NULL,
   PRIMARY KEY (pk_user_id)
 ) ENGINE=InnoDB;
-ALTER TABLE user
-MODIFY COLUMN pk_user_id int;
 
 /* */
 CREATE TABLE IF NOT EXISTS connection (
@@ -53,12 +51,36 @@ CREATE TABLE IF NOT EXISTS device (
 INSERT INTO user (username, password, email)
 VALUES ('comiot', '123456', 'comiotproject@gmail.com');
 
+SELECT @user_pk := pk_user_id FROM user WHERE username = 'comiot';
+
+INSERT INTO connection (pk_user_id, host, port, username, password, root_topic)
+VALUES (@user_pk, 'mqtt.dioty.co', '1883', 'comiotproject@gmail.com', 'fbe4629f', '/comiotproject@gmail.com/');
+
+INSERT INTO place (pk_user_id, place_id, place_name, place_description)
+VALUES (@user_pk, '1', 'House', 'This is a description.');
+INSERT INTO place (pk_user_id, place_id, place_name, place_description)
+VALUES (@user_pk, '2', 'Backyard', 'This is a description.');
+
+INSERT INTO device (pk_user_id, place_id, device_id, device_name, device_description)
+VALUES (@user_pk, '1', '5', 'Generic', 'Generic device');
+INSERT INTO device (pk_user_id, place_id, device_id, device_name, device_description)
+VALUES (@user_pk, '1', '9', 'Raspberry', 'Raspberry device');
+UPDATE place SET place_id = '1' where pk_place_id = 1;
+
+
+
+
+
 INSERT INTO user (username, password, email)
 VALUES ('b', 'b', 'comiotproject@gmail.com');
 
 INSERT INTO user (username, password, email)
 VALUES ('comiot', 'a', 'a@gmail.com');
 
+INSERT INTO user (username, password, email)
+VALUES ('hola', 'b', 'c@gmail.com');
+
+SELECT pk_user_id FROM user;
 DELETE FROM user where pk_user_id = 4;
 SELECT * FROM user;
 SELECT @user_pk := pk_user_id FROM user WHERE username = 'comiot';
@@ -66,26 +88,14 @@ SELECT * FROM user where ((username = 'comiot' or email = 'comiotproject@gmail.c
 
 UPDATE user SET username = 'b', password = 'b', email = 'b@b.com' where pk_user_id = 6;
 
-INSERT INTO connection (pk_user_id, host, port, username, password, root_topic)
-VALUES (@user_pk, 'mqtt.dioty.co', '1883', 'comiotproject@gmail.com', 'fbe4629f', '/comiotproject@gmail.com/');
 
 SELECT * FROM connection;
 SELECT * FROM connection WHERE pk_user_id = @user_pk;
 DELETE FROM connection where pk_user_id = 6;
 
-INSERT INTO place (pk_user_id, place_id, place_name, place_description)
-VALUES (@user_pk, '8', 'House', 'This is a description.');
-INSERT INTO place (pk_user_id, place_id, place_name, place_description)
-VALUES (@user_pk, '20', 'Backyard', 'This is a description.');
 
 SELECT * FROM place WHERE pk_user_id = @user_pk;
 SELECT * FROM device WHERE pk_user_id = @user_pk;
-
-INSERT INTO device (pk_user_id, place_id, device_id, device_name, device_description)
-VALUES (@user_pk, '8', '5', 'Generic', 'Generic device');
-INSERT INTO device (pk_user_id, place_id, device_id, device_name, device_description)
-VALUES (@user_pk, '20', '9', 'Raspberry', 'Raspberry device');
-UPDATE place SET place_id = '1' where pk_place_id = 1;
 
 SELECT * FROM device WHERE pk_user_id = @user_pk;
 SET @place_id = 8;
