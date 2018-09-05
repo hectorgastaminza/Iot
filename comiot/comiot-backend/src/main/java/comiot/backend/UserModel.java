@@ -99,9 +99,55 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 	}
 	
 	
+	public boolean updateConnection(int userPk, String mqtthost, int mqttport, String mqttusername, String mqttpassword, String mqtttopic) {
+		int result = -1;
+		
+		if(usersDeviceServer.containsKey(userPk)) {
+			MqttConnectionConfiguration mqttConfig = new MqttConnectionConfiguration(mqtthost, 
+					mqttport, 
+					mqttusername, 
+					mqttpassword, 
+					mqtttopic);
+			/* Refresh DB */
+			try {
+				Connection conn = ConnectorMysql.getConnection();
+				result = DBConnector.mqttConfigRefresh(conn, userPk, mqttConfig);
+				if (result > 0) {
+					mqttConfig = DBConnector.mqttConfigGetByUserPk(conn, userPk);
+				}
+				conn.close();				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			/* Refresh connection */
+			if (result > 0) {
+				try {
+					DeviceServer deviceServer = usersDeviceServer.get(userPk);
+					deviceServer.disconnect();
+					deviceServer.setAppConnection(new AppConnection(mqttConfig));
+					deviceServer.connect();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return (result > 0);
+	}
 	
 	
-	
+	public List<Device> deviceGetList(int userPk){
+		List<Device> devices = null;
+		
+		if(usersDeviceServer.containsKey(userPk)) {
+			Place place = usersDeviceServer.get(userPk).getPlace(1); /* Hardcode until feature places is lunched */
+			if(place != null)
+			{
+				devices = place.getDevices(); 
+			}
+		}
+		
+		return devices;
+	}
 	
 	
 	
@@ -185,23 +231,13 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 		boolean retval = false;
 		
 		if((usersDeviceServer != null) && (usersDeviceServer.containsKey(userPk))) {
+			usersDeviceServer.get(1).getPlaces().get(1).getDevices();
 			retval = usersDeviceServer.get(userPk).addDevice(device);
 		}
 		
 		return retval;
 	}
 	
-	private boolean addMqttConfig(int userPk, MqttConnectionConfiguration mqttConfig) {
-		boolean retval = false;
-		
-		if((usersDeviceServer != null) && (usersDeviceServer.containsKey(userPk))) {
-			usersDeviceServer.get(userPk).disconnect();
-			usersDeviceServer.get(userPk).setAppConnection(new AppConnection(mqttConfig));
-			retval = true;
-		}
-		
-		return retval;
-	}
 
 	@Override
 	public void deviceRefreshStatusCallback(int userPk, DeviceCommandRefreshState deviceCommandRefreshState) {

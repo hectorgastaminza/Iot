@@ -62,10 +62,20 @@ public class DeviceServer implements IStringCommandCallback {
 		return retval;
 	}
 	
+	public Place getPlace(int placeID) {
+		Place retval = null;
+		
+		if(places.containsKey(placeID)) {
+			retval = places.get(placeID);
+		}
+		
+		return retval;
+	}
+	
 	public boolean removePlace(int placeID) {
 		boolean retval = false;
 		
-		if(!places.containsKey(placeID)) {
+		if(places.containsKey(placeID)) {
 			places.remove(placeID);
 			retval = true;
 		}
