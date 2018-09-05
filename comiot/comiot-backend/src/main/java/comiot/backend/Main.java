@@ -2,8 +2,6 @@ package comiot.backend;
 
 import java.util.Scanner;
 
-import comiot.core.application.server.Server;
-
 public class Main {
 	
 	/*
@@ -12,7 +10,7 @@ public class Main {
 	}
 	*/
 	public static void oldBackend() {
-		Server comiotBackend = new Server();
+		UserModel comiotBackend = new UserModel();
 		System.out.println("Welcome to COMIOT");
 		System.out.println("Starting DEMO server");
 		/* Launch */

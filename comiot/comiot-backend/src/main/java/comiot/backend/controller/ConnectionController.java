@@ -14,8 +14,8 @@ import comiot.core.protocol.mqtt.MqttConnectionConfiguration;
 @RestController
 public class ConnectionController {
 	
-	@RequestMapping("/connection")
-	public boolean getUserLogin(@RequestParam(value="userpk", defaultValue="-1") int userpk, 
+	@RequestMapping("/connection/update")
+	public boolean getUpdateConnection(@RequestParam(value="userpk", defaultValue="-1") int userpk, 
 			@RequestParam(value="mqtthost", defaultValue="") String mqtthost,
 			@RequestParam(value="mqttport", defaultValue="0") int mqttport,
 			@RequestParam(value="mqttusername", defaultValue="") String mqttusername,
@@ -25,7 +25,7 @@ public class ConnectionController {
 	}
 	
 	private boolean updateConnection(int userPk, String mqtthost, int mqttport, String mqttusername, String mqttpassword, String mqtttopic) {
-		boolean retval = false;
+		int result = -1;
 		
 		MqttConnectionConfiguration mqttConfig = new MqttConnectionConfiguration(mqtthost, 
 				mqttport, 
@@ -33,7 +33,6 @@ public class ConnectionController {
 				mqttpassword, 
 				mqtttopic);
 		
-		int result = -1;
 		try {
 			Connection conn = ConnectorMysql.getConnection();
 			result = DBConnector.mqttConfigRefresh(conn, userPk, mqttConfig);
@@ -41,9 +40,7 @@ public class ConnectionController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		retval = (result > 0);
 		
-		return retval;
+		return (result > 0);
 	}
 }

@@ -37,15 +37,17 @@ public class DBConnector {
 		
 		if((conn != null) && (conn.isValid(0)))
 		{
-			String query = "SELECT * FROM user where ((username = ? or email = ? ) and (pk_user_id != ?))";
-			PreparedStatement p = conn.prepareStatement(query);
-			p.setString(1, user.getUsername());
-			p.setString(2, user.getEmail());
-			p.setInt(3, pk);
-			ResultSet rs = p.executeQuery();
-			
-			if(!rs.next()) {
-				retval = true;
+			if((!user.getUsername().equals("")) && (!user.getPassword().equals(""))) {
+				String query = "SELECT * FROM user where ((username = ? or email = ? ) and (pk_user_id != ?))";
+				PreparedStatement p = conn.prepareStatement(query);
+				p.setString(1, user.getUsername());
+				p.setString(2, user.getEmail());
+				p.setInt(3, pk);
+				ResultSet rs = p.executeQuery();
+				
+				if(!rs.next()) {
+					retval = true;
+				}
 			}
 		}
 		

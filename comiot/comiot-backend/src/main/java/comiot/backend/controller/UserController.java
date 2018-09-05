@@ -17,23 +17,23 @@ import comiot.core.database.mysql.ConnectorMysql;
 public class UserController {
 	
 	@RequestMapping("/")
-	public String getError(@RequestParam(value="name", defaultValue="") String name, @RequestParam(value="password", defaultValue="") String password) {
+	public String getRoot(@RequestParam(value="name", defaultValue="") String name, @RequestParam(value="password", defaultValue="") String password) {
 		return "Hello World!";
 	}
 	
-	@RequestMapping("/login")
+	@RequestMapping("/user/login")
 	public User getUserLogin(@RequestParam(value="name", defaultValue="") String name, @RequestParam(value="password", defaultValue="") String password) {
 		return userLogin(name, password);
 	}
 	
-	@RequestMapping("/signup")
+	@RequestMapping("/user/signup")
 	public boolean getUserSignup(@RequestParam(value="name", defaultValue="") String name, 
 			@RequestParam(value="password", defaultValue="") String password,
 			@RequestParam(value="email", defaultValue="") String email) {
 		return userSignup(name, password, email);
 	}
 	
-	@RequestMapping("/recovery")
+	@RequestMapping("/user/recovery")
 	public boolean getUserRecovery(@RequestParam(value="email", defaultValue="") String email) {
 		return userRecovery(email);
 	}
@@ -58,21 +58,19 @@ public class UserController {
 	}
 	
 	private boolean userSignup(String username, String password, String email) {
-		boolean retval = false;
+		int result = -1;
+		
 		User user = new User(username, password, email);
 		
 		try {
 			Connection conn = ConnectorMysql.getConnection();
-			int result = DBConnector.userInsert(conn, user);
-			conn.close();
-			
-			retval = (result > 0);
-			
+			result = DBConnector.userInsert(conn, user);
+			conn.close();	
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return retval;
+		return (result > 0);
 	}
 	
 	private boolean userRecovery(String email) {
