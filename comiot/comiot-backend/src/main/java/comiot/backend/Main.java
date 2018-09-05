@@ -14,7 +14,7 @@ public class Main {
 		System.out.println("Welcome to COMIOT");
 		System.out.println("Starting DEMO server");
 		/* Launch */
-		comiotBackend.run();
+		//comiotBackend.run();
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Press 0 to exit");
 		while (scanner.nextInt() != 0) {

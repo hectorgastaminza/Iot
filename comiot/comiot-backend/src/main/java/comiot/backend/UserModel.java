@@ -5,6 +5,10 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.mail.MessagingException;
 
 import org.springframework.stereotype.Service;
 
@@ -12,6 +16,7 @@ import comiot.core.application.common.AppConnection;
 import comiot.core.application.server.DeviceServer;
 import comiot.core.application.server.IDeviceStatusRefreshCallback;
 import comiot.core.application.server.Place;
+import comiot.core.application.server.User;
 import comiot.core.database.DBConnector;
 import comiot.core.database.mysql.ConnectorMysql;
 import comiot.core.device.Device;
@@ -27,20 +32,81 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 		usersDeviceServer = new HashMap<>();
 	}
 	
-	public void run( ) {
-		loadUsers();
+	
+	public User userLogin(String username, String password) {
+		User user = new User(username, "", "");
 		
-		for (Map.Entry<Integer, DeviceServer> entry : usersDeviceServer.entrySet()) {
-			loadPlaces(entry.getKey());
-			loadDevices(entry.getKey());
-			loadConnection(entry.getKey());
+		int userPk = 0;
+		try {
+			Connection conn = ConnectorMysql.getConnection();
+			userPk = DBConnector.userGetPk(conn, username, password);
+			conn.close();	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		if (userPk > 0) {
+		    user.setPk(userPk);
+		    
+		    if(addUser(user.getPk())) {
+		    	UserModelLoadThread runLoad = new UserModelLoadThread(usersDeviceServer.get(user.getPk()), user.getPk());
+		        ExecutorService executor = Executors.newCachedThreadPool();
+		        executor.submit(runLoad);
+		    }
+		}
+		
+		return user;
+	}
+	
+	public boolean userSignup(String username, String password, String email) {
+		int result = -1;
+		
+		User user = new User(username, password, email);
+		
+		try {
+			Connection conn = ConnectorMysql.getConnection();
+			result = DBConnector.userInsert(conn, user);
+			conn.close();	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return (result > 0);
+	}
+	
+	public boolean userRecovery(String email) {
+		boolean retval = false;
+		
+		User user = null;
+		try {
+			Connection conn = ConnectorMysql.getConnection();
+			user = DBConnector.userGetByEmail(conn, email);
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		if(user != null) {
 			try {
-				entry.getValue().connect();
-			} catch (Exception e) {
+				retval = comiot.core.email.EmailSender.sendRecovery(user);
+			} catch (MessagingException e) {
 				e.printStackTrace();
 			}
 		}
+		
+		return retval;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	
 	/**
 	 * Load users from database
@@ -78,92 +144,7 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 		return retval;
 	}
 	
-	public boolean loadPlaces(int userPk) {
-		boolean retval = false;
-		
-		if(usersDeviceServer.containsKey(userPk)) {
-			List<Place> places = null;
-			
-			Connection conn = ConnectorMysql.getConnection();
-			
-			try {
-				places = DBConnector.placesGetByUserPk(conn, userPk);
-				for (Place place : places) {
-					addPlace(userPk, place);
-				}
-				retval = true;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				if(!conn.isClosed()) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return retval;
-	}
-
-	public boolean loadDevices(int userPk) {
-		boolean retval = false;
-		
-		if(usersDeviceServer.containsKey(userPk)) {
-			List<Device> devices = null;
-			
-			Connection conn = ConnectorMysql.getConnection();
-			
-			try {
-				devices = DBConnector.devicesGetByUserPk(conn, userPk);
-				for (Device device : devices) {
-					addDevice(userPk, device);
-				}
-				retval = true;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				if(!conn.isClosed()) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return retval;
-	}
 	
-	public boolean loadConnection(int userPk) {
-		boolean retval = false;
-		
-		if(usersDeviceServer.containsKey(userPk)) {
-			MqttConnectionConfiguration mqttConfig = null;
-			
-			Connection conn = ConnectorMysql.getConnection();
-			
-			try {
-				mqttConfig = DBConnector.mqttConfigGetByUserPk(conn, userPk);
-				retval = addMqttConfig(userPk, mqttConfig);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				if(!conn.isClosed()) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return retval;
-	}
 
 	public void deleteUsers() {
 		if((usersDeviceServer != null) && (!usersDeviceServer.isEmpty())) {

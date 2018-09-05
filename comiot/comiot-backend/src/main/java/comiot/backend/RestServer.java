@@ -21,7 +21,6 @@ public class RestServer {
 		System.out.println("Welcome to COMIOT");
 		System.out.println("Starting DEMO server");
 		/* Launch */
-		userModel.run();
 		/*
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Press 0 to exit");
