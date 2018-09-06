@@ -23,6 +23,12 @@ abstract public class DeviceCommand {
 	
 	abstract protected ProtocolSegment[] getProtocolSegments();
 	
+	/**
+	 * Used by JSON constructor
+	 */
+	public DeviceCommand() {
+	}
+	
 	public DeviceCommand(int place, int device) {
 		this.placeID = place;
 		this.deviceID = device;

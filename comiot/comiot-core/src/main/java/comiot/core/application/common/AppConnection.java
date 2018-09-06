@@ -60,6 +60,16 @@ public class AppConnection implements comiot.core.protocol.mqtt.IMqttReceiveCall
 		return mqttConnection.MqttSend(command.toString());
 	}
 
+	public boolean commandRequest(DeviceCommandRequest command) {
+		/*
+		System.out.println("Device: " + deviceID + 
+				" | Place: " + placeID +
+				" | commandRequest: " + commandID
+				);
+				*/
+		return mqttConnection.MqttSend(command.toString());
+	}
+	
 	@Override
 	public boolean commandRequest(int placeID, int deviceID, eDeviceCommands commandID, int value) {
 		DeviceCommandRequest command = new DeviceCommandRequest(placeID, deviceID, commandID, value);
@@ -69,6 +79,6 @@ public class AppConnection implements comiot.core.protocol.mqtt.IMqttReceiveCall
 				" | commandRequest: " + commandID
 				);
 				*/
-		return mqttConnection.MqttSend(command.toString());
+		return commandRequest(command);
 	}
 }

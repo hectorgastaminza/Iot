@@ -16,6 +16,12 @@ public class DeviceCommandRequest extends DeviceCommand {
 	private int value = 0;
 
 	/**
+	 * Used by JSON constructor
+	 */
+	public DeviceCommandRequest() {
+	}
+	
+	/**
 	 * Constructs a device command
 	 * @param cmd : eDeviceCommands
 	 * @param value : int

@@ -13,6 +13,12 @@ public class User extends DBRecord implements Serializable {
 	private String email;
 	private MqttConnectionConfiguration mqttConfig;
 	
+	/**
+	 * Used by JSON constructor
+	 */
+	public User() {
+	}
+	
 	public User(String username, String password, String email) {
 		this.username = username;
 		this.password = password;

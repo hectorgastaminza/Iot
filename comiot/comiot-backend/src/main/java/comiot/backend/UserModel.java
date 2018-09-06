@@ -2,6 +2,7 @@ package comiot.backend;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,17 +22,16 @@ import comiot.core.database.DBConnector;
 import comiot.core.database.mysql.ConnectorMysql;
 import comiot.core.device.Device;
 import comiot.core.device.command.DeviceCommandRefreshState;
+import comiot.core.device.command.DeviceCommandRequest;
 import comiot.core.protocol.mqtt.MqttConnectionConfiguration;
 
 @Service
 public class UserModel implements IDeviceStatusRefreshCallback {
 	private HashMap<Integer, DeviceServer> usersDeviceServer = null;
 	
-	
 	public UserModel() {
 		usersDeviceServer = new HashMap<>();
 	}
-	
 	
 	public User userLogin(String username, String password) {
 		User user = new User(username, "", "");
@@ -139,19 +139,88 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 		List<Device> devices = null;
 		
 		if(usersDeviceServer.containsKey(userPk)) {
-			Place place = usersDeviceServer.get(userPk).getPlace(1); /* Hardcode until feature places is lunched */
-			if(place != null)
-			{
-				devices = place.getDevices(); 
+			devices = new ArrayList<>();
+			for (Place place : usersDeviceServer.get(userPk).getPlaces()) {
+				devices.addAll(place.getDevices());
 			}
 		}
 		
 		return devices;
 	}
 	
+	public boolean deviceNew(int userPk, Device device){
+		boolean retval = false;
+		int result = -1;
+		
+		if(usersDeviceServer.containsKey(userPk)) {
+			device.setPlace(1);					/* Hardcode until feature places is finish */ 
+			
+			/* Refresh DB */
+			try {
+				Connection conn = ConnectorMysql.getConnection();
+				result = DBConnector.deviceInsert(conn, userPk, device);
+				conn.close();				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			if(result > 0) {
+				DeviceServer deviceServer = usersDeviceServer.get(userPk);
+				retval = deviceServer.addDevice(device);
+			}
+		}
+		
+		return ((result > 0) && retval);
+	}
 	
+	public boolean deviceUpdate(int userPk, Device device){
+		boolean retval = false;
+		int result = -1;
+		
+		if(usersDeviceServer.containsKey(userPk)) {
+			device.setPlace(1);					/* Hardcode until feature places is finish */
+			
+			/* Refresh DB */
+			try {
+				Connection conn = ConnectorMysql.getConnection();
+				result = DBConnector.deviceUpdate(conn, device);
+				conn.close();				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			if(result > 0) {
+				DeviceServer deviceServer = usersDeviceServer.get(userPk);
+				retval = deviceServer.updateDevice(device);
+			}
+		}
+		
+		return ((result > 0) && retval);
+	}
 	
-	
+	public boolean deviceDelete(int userPk, Device device){
+		boolean retval = false;
+		int result = -1;
+		
+		if(usersDeviceServer.containsKey(userPk)) {
+			
+			/* Refresh DB */
+			try {
+				Connection conn = ConnectorMysql.getConnection();
+				result = DBConnector.deviceDelete(conn, device.getPk());
+				conn.close();				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			if(result > 0) {
+				DeviceServer deviceServer = usersDeviceServer.get(userPk);
+				retval = deviceServer.removeDevice(device.getId(), device.getPlaceID());
+			}
+		}
+		
+		return ((result > 0) && retval);
+	}
 
 	
 	/**
@@ -190,8 +259,6 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 		return retval;
 	}
 	
-	
-
 	public void deleteUsers() {
 		if((usersDeviceServer != null) && (!usersDeviceServer.isEmpty())) {
 			// Closing connections
@@ -217,22 +284,13 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 		return retval;
 	}
 	
-	private boolean addPlace(Integer userPk, Place place) {
-		boolean retval = false;
-		
-		if((usersDeviceServer != null) && (usersDeviceServer.containsKey(userPk))) {
-			retval = usersDeviceServer.get(userPk).addPlace(place);
-		}
-		
-		return retval;
-	}
 	
-	private boolean addDevice(int userPk, Device device) {
+	public boolean commandRequestSend(int userPk, DeviceCommandRequest command) {
 		boolean retval = false;
 		
-		if((usersDeviceServer != null) && (usersDeviceServer.containsKey(userPk))) {
-			usersDeviceServer.get(1).getPlaces().get(1).getDevices();
-			retval = usersDeviceServer.get(userPk).addDevice(device);
+		if(!usersDeviceServer.containsKey(userPk)) {
+			DeviceServer deviceServer = usersDeviceServer.get(userPk);
+			retval = deviceServer.commandRequestSend(command);
 		}
 		
 		return retval;

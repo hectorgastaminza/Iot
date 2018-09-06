@@ -87,6 +87,17 @@ public class Place extends DBRecord implements Serializable {
 		return retval;
 	}
 	
+	public boolean updateDevice(Device device) {
+		boolean retval = false;
+		
+		if(devices.containsKey(device.getId())) {
+			devices.put(device.getId(), device);
+			retval = true;
+		}
+		
+		return retval;
+	}
+	
 	public boolean processDeviceCommandRefreshState(DeviceCommandRefreshState deviceCommandRefreshState) {
 		boolean retval = false;
 		

@@ -3,8 +3,10 @@ package comiot.backend.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import comiot.backend.UserModel;
@@ -21,18 +23,21 @@ public class DeviceController {
 		return userModel.deviceGetList(userpk);
 	}
 	
-	@RequestMapping("/device/new")
+	@ResponseBody @RequestMapping("/device/new")
 	public boolean getDeviceNew(@RequestParam(value="userpk", defaultValue="-1") int userpk,
-			@RequestParam(value="device", defaultValue="-1") int device,
-			@RequestParam(value="place", defaultValue="-1") int place) {
-		return false;
+			@RequestBody Device device) {
+		return userModel.deviceNew(userpk, device);
 	}
 	
-	@RequestMapping("/device/update")
-	public boolean getDeviceUpdate(@RequestParam(value="userpk", defaultValue="-1") int userpk, 
-			@RequestParam(value="device", defaultValue="-1") int device,
-			@RequestParam(value="place", defaultValue="-1") int place) {
-		return false;
+	@ResponseBody @RequestMapping("/device/update")
+	public boolean getDeviceUpdate(@RequestParam(value="userpk", defaultValue="-1") int userpk,
+			@RequestBody Device device) {
+		return userModel.deviceUpdate(userpk, device);
 	}
-
+	
+	@ResponseBody @RequestMapping("/device/delete")
+	public boolean getDeviceDelete(@RequestParam(value="userpk", defaultValue="-1") int userpk,
+			@RequestBody Device device) {
+		return userModel.deviceDelete(userpk, device);
+	}
 }

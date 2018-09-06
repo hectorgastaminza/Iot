@@ -1,17 +1,11 @@
 package comiot.backend.controller;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import comiot.backend.UserModel;
-import comiot.core.database.DBConnector;
-import comiot.core.database.mysql.ConnectorMysql;
-import comiot.core.protocol.mqtt.MqttConnectionConfiguration;
 
 @RestController
 public class ConnectionController {

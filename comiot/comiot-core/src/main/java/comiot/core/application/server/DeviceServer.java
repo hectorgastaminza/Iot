@@ -10,6 +10,7 @@ import comiot.core.application.common.IStringCommandCallback;
 import comiot.core.device.Device;
 import comiot.core.device.DeviceControl;
 import comiot.core.device.command.DeviceCommandRefreshState;
+import comiot.core.device.command.DeviceCommandRequest;
 
 public class DeviceServer implements IStringCommandCallback {
 	private AppConnection appConnection = null;
@@ -93,6 +94,17 @@ public class DeviceServer implements IStringCommandCallback {
 		
 		return retval;
 	}
+	
+	public boolean updateDevice(Device device) {
+		boolean retval = false;
+		
+		if(places.containsKey(device.getPlaceID())) {
+			Place place = places.get(device.getPlaceID());
+			retval = place.updateDevice(device);
+		}
+		
+		return retval;
+	}
 
 	public boolean removeDevice(int deviceID, int placeID) {
 		boolean retval = false;
@@ -104,6 +116,18 @@ public class DeviceServer implements IStringCommandCallback {
 		
 		return retval;
 	}
+	
+	public boolean commandRequestSend(DeviceCommandRequest command) {
+		boolean retval = false;
+		
+		if(appConnection != null) {
+			retval = appConnection.commandRequest(command);
+		}
+		
+		return retval;
+	}
+	
+	
 
 	@Override
 	public boolean receivedStringCommand(String command) {

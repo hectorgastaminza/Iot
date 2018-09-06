@@ -21,6 +21,9 @@ public class Device extends DBRecord implements Serializable {
 	private String description;
 	private String name;
 	
+	public Device() {
+	}
+	
 	public Device(int place, int id) {
 		this.place = place;
 		this.id = id;
