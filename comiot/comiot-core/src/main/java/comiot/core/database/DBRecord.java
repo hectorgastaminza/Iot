@@ -2,6 +2,9 @@ package comiot.core.database;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class DBRecord implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -11,7 +14,8 @@ public class DBRecord implements Serializable {
 		pk = -1;
 	}
 	
-	public DBRecord(int pk) {
+	@JsonCreator
+	public DBRecord(@JsonProperty("pk")int pk) {
 		this.pk = pk;
 	}
 	

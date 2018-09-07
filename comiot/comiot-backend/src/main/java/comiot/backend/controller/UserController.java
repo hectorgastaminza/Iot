@@ -2,6 +2,7 @@ package comiot.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import comiot.backend.UserModel;
 import comiot.core.application.server.User;
-import comiot.core.device.Device;
 
 @RestController
 public class UserController {
@@ -38,12 +38,13 @@ public class UserController {
 		return userModel.userSignup(name, password, email);
 	}
 
-	@RequestMapping(value = "/user/recovery", method = RequestMethod.POST)
-	public ResponseEntity<String> getUserRecovery(@RequestParam(value="email", defaultValue="") String email,
-			@RequestBody User user)
+	@RequestMapping(value = "/user/recovery", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> getUserRecovery(@RequestBody User user)
 	{
 	    System.out.println(user.getEmail());
-	    return new ResponseEntity<String>(user.getEmail(), userModel.userRecovery(user.getEmail()) ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+	    boolean retval = userModel.userRecovery(user.getEmail());
+	    
+	    return new ResponseEntity<User>(user, retval? HttpStatus.OK : HttpStatus.BAD_REQUEST);
 	}
 
 }

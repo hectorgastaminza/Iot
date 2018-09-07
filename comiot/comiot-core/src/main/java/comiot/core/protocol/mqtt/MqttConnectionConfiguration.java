@@ -12,9 +12,9 @@ public class MqttConnectionConfiguration extends DBRecord implements Serializabl
 	/* Optional */
 	private int brokerWebSocketsPort = 8080;
 	/* Optional */
-	private String userId = "comiotproject@gmail.com";
+	private String username = "comiotproject@gmail.com";
 	/* Optional */
-	private String password = "fbe4629f";
+	private String passwordStr = "fbe4629f";
 	/* Optional */
 	private String rootTopic = "/comiotproject@gmail.com/";
 	/* Quality of service */
@@ -41,8 +41,8 @@ public class MqttConnectionConfiguration extends DBRecord implements Serializabl
 	) {
 		this.brokerHost = brokerHost;
 		this.brokerPort = brokerPort;
-		this.userId = userId;
-		this.password = password;
+		this.username = userId;
+		this.passwordStr = password;
 		this.rootTopic = rootTopic;
 	}
 	
@@ -55,15 +55,15 @@ public class MqttConnectionConfiguration extends DBRecord implements Serializabl
 	}
 	
 	public String getUsername() {
-		return userId;
+		return username;
 	}
 	
 	public String getPasswordStr() {
-		return password;
+		return passwordStr;
 	}
 
 	protected char[] getPassword() {
-		return password.toCharArray();
+		return passwordStr.toCharArray();
 	}
 
 	protected String getBrokerURL() {

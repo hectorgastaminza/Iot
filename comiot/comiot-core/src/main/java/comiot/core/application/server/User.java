@@ -2,6 +2,8 @@ package comiot.core.application.server;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import comiot.core.database.DBRecord;
 import comiot.core.protocol.mqtt.MqttConnectionConfiguration;
 
@@ -16,6 +18,7 @@ public class User extends DBRecord implements Serializable {
 	/**
 	 * Used by JSON constructor
 	 */
+	@JsonCreator
 	public User() {
 	}
 	
@@ -25,15 +28,17 @@ public class User extends DBRecord implements Serializable {
 		this.email = email;
 	}
 	
-	public void setMqttConfig(MqttConnectionConfiguration mqttConfig) {
-		this.mqttConfig = mqttConfig;
-	}
-	
 	public String getUsername() {
 		return username;
 	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	public String getPassword() {
 		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public String getEmail() {
 		return email;
@@ -41,9 +46,11 @@ public class User extends DBRecord implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
 	public MqttConnectionConfiguration getMqttConfig() {
 		return mqttConfig;
+	}
+	public void setMqttConfig(MqttConnectionConfiguration mqttConfig) {
+		this.mqttConfig = mqttConfig;
 	}
 
 }

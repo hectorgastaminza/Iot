@@ -13,7 +13,7 @@ public class Device extends DBRecord implements Serializable {
 	public static final int DEVICE_ID_MIN = DEVICE_ID_INVALID + 1;
 	public static final int DEVICE_ID_MAX = DEVICE_ID_BROADCAST - 1;
 	
-	private int place = 0;
+	private int placeID = 0;
 	private int id = 0;
 	private eDeviceStates state = eDeviceStates.NONE;
 	private int value = 0;
@@ -25,7 +25,7 @@ public class Device extends DBRecord implements Serializable {
 	}
 	
 	public Device(int place, int id) {
-		this.place = place;
+		this.placeID = place;
 		this.id = id;
 	}
 	
@@ -59,7 +59,7 @@ public class Device extends DBRecord implements Serializable {
 		
 		if(debugMessages) {
 			System.out.println("Device: " + id + 
-					" | Place: " + place +
+					" | Place: " + placeID +
 					" | new state: " + state
 					);
 		}
@@ -78,11 +78,11 @@ public class Device extends DBRecord implements Serializable {
 	}
 	
 	public int getPlaceID() {
-		return place;
+		return placeID;
 	}
 	
 	public void setPlace(int place) {
-		this.place = place;
+		this.placeID = place;
 	}
 	
 	public int getId() {
@@ -119,7 +119,7 @@ public class Device extends DBRecord implements Serializable {
 	}
 	
 	public boolean refreshState() {
-		return (deviceCommandsCallback != null) ? deviceCommandsCallback.commandRefreshState(place, id, state, value) : false;
+		return (deviceCommandsCallback != null) ? deviceCommandsCallback.commandRefreshState(placeID, id, state, value) : false;
 	}
 
 	public String getName() {
