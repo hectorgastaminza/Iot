@@ -1,9 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,8 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import comiot.core.application.server.User;
-import comiot.core.database.DBConnector;
-import comiot.core.database.mysql.ConnectorMysql;
 
 /**
  * Servlet implementation class CreateUserServlet
@@ -40,20 +35,13 @@ public class SignupServlet extends HttpServlet {
 			String email = request.getParameter("email");
 			User user = new User(username, password, email);
 			
-			try {
-				Connection conn = ConnectorMysql.getConnection();
-				int result = DBConnector.userInsert(conn, user);
-				conn.close();
 				
-				if(result > 0) {
+				if(1 > 0) {
 					request.setAttribute("successMessage", "User created. Please login");
 				} 
 				else {
 					request.setAttribute("errorMessage", "This user is already been registered");
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		else {
 			request.setAttribute("errorMessage", "Passwords are not equals");

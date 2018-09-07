@@ -1,30 +1,23 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Properties;
 
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONWrappedObject;
+
 import comiot.core.application.server.User;
-import comiot.core.database.DBConnector;
-import comiot.core.database.mysql.ConnectorMysql;
 
 /**
  * Servlet implementation class RecoveryServlet
@@ -46,72 +39,25 @@ public class RecoveryServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
 		
-		try {
-			User user = null;
-			
-			Connection conn = ConnectorMysql.getConnection();
-			user = DBConnector.userGetByEmail(conn, email);
-			conn.close();
-			
-			if(user != null) {
-				boolean result = sendRecoveryEmail(user);
-				if(result) {
-					request.setAttribute("successMessage", "We've sent to you an email with your credentials.");
-					request.getRequestDispatcher("/recovery").forward(request, response);
-				}
-			}
-			else {
-				request.setAttribute("errorMessage", "This email has not been registered");
-				request.getRequestDispatcher("/recovery").forward(request, response);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private boolean sendRecoveryEmail(User user) throws MessagingException {
-		boolean retval = false;
+		UriComponentsBuilder builder = UriComponentsBuilder
+			    .fromUriString(BackendConfig.USER_RECOVERY)
+			    // Add query parameter
+			    .queryParam("email", email);
+		System.out.println(builder.toUriString());
+				
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set("Content-Type", "application/json");
 		
-		Properties prop = new Properties();
-		prop.put("mail.smtp.auth", true);
-		prop.put("mail.smtp.starttls.enable", true);
-		prop.put("mail.smtp.host", "smtp.gmail.com");
-		prop.put("mail.smtp.port", "465");
-		prop.put("mail.smtp.ssl.enable", true);
+		User user = new User("","",email);
+		ObjectMapper objMap = new ObjectMapper();
+		String userStr = objMap.writeValueAsString(user);
 		
-		Session session = Session.getInstance(prop, new Authenticator() {
-		    @Override
-		    protected PasswordAuthentication getPasswordAuthentication() {
-		        return new PasswordAuthentication("comiotprojectnoreply@gmail.com", "noreply+1234");
-		    }
-		});
+		HttpEntity <String> httpEntity = new HttpEntity <String> (userStr, httpHeaders);
 		
-		Message message = new MimeMessage(session);
-		message.setFrom(new InternetAddress("comiotprojectnoreply@gmail.com"));
-		message.setRecipients(
-				Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
-		message.setSubject("COMIOT password recovery");
-
-		String msg = "COMIOT password recovery <br>"
-				+ "User: " + user.getUsername() + "<br>"
-				+ "Password: " + user.getPassword() + "<br>" + "<br>"
-				+ "Thanks for choose COMIOT";
-
-		MimeBodyPart mimeBodyPart = new MimeBodyPart();
-		mimeBodyPart.setContent(msg, "text/html");
-
-		Multipart multipart = new MimeMultipart();
-		multipart.addBodyPart(mimeBodyPart);
-
-		message.setContent(multipart);
-
-		Transport.send(message);
+		RestTemplate restTemplate = new RestTemplate();
+		String result = restTemplate.postForObject(builder.toUriString(), httpEntity, String.class);
 		
-		retval = true;
-		
-		return retval;
+	    System.out.println(result);
 	}
 
 }

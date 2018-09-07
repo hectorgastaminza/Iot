@@ -2,8 +2,6 @@ package servlet;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
-import comiot.core.database.DBConnector;
-import comiot.core.database.mysql.ConnectorMysql;
 import comiot.core.device.Device;
 
 /**
@@ -40,28 +36,12 @@ public class DeviceCreateServlet extends HttpServlet {
 				NameValuePair param = params.get(0);
 
 				if(param.getName().equals("update")){
-					try {
-						int devicePk = Integer.parseInt(params.get(0).getValue());
-						Connection conn = ConnectorMysql.getConnection();
-						Device device = DBConnector.deviceGetByPk(conn, devicePk);
-						conn.close();
-						request.setAttribute("device", device);
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
+
 				}
 				else {
 					if(param.getName().equals("delete"))
 					{
-						try {
-							int devicePk = Integer.parseInt(params.get(0).getValue());
-							Connection conn = ConnectorMysql.getConnection();
-							DBConnector.deviceDelete(conn, devicePk);
-							conn.close();
-							// request.getRequestDispatcher("/login").forward(request, response);
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
+
 					}
 				}
 			}
@@ -87,12 +67,10 @@ public class DeviceCreateServlet extends HttpServlet {
 		device.setDescription(deviceDescription);
 		int result = -1;
 		
-		try {
-			Connection conn = ConnectorMysql.getConnection();
 			if((devicePkStr != null) && (!devicePkStr.isEmpty())) {
 				devicePk = Integer.parseInt(devicePkStr);
 				device.setPk(devicePk);
-				result = DBConnector.deviceUpdate(conn, device);
+				result = 1;
 				
 				if(result > 0) {
 					request.setAttribute("successMessage", "Your new device has been created!");
@@ -103,7 +81,6 @@ public class DeviceCreateServlet extends HttpServlet {
 			}
 			else
 			{
-				result = DBConnector.deviceInsert(conn, userPk, device);
 				
 				if(result > 0) {
 					request.setAttribute("successMessage", "Your new device has been created!");
@@ -111,11 +88,7 @@ public class DeviceCreateServlet extends HttpServlet {
 				else {
 					request.setAttribute("errorMessage", "Error. Invalid data has been entered.");
 				}
-			}			
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			}
 		
 		request.getRequestDispatcher("/WEB-INF/views/devicecreate.jsp").forward(request, response);
 	}

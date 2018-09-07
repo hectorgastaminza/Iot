@@ -1,17 +1,12 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import comiot.core.database.DBConnector;
-import comiot.core.database.mysql.ConnectorMysql;
 import comiot.core.protocol.mqtt.MqttConnectionConfiguration;
 
 /**
@@ -28,13 +23,7 @@ public class ConnectionServlet extends HttpServlet {
 		if(SessionValidator.isSessionValid(request, response)) {
 			int userPk = (int) request.getSession().getAttribute("userpk");
 			MqttConnectionConfiguration mqttConfig = null;
-			try {
-				Connection conn = ConnectorMysql.getConnection();
-				mqttConfig = DBConnector.mqttConfigGetByUserPk(conn, userPk);
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+
 			if(mqttConfig != null) {
 				request.setAttribute("mqtthost", mqttConfig.getBrokerHost());
 				request.setAttribute("mqttport", mqttConfig.getBrokerPort());
@@ -72,13 +61,6 @@ public class ConnectionServlet extends HttpServlet {
 					mqtttopic);
 			
 			int result = -1;
-			try {
-				Connection conn = ConnectorMysql.getConnection();
-				result = DBConnector.mqttConfigRefresh(conn, userPk, mqttConfig);
-				conn.close();				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 
 			if(result > 0) {
 				request.setAttribute("successMessage", "Connection data modified.");

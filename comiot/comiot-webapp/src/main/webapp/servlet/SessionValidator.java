@@ -1,15 +1,9 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import comiot.core.database.DBConnector;
-import comiot.core.database.mysql.ConnectorMysql;
 
 public class SessionValidator {
        
@@ -26,19 +20,12 @@ public class SessionValidator {
 			String password = (String) request.getSession().getAttribute("password");
 			
 			if((username != null) && (password != null)) {
-				try {
-					Connection conn = ConnectorMysql.getConnection();
-					int result = DBConnector.userGetPk(conn, username, password);
-					conn.close();	
 					
-					if(result > 0) {
+					if(1 > 0) {
 						valid = true;
-						request.getSession().setAttribute("userpk", result);
+						request.getSession().setAttribute("userpk", 1);
 						request.getSession().setAttribute("validsession", request.getSession().getId());
 					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 			}
 			else {
 				request.getSession().removeAttribute("validsession");

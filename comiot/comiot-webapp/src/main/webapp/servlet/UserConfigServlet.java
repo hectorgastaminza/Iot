@@ -1,9 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,8 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import comiot.core.application.server.User;
-import comiot.core.database.DBConnector;
-import comiot.core.database.mysql.ConnectorMysql;
 
 /**
  * Servlet implementation class UserConfigServlet
@@ -28,13 +23,7 @@ public class UserConfigServlet extends HttpServlet {
 		if(SessionValidator.isSessionValid(request, response)) {
 			String username = (String) request.getSession().getAttribute("username");
 			User user = null;
-			try {
-				Connection conn = ConnectorMysql.getConnection();
-				user = DBConnector.userGetByUsername(conn, username);
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+
 			request.setAttribute("username", user.getUsername());
 			request.setAttribute("email", user.getEmail());
 			request.getRequestDispatcher("/WEB-INF/views/userconfig.jsp").forward(request, response);
@@ -60,13 +49,6 @@ public class UserConfigServlet extends HttpServlet {
 			user.setPk(pk);
 
 			int result = -1;
-			try {
-				Connection conn = ConnectorMysql.getConnection();
-				result = DBConnector.userUpdate(conn, user);
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 
 			if(result > 0) {
 				request.setAttribute("successMessage", "User data modified.");

@@ -38,6 +38,10 @@ public class User extends DBRecord implements Serializable {
 	public String getEmail() {
 		return email;
 	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 	public MqttConnectionConfiguration getMqttConfig() {
 		return mqttConfig;
 	}

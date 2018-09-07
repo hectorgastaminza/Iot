@@ -2,8 +2,6 @@ package servlet;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,12 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
-import comiot.core.application.common.AppConnection;
-import comiot.core.database.DBConnector;
-import comiot.core.database.mysql.ConnectorMysql;
-import comiot.core.device.Device;
 import comiot.core.device.command.eDeviceCommands;
-import comiot.core.protocol.mqtt.MqttConnectionConfiguration;
 
 /**
  * Servlet implementation class DeviceCreateServlet
@@ -68,31 +61,7 @@ public class CommandSendServlet extends HttpServlet {
 	}
 	
 	private void sendAppCommand(int userPk, int deviceId, eDeviceCommands command) {
-		AppConnection appConnection = getAppConnection(userPk);
-		if(appConnection != null) {
-			appConnection.connect();
-			appConnection.commandRequest(1, deviceId, command, 0);
-			appConnection.disconnect();
-		}
-	}
-	
-	private AppConnection getAppConnection(int userPk) {
-		AppConnection appConnection = null;
-		
-		try {
-			MqttConnectionConfiguration mqttConfig = null;
-			Connection conn = ConnectorMysql.getConnection();
-			mqttConfig = DBConnector.mqttConfigGetByUserPk(conn, userPk);
-			conn.close();
-			
-			if(mqttConfig != null) {
-				appConnection = new AppConnection(mqttConfig);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return appConnection;
+
 	}
 	
 }
