@@ -13,9 +13,8 @@ public class BackendConfig {
 	static final String USER_RECOVERY = BACKEND_URL + "/user/recovery";
 	static final String USER_SIGNUP = BACKEND_URL + "/user/signup";
 	static final String USER_LOGIN = BACKEND_URL + "/user/login";
+	static final String USER_UPDATE = BACKEND_URL + "/user/update";
 	static final String DEVICE_GET = BACKEND_URL + "/device/get";
-	
-	
 	
 	
 	static <T> HttpEntity<String> getHttpEntity(T body) throws JsonProcessingException {

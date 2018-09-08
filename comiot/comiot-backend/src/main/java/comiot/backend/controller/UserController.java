@@ -47,5 +47,13 @@ public class UserController {
 	    boolean retval = userModel.userRecovery(user.getEmail());
 	    return new ResponseEntity<User>(user, retval? HttpStatus.OK : HttpStatus.BAD_REQUEST);
 	}
+	
+	
+	@RequestMapping(value = "/user/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> getUserUpdate(@RequestBody User user) {
+	    System.out.println(user.getEmail());
+	    boolean retval = userModel.userUpdate(user);
+	    return new ResponseEntity<User>(user, retval? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+	}
 
 }

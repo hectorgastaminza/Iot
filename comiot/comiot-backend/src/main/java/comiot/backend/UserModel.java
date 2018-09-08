@@ -70,6 +70,20 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 		return (result > 0);
 	}
 	
+	public boolean userUpdate(User user) {
+		int result = -1;
+		
+		try {
+			Connection conn = ConnectorMysql.getConnection();
+			result = DBConnector.userUpdate(conn, user);
+			conn.close();	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return (result > 0);
+	}
+	
 	public boolean userRecovery(String email) {
 		boolean retval = false;
 		

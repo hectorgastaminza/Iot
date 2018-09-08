@@ -7,6 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import comiot.core.application.server.User;
 
 /**
@@ -20,11 +25,6 @@ public class UserConfigServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String username = (String) request.getSession().getAttribute("username");
-		User user = null;
-
-		request.setAttribute("username", user.getUsername());
-		request.setAttribute("email", user.getEmail());
 		request.getRequestDispatcher("/WEB-INF/views/userconfig.jsp").forward(request, response);
 	}
 
@@ -32,22 +32,32 @@ public class UserConfigServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User loguedUser = (User)request.getSession(false).getAttribute("user");
 		String password = request.getParameter("password");
 		String confirm = request.getParameter("confirm");
-		int pk = (int)request.getSession().getAttribute("userpk");
+		int pk = loguedUser.getPk();
 
 		if((password.equals(confirm)) && (pk > 0)) {
 			String newUsername = request.getParameter("username");
 			String newEmail = request.getParameter("email");
 			User user = new User(newUsername, password, newEmail);
 			user.setPk(pk);
-
-			int result = -1;
-
-			if(result > 0) {
+			
+			String url = UriComponentsBuilder
+					.fromUriString(BackendConfig.USER_UPDATE).toUriString();
+			
+			RestTemplate restTemplate = new RestTemplate();
+			ResponseEntity<User> result = null;
+			try {
+				result = restTemplate.postForEntity(url, BackendConfig.getHttpEntity(user), User.class);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			if((result != null) && (result.getStatusCode() == HttpStatus.OK)) {
 				request.setAttribute("successMessage", "User data modified.");
-				request.getSession().setAttribute("username", newUsername);
-				request.getSession().setAttribute("password", password);
+				request.getSession(false).setAttribute("user", user);
 			}
 			else {
 				request.setAttribute("errorMessage", "Error. Invalid data has been entered.");
@@ -58,7 +68,7 @@ public class UserConfigServlet extends HttpServlet {
 			request.setAttribute("errorMessage", "Passwords are not equals");
 		}
 
-		request.getRequestDispatcher("/app/userconfig").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/userconfig.jsp").forward(request, response);
 	}
 
 }
