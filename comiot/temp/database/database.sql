@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS connection (
 CREATE TABLE IF NOT EXISTS place (
   pk_place_id int NOT NULL AUTO_INCREMENT,
   pk_user_id int NOT NULL,
-  place_id MEDIUMINT NOT NULL,
+  place_id MEDIUMINT NOT NULL DEFAULT 1,
   place_name VARCHAR(64) NOT NULL,
   place_description VARCHAR(128),
   PRIMARY KEY (pk_place_id),
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS place (
 CREATE TABLE IF NOT EXISTS device (
   pk_device_id int NOT NULL AUTO_INCREMENT,
   pk_user_id int NOT NULL,
-  place_id MEDIUMINT NOT NULL,
+  place_id MEDIUMINT NOT NULL DEFAULT 1,
   device_id MEDIUMINT NOT NULL,
   device_name VARCHAR(64) NOT NULL,
   device_description VARCHAR(128),
@@ -81,17 +81,17 @@ INSERT INTO user (username, password, email)
 VALUES ('hola', 'b', 'c@gmail.com');
 
 SELECT pk_user_id FROM user;
-DELETE FROM user where pk_user_id = 4;
-SELECT * FROM user;
+DELETE FROM connection where pk_user_id = 1;
+SELECT * FROM place;
 SELECT @user_pk := pk_user_id FROM user WHERE username = 'comiot';
 SELECT * FROM user where ((username = 'comiot' or email = 'comiotproject@gmail.com' ) and (pk_user_id != 1));
 
 UPDATE user SET username = 'b', password = 'b', email = 'b@b.com' where pk_user_id = 6;
 
 
-SELECT * FROM connection;
+SELECT * FROM user;
 SELECT * FROM connection WHERE pk_user_id = @user_pk;
-DELETE FROM connection where pk_user_id = 6;
+#DELETE FROM connection where pk_user_id = @user_pk;
 
 
 SELECT * FROM place WHERE pk_user_id = @user_pk;
