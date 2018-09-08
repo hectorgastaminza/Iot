@@ -14,28 +14,28 @@
 				<label for="host" class="col-sm-2 col-form-label">Broker</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="mqtthost"
-						value="${mqtthost}" placeholder="Enter MQTT broker host url">
+						value="${mqttConfig.getBrokerHost()}" placeholder="Enter MQTT broker host url">
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="port" class="col-sm-2 col-form-label">Port</label>
 				<div class="col-sm-10">
 					<input type="number" class="form-control" name="mqttport"
-						value="${mqttport}" placeholder="Enter host port number">
+						value="${mqttConfig.getBrokerPort()}" placeholder="Enter host port number">
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="username" class="col-sm-2 col-form-label">Username</label>
 				<div class="col-sm-10">
 					<input type="username" class="form-control" name="mqttusername"
-						value="${mqttusername}" placeholder="Enter username">
+						value="${mqttConfig.getUsername()}" placeholder="Enter username">
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="userPassword" class="col-sm-2 col-form-label">Password</label>
 				<div class="col-sm-10">
 					<input type="password" class="form-control" name="mqttpassword"
-						value="${mqttpassword}" placeholder="Enter Password">
+						value="${mqttConfig.getPasswordStr()}" placeholder="Enter Password">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -43,7 +43,7 @@
 					topic</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="mqtttopic"
-						value="${mqtttopic}" placeholder="Enter root topic">
+						value="${mqttConfig.getRootTopic()}" placeholder="Enter root topic">
 				</div>
 			</div>
 			<button type="submit" class="btn btn-primary btn-block">Submit</button>

@@ -108,16 +108,28 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 		return retval;
 	}
 	
+	public MqttConnectionConfiguration getConnection(int userPk) {
+		MqttConnectionConfiguration mqttConfig = null;
+		
+		if(usersDeviceServer.containsKey(userPk)) {
+			/* Refresh DB */
+			try {
+				Connection conn = ConnectorMysql.getConnection();
+				mqttConfig = DBConnector.mqttConfigGetByUserPk(conn, userPk);
+				conn.close();				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return mqttConfig;
+	}
 	
-	public boolean updateConnection(int userPk, String mqtthost, int mqttport, String mqttusername, String mqttpassword, String mqtttopic) {
+	
+	public boolean updateConnection(int userPk, MqttConnectionConfiguration mqttConfig) {
 		int result = -1;
 		
 		if(usersDeviceServer.containsKey(userPk)) {
-			MqttConnectionConfiguration mqttConfig = new MqttConnectionConfiguration(mqtthost, 
-					mqttport, 
-					mqttusername, 
-					mqttpassword, 
-					mqtttopic);
 			/* Refresh DB */
 			try {
 				Connection conn = ConnectorMysql.getConnection();
