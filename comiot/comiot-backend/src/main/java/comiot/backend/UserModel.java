@@ -180,6 +180,21 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 		return places;
 	}
 	
+	public Device deviceGetByPk(int userPk, int devicePk){
+		List<Place> places = placeGetList(userPk);
+		Device device = null;
+		
+		for (Place place : places) {
+			for (Device var : place.getDevices()) {
+				if(var.getPk() == devicePk) {
+					device = var;
+				}
+			}
+		}
+		
+		return device;
+	}
+	
 	public boolean deviceNew(int userPk, Device device){
 		boolean retval = false;
 		int result = -1;
@@ -215,7 +230,7 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 			/* Refresh DB */
 			try {
 				Connection conn = ConnectorMysql.getConnection();
-				result = DBConnector.deviceUpdate(conn, device);
+				result = DBConnector.deviceUpdate(conn, userPk, device);
 				conn.close();				
 			} catch (SQLException e) {
 				e.printStackTrace();

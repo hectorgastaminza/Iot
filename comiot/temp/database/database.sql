@@ -81,7 +81,7 @@ INSERT INTO user (username, password, email)
 VALUES ('hola', 'b', 'c@gmail.com');
 
 SELECT pk_user_id FROM user;
-DELETE FROM connection where pk_user_id = 1;
+DELETE FROM device where pk_user_id = 1;
 SELECT * FROM place;
 SELECT @user_pk := pk_user_id FROM user WHERE username = 'comiot';
 SELECT * FROM user where ((username = 'comiot' or email = 'comiotproject@gmail.com' ) and (pk_user_id != 1));
@@ -96,6 +96,9 @@ SELECT * FROM connection WHERE pk_user_id = @user_pk;
 
 SELECT * FROM place WHERE pk_user_id = @user_pk;
 SELECT * FROM device WHERE pk_user_id = @user_pk;
+SELECT * FROM device WHERE pk_user_id = @user_pk AND device_id = 99 AND place_id = 1 AND pk_device_id != 9;
+
+SELECT pk_device_id FROM device WHERE pk_user_id = 1 AND device_id = 95 AND place_id = 1;
 
 SELECT * FROM device WHERE pk_user_id = @user_pk;
 SET @place_id = 8;

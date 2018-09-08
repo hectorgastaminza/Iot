@@ -28,6 +28,13 @@ public class DeviceController {
 		return new ResponseEntity<List<Place>>(places, (places != null)? HttpStatus.OK : HttpStatus.BAD_REQUEST);
 	}
 	
+	@RequestMapping("/device/getbypk")
+	public ResponseEntity<Device> getDeviceGetByPk(@RequestParam(value="userpk", defaultValue="-1") int userpk,
+			@RequestParam(value="devicepk", defaultValue="-1") int devicepk) {
+		Device device = userModel.deviceGetByPk(userpk, devicepk);
+		return new ResponseEntity<Device>(device, (device != null)? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+	}
+	
 	@RequestMapping(value = "/device/new", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> getUserSignup(@RequestParam(value="userpk", defaultValue="-1") int userpk,
 			@RequestBody Device device) {

@@ -127,7 +127,7 @@ public class Place extends DBRecord implements Serializable {
 		boolean retval = false;
 		
 		for (Device var : devices) {
-			if(var.getId() == device.getId()) {
+			if(var.getPk() == device.getPk()) {
 				devices.remove(var);
 				devices.add(device);
 				retval = true;

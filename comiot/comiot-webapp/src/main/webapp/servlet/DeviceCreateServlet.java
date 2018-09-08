@@ -12,11 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import comiot.core.application.server.Place;
 import comiot.core.application.server.User;
 import comiot.core.device.Device;
 
@@ -41,7 +44,7 @@ public class DeviceCreateServlet extends HttpServlet {
 				NameValuePair param = params.get(0);
 
 				if(param.getName().equals("update")){
-
+					refreshDeviceData(request, Integer.parseInt(param.getValue()));
 				}
 				else {
 					if(param.getName().equals("delete"))
@@ -102,5 +105,35 @@ public class DeviceCreateServlet extends HttpServlet {
 		}
 
 		request.getRequestDispatcher("/WEB-INF/views/devicecreate.jsp").forward(request, response);
+	}
+	
+	private void refreshDeviceData(HttpServletRequest request, int devicepk) {
+		/* Checks if the user was not created */
+		User user = (User) request.getSession(false).getAttribute("user");
+		
+		String url = UriComponentsBuilder
+				.fromUriString(BackendConfig.DEVICE_GET_BY_PK)
+				.queryParam("userpk", user.getPk())
+				.queryParam("devicepk", devicepk)
+				.toUriString();
+		
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<Device> result = null;
+		try {
+			result = restTemplate.exchange(url,
+			                    HttpMethod.GET, 
+			                    null, 
+			                    new ParameterizedTypeReference<Device>() {}
+			);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if((result != null) && (result.getStatusCode() == HttpStatus.OK)) {
+			/* Refresh Places */
+			Device device = result.getBody();
+			request.setAttribute("device", device);
+		}
 	}
 }

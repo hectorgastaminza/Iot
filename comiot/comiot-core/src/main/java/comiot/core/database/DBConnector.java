@@ -422,23 +422,60 @@ public class DBConnector {
 		return result;
 	}
 	
+	public static boolean deviceCheckUpdate(Connection conn, int userPk, Device device) throws SQLException {
+		boolean retval = false;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "SELECT pk_device_id FROM device WHERE pk_user_id = ? AND device_id = ? AND place_id = ? AND pk_device_id != ?";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setInt(1, userPk);
+			p.setInt(2, device.getId());
+			p.setInt(3, device.getPlaceID());
+			p.setInt(4, device.getPk());
+			ResultSet rs = p.executeQuery();
+			retval = rs.next();
+		}
+		
+		return retval;
+	}
+	
+	public static boolean deviceCheckInsert(Connection conn, int userPk, Device device) throws SQLException {
+		boolean retval = false;
+		
+		if((conn != null) && (conn.isValid(0)))
+		{
+			String query = "SELECT * FROM device WHERE pk_user_id=? AND pk_device_id=? AND place_id=?";
+			PreparedStatement p = conn.prepareStatement(query);
+			p.setInt(1, userPk);
+			p.setInt(2, device.getId());
+			p.setInt(3, device.getPlaceID());
+			ResultSet rs = p.executeQuery();
+			retval = rs.next();
+		}
+		
+		return retval;
+	}
+	
 	public static int deviceInsert(Connection conn, int userPk, Device device) throws SQLException {
 		int retval = -1;
 		
 		if((conn != null) && (conn.isValid(0)))
 		{
-			String query = "INSERT INTO device (pk_user_id, device_id, device_name, device_description) values (?, ?, ?, ?)";
-			PreparedStatement p = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			p.setInt(1, userPk);
-			p.setInt(2, device.getId());
-			p.setString(3, device.getName());
-			p.setString(4, device.getDescription());
-			retval = p.executeUpdate();
-
-			if(retval > 0) {
-				ResultSet rs = p.getGeneratedKeys();
-				if (rs.next()) {
-					device.setPk(rs.getInt(1));
+			if(!deviceCheckInsert(conn, userPk, device)) {
+				String query = "INSERT INTO device (pk_user_id, device_id, device_name, device_description) values (?, ?, ?, ?)";
+				PreparedStatement p = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+				p.setInt(1, userPk);
+				p.setInt(2, device.getId());
+				p.setString(3, device.getName());
+				p.setString(4, device.getDescription());
+				retval = p.executeUpdate();
+	
+				if(retval > 0) {
+					ResultSet rs = p.getGeneratedKeys();
+					if (rs.next()) {
+						device.setPk(rs.getInt(1));
+					}
 				}
 			}
 		}
@@ -446,20 +483,22 @@ public class DBConnector {
 		return retval;
 	}
 	
-	public static int deviceUpdate(Connection conn, Device device) throws SQLException{
+	public static int deviceUpdate(Connection conn, int userPk, Device device) throws SQLException{
 		int result = -1;
 		
 		if((conn != null) && (conn.isValid(0)))
 		{
-			String query = "UPDATE device "
-					+ "SET device_id=?, device_name=?, device_description=? "
-					+ "where pk_device_id=?";
-			PreparedStatement p = conn.prepareStatement(query);
-			p.setInt(1, device.getId());
-			p.setString(2, device.getName());
-			p.setString(3, device.getDescription());
-			p.setInt(4, device.getPk());
-			result = p.executeUpdate();
+			if(!deviceCheckUpdate(conn, userPk ,device)) {
+				String query = "UPDATE device "
+						+ "SET device_id=?, device_name=?, device_description=? "
+						+ "where pk_device_id=?";
+				PreparedStatement p = conn.prepareStatement(query);
+				p.setInt(1, device.getId());
+				p.setString(2, device.getName());
+				p.setString(3, device.getDescription());
+				p.setInt(4, device.getPk());
+				result = p.executeUpdate();
+			}
 		}
 		
 		return result;

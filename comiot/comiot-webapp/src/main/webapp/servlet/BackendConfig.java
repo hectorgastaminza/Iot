@@ -15,6 +15,7 @@ public class BackendConfig {
 	static final String USER_LOGIN = BACKEND_URL + "/user/login";
 	static final String USER_UPDATE = BACKEND_URL + "/user/update";
 	static final String DEVICE_GET = BACKEND_URL + "/device/get";
+	static final String DEVICE_GET_BY_PK = BACKEND_URL + "/device/getbypk";
 	static final String DEVICE_CREATE = BACKEND_URL + "/device/new";
 	static final String DEVICE_UPDATE = BACKEND_URL + "/device/update";
 	static final String DEVICE_DELETE = BACKEND_URL + "/device/delete";
