@@ -7,6 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import comiot.core.application.server.User;
 
 /**
@@ -35,18 +40,29 @@ public class SignupServlet extends HttpServlet {
 			String email = request.getParameter("email");
 			User user = new User(username, password, email);
 			
-				
-				if(1 > 0) {
-					request.setAttribute("successMessage", "User created. Please login");
-				} 
-				else {
-					request.setAttribute("errorMessage", "This user is already been registered");
-				}
+			String url = UriComponentsBuilder
+					.fromUriString(BackendConfig.USER_SIGNUP).toUriString();
+			
+			RestTemplate restTemplate = new RestTemplate();
+			ResponseEntity<User> result = null;
+			try {
+				result = restTemplate.postForEntity(url, BackendConfig.getHttpEntity(user), User.class);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			if((result != null) && (result.getStatusCode() == HttpStatus.OK)) {
+				request.setAttribute("successMessage", "User created. Please login");
+			}
+			else {
+				request.setAttribute("errorMessage", "This user is already been registered");
+			}
 		}
 		else {
 			request.setAttribute("errorMessage", "Passwords are not equals");
 		}
 		
-		request.getRequestDispatcher("/signup").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/signup.jsp").forward(request, response);
 	}
 }

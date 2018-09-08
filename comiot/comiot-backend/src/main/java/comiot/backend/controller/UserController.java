@@ -31,19 +31,17 @@ public class UserController {
 		return userModel.userLogin(name, password);
 	}
 	
-	@RequestMapping("/user/signup")
-	public boolean getUserSignup(@RequestParam(value="name", defaultValue="") String name, 
-			@RequestParam(value="password", defaultValue="") String password,
-			@RequestParam(value="email", defaultValue="") String email) {
-		return userModel.userSignup(name, password, email);
+	@RequestMapping(value = "/user/signup", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> getUserSignup(@RequestBody User user) {
+		System.out.println(user.getUsername());
+		boolean retval = userModel.userSignup(user);
+		return new ResponseEntity<User>(user, retval? HttpStatus.OK : HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "/user/recovery", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> getUserRecovery(@RequestBody User user)
-	{
+	public ResponseEntity<User> getUserRecovery(@RequestBody User user) {
 	    System.out.println(user.getEmail());
 	    boolean retval = userModel.userRecovery(user.getEmail());
-	    
 	    return new ResponseEntity<User>(user, retval? HttpStatus.OK : HttpStatus.BAD_REQUEST);
 	}
 

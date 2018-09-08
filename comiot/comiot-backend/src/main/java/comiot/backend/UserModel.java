@@ -58,10 +58,8 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 		return user;
 	}
 	
-	public boolean userSignup(String username, String password, String email) {
+	public boolean userSignup(User user) {
 		int result = -1;
-		
-		User user = new User(username, password, email);
 		
 		try {
 			Connection conn = ConnectorMysql.getConnection();
