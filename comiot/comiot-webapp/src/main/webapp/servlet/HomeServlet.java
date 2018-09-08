@@ -28,14 +28,8 @@ public class HomeServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(SessionValidator.isSessionValid(request, response)) {
-			refreshData(request, response);
-			request.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(request, response);
-		}
-		else {
-			request.setAttribute("errorMessage", "Invalid Credentials");
-			request.getRequestDispatcher("/login").forward(request, response);
-		}
+		refreshData(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(request, response);
 	}
 
 	/**

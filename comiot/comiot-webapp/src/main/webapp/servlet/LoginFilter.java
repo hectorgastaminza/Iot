@@ -23,15 +23,15 @@ public class LoginFilter implements Filter{
 		HttpServletRequest request = (HttpServletRequest)req;
 		HttpServletResponse response = (HttpServletResponse)res;
 		HttpSession session = request.getSession(false);
-		/*
-		if(session != null && session.getAttribute("username") != null){
+		
+		if(session != null && session.getAttribute("user") != null){
 			chain.doFilter(req, res);
 		}
 		else {
 			request.setAttribute("errorMessage", "Invalid Credentials");
 			request.getRequestDispatcher("/login").forward(request, response);
 		}
-		*/
+		
 	}
 
 	@Override

@@ -20,23 +20,17 @@ public class ConnectionServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(SessionValidator.isSessionValid(request, response)) {
-			int userPk = (int) request.getSession().getAttribute("userpk");
-			MqttConnectionConfiguration mqttConfig = null;
+		int userPk = (int) request.getSession().getAttribute("userpk");
+		MqttConnectionConfiguration mqttConfig = null;
 
-			if(mqttConfig != null) {
-				request.setAttribute("mqtthost", mqttConfig.getBrokerHost());
-				request.setAttribute("mqttport", mqttConfig.getBrokerPort());
-				request.setAttribute("mqttusername", mqttConfig.getUsername());
-				request.setAttribute("mqttpassword", mqttConfig.getPasswordStr());
-				request.setAttribute("mqtttopic", mqttConfig.getRootTopic());
-			}
-			request.getRequestDispatcher("/WEB-INF/views/connection.jsp").forward(request, response);
+		if(mqttConfig != null) {
+			request.setAttribute("mqtthost", mqttConfig.getBrokerHost());
+			request.setAttribute("mqttport", mqttConfig.getBrokerPort());
+			request.setAttribute("mqttusername", mqttConfig.getUsername());
+			request.setAttribute("mqttpassword", mqttConfig.getPasswordStr());
+			request.setAttribute("mqtttopic", mqttConfig.getRootTopic());
 		}
-		else {
-			request.setAttribute("errorMessage", "Invalid Credentials");
-			request.getRequestDispatcher("/login").forward(request, response);
-		}
+		request.getRequestDispatcher("/WEB-INF/views/connection.jsp").forward(request, response);
 	}
 
 	/**

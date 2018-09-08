@@ -20,18 +20,12 @@ public class UserConfigServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(SessionValidator.isSessionValid(request, response)) {
-			String username = (String) request.getSession().getAttribute("username");
-			User user = null;
+		String username = (String) request.getSession().getAttribute("username");
+		User user = null;
 
-			request.setAttribute("username", user.getUsername());
-			request.setAttribute("email", user.getEmail());
-			request.getRequestDispatcher("/WEB-INF/views/userconfig.jsp").forward(request, response);
-		}
-		else {
-			request.setAttribute("errorMessage", "Invalid Credentials");
-			request.getRequestDispatcher("/login").forward(request, response);
-		}
+		request.setAttribute("username", user.getUsername());
+		request.setAttribute("email", user.getEmail());
+		request.getRequestDispatcher("/WEB-INF/views/userconfig.jsp").forward(request, response);
 	}
 
 	/**

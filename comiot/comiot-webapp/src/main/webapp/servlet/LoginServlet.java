@@ -18,8 +18,6 @@ import comiot.core.application.server.User;
 @WebServlet(urlPatterns="/login.do")
 public class LoginServlet extends HttpServlet {
 	
-	//private UserValidationService userValidationService = new UserValidationService();
-	
 	/**
 	 * 
 	 */
