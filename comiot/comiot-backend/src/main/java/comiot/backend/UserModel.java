@@ -144,6 +144,16 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 		return devices;
 	}
 	
+	public List<Place> placeGetList(int userPk){
+		List<Place> places = null;
+		
+		if(usersDeviceServer.containsKey(userPk)) {
+			places = usersDeviceServer.get(userPk).getPlaces();
+		}
+		
+		return places;
+	}
+	
 	public boolean deviceNew(int userPk, Device device){
 		boolean retval = false;
 		int result = -1;

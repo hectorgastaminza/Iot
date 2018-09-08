@@ -13,6 +13,10 @@ public class BackendConfig {
 	static final String USER_RECOVERY = BACKEND_URL + "/user/recovery";
 	static final String USER_SIGNUP = BACKEND_URL + "/user/signup";
 	static final String USER_LOGIN = BACKEND_URL + "/user/login";
+	static final String DEVICE_GET = BACKEND_URL + "/device/get";
+	
+	
+	
 	
 	static <T> HttpEntity<String> getHttpEntity(T body) throws JsonProcessingException {
 		ObjectMapper objMap = new ObjectMapper();
@@ -31,7 +35,8 @@ public class BackendConfig {
 	serializerTest(new Device(), objMap, Device.class);
 	serializerTest(new MqttConnectionConfiguration(), objMap, MqttConnectionConfiguration.class);
 	*/
-	static <T> void serializerTest(T var, ObjectMapper objMap, T classType){
+	static <T> void serializerTest(T var, T classType){
+		ObjectMapper objMap = new ObjectMapper();
 		String auxStr = null;
 		T aux = null;
 		try {

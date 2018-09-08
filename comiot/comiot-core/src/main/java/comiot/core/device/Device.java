@@ -38,7 +38,7 @@ public class Device extends DBRecord implements Serializable {
 	}
 	
 	public boolean equals(Device device) {
-		return ((this.id == device.id) && (this.id == device.id));
+		return ((this.id == device.id) && (this.placeID == device.placeID));
 	}
 	
 	public eDeviceStates getState() {

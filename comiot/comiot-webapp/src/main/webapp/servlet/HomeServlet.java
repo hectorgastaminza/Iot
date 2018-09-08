@@ -10,6 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import comiot.core.application.server.DeviceServer;
 import comiot.core.application.server.Place;
 import comiot.core.application.server.User;
@@ -22,7 +29,6 @@ import comiot.core.device.Device;
 @WebServlet("/home.do")
 public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private User user = null;
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -38,34 +44,30 @@ public class HomeServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	}
 	
-	
-	
 	private void refreshData(HttpServletRequest request, HttpServletResponse response) {
 		/* Checks if the user was not created */
-		Connection conn = ConnectorMysql.getConnection();
-		int userPk = -1;
-		if(user == null) {
-			String username = (String) request.getSession().getAttribute("username");
-			String password = (String) request.getSession().getAttribute("password");
-			if((username != null) && (password != null)) {
-
-			}
+		User user = (User) request.getSession(false).getAttribute("user");
+		
+		String url = UriComponentsBuilder
+				.fromUriString(BackendConfig.DEVICE_GET).queryParam("userpk", user.getPk()).toUriString();
+		
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<List<Place>> result = null;
+		try {
+			result = restTemplate.exchange(url,
+			                    HttpMethod.GET, 
+			                    null, 
+			                    new ParameterizedTypeReference<List<Place>>() {}
+			);
 		}
-		else {
-			userPk = user.getPk();
+		catch (Exception e) {
+			e.printStackTrace();
 		}
-		if(userPk > 0){
-			DeviceServer deviceServer = new DeviceServer();
+		
+		if((result != null) && (result.getStatusCode() == HttpStatus.OK)) {
 			/* Refresh Places */
-			List<Place> places = null;
-			List<Device> devices = null;
-				
-				request.setAttribute("places", places);
-				request.setAttribute("devices", devices);
+			List<Place> places = result.getBody();
+			request.setAttribute("places", places);
 		}
-	}
-	
-	
-	private void refreshBusisnessLogic(HttpServletRequest request, HttpServletResponse response) {
 	}
 }
