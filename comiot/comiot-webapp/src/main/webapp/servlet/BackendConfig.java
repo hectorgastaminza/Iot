@@ -15,8 +15,13 @@ public class BackendConfig {
 	static final String USER_LOGIN = BACKEND_URL + "/user/login";
 	static final String USER_UPDATE = BACKEND_URL + "/user/update";
 	static final String DEVICE_GET = BACKEND_URL + "/device/get";
+	static final String DEVICE_CREATE = BACKEND_URL + "/device/new";
+	static final String DEVICE_UPDATE = BACKEND_URL + "/device/update";
+	static final String DEVICE_DELETE = BACKEND_URL + "/device/delete";
 	static final String CONNECTION_GET = BACKEND_URL + "/connection/get";
 	static final String CONNECTION_UPDATE = BACKEND_URL + "/connection/update";
+	
+	
 	
 	static <T> HttpEntity<String> getHttpEntity(T body) throws JsonProcessingException {
 		ObjectMapper objMap = new ObjectMapper();

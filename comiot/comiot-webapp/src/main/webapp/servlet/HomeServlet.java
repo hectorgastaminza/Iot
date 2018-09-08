@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -17,11 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import comiot.core.application.server.DeviceServer;
 import comiot.core.application.server.Place;
 import comiot.core.application.server.User;
-import comiot.core.database.mysql.ConnectorMysql;
-import comiot.core.device.Device;
 
 /**
  * Servlet implementation class HomeServlet
