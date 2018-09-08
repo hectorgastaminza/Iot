@@ -37,16 +37,12 @@ public class Device extends DBRecord implements Serializable {
 		this.description = description;
 	}
 	
-	public boolean equals(Device device) {
-		return ((this.id == device.id) && (this.placeID == device.placeID));
-	}
-	
 	public eDeviceStates getState() {
 		return state;
 	}
 	
-	public void setDeviceCommandsCallback(IDeviceCommandsCallback deviceCommandsCallback) {
-		this.deviceCommandsCallback = deviceCommandsCallback;
+	public void setState(eDeviceStates state) {
+		this.state = state;
 	}
 	
 	public void setState(eDeviceStates state, int value) {
@@ -54,27 +50,12 @@ public class Device extends DBRecord implements Serializable {
 		this.value = value;
 	}
 	
-	public void setState(eDeviceStates state) {
-		this.state = state;
-		
-		if(debugMessages) {
-			System.out.println("Device: " + id + 
-					" | Place: " + placeID +
-					" | new state: " + state
-					);
-		}
-		
-		refreshState();
-	}
-	
 	public int getValue() {
 		return value;
 	}
 	
-	public boolean setValue(int value) {
+	public void setValue(int value) {
 		this.value = value;
-		setState(eDeviceStates.ON_VALUE);
-		return true;
 	}
 	
 	public int getPlaceID() {
@@ -93,35 +74,10 @@ public class Device extends DBRecord implements Serializable {
 		this.id = id;
 	}
 	
-	public boolean reset() {
-		setState(eDeviceStates.NONE);
-		return true;
+	public void setDeviceCommandsCallback(IDeviceCommandsCallback deviceCommandsCallback) {
+		this.deviceCommandsCallback = deviceCommandsCallback;
 	}
 	
-	public boolean on() {
-		setState(eDeviceStates.ON);
-		return true;
-	}
-	
-	public boolean off() {
-		setState(eDeviceStates.OFF);
-		return true;
-	}
-	
-	public boolean up() {
-		setState(eDeviceStates.ON_VALUE);
-		return true;
-	}
-	
-	public boolean down() {
-		setState(eDeviceStates.ON_VALUE);
-		return true;
-	}
-	
-	public boolean refreshState() {
-		return (deviceCommandsCallback != null) ? deviceCommandsCallback.commandRefreshState(placeID, id, state, value) : false;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -133,5 +89,58 @@ public class Device extends DBRecord implements Serializable {
 	private boolean debugMessages = false;
 	public void setDebugMessages(boolean debug) {
 		debugMessages = debug;
+	}
+	
+	
+	public boolean equals(Device device) {
+		return ((this.id == device.id) && (this.placeID == device.placeID));
+	}
+	
+	public void stateChange(eDeviceStates state) {
+		this.state = state;
+		
+		if(debugMessages) {
+			System.out.println("Device: " + id + 
+					" | Place: " + placeID +
+					" | new state: " + state
+					);
+		}
+		
+		refreshState();
+	}
+	
+	public boolean refreshState() {
+		return (deviceCommandsCallback != null) ? deviceCommandsCallback.commandRefreshState(placeID, id, state, value) : false;
+	}
+	
+	public boolean valueChange(int value) {
+		this.value = value;
+		stateChange(eDeviceStates.ON_VALUE);
+		return true;
+	}
+	
+	public boolean reset() {
+		stateChange(eDeviceStates.NONE);
+		return true;
+	}
+	
+	public boolean on() {
+		stateChange(eDeviceStates.ON);
+		return true;
+	}
+	
+	public boolean off() {
+		stateChange(eDeviceStates.OFF);
+		return true;
+	}
+	
+	public boolean up() {
+		stateChange(eDeviceStates.ON_VALUE);
+		return true;
+	}
+	
+	public boolean down() {
+		stateChange(eDeviceStates.ON_VALUE);
+		return true;
 	}
 }

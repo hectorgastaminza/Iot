@@ -27,7 +27,7 @@ public class DeviceCommandDispatcher {
 			retval = device.on();
 			break;
 		case SET_VALUE:
-			retval = device.setValue(value);
+			retval = device.valueChange(value);
 			break;
 		case UP:
 			retval = device.up();

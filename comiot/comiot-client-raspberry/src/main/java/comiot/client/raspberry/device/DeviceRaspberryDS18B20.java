@@ -58,7 +58,7 @@ public class DeviceRaspberryDS18B20 extends Device implements ActionListener{
 		readTemperature();
 		
 		if(temperatureLastValid > TEMPERATURE_INVALID_VALUE) {
-			setValue(temperatureLastValid);
+			valueChange(temperatureLastValid);
 		}
 	}
     
