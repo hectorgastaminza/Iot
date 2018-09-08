@@ -22,14 +22,16 @@ public class UserController {
 	@RequestMapping("/")
 	public String getRoot(@RequestParam(value="name", defaultValue="") String name, 
 			@RequestParam(value="password", defaultValue="") String password) {
-		return "Hello World!";
+		return "Welcome to C⊙mI⊙T";
 	}
 	
-	@RequestMapping("/user/login")
-	public User getUserLogin(@RequestParam(value="name", defaultValue="") String name, 
-			@RequestParam(value="password", defaultValue="") String password) {
-		return userModel.userLogin(name, password);
+	
+	@RequestMapping(value = "/user/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> getUserLogin(@RequestBody User user) {
+		User loguedUser = userModel.userLogin(user);
+		return new ResponseEntity<User>(loguedUser, (loguedUser != null)? HttpStatus.OK : HttpStatus.BAD_REQUEST);
 	}
+	
 	
 	@RequestMapping(value = "/user/signup", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> getUserSignup(@RequestBody User user) {
@@ -38,6 +40,7 @@ public class UserController {
 		return new ResponseEntity<User>(user, retval? HttpStatus.OK : HttpStatus.BAD_REQUEST);
 	}
 
+	
 	@RequestMapping(value = "/user/recovery", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> getUserRecovery(@RequestBody User user) {
 	    System.out.println(user.getEmail());

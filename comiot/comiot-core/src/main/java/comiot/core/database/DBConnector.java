@@ -54,25 +54,21 @@ public class DBConnector {
 		return retval;
 	}
 	
-	public static int userGetPk(Connection conn, String username, String password) throws SQLException {
-		int retval = -1;
+	public static User userGetPk(Connection conn, String username, String password) throws SQLException {
+		User user = null;
 		
 		if((conn != null) && (conn.isValid(0)))
 		{
-			String query = "SELECT pk_user_id FROM user WHERE username=? and password=?";
+			String query = "SELECT * FROM user WHERE username=? and password=?";
 			PreparedStatement p = conn.prepareStatement(query);
 			p.setString(1, username);
 			p.setString(2, password);
 			ResultSet rs = p.executeQuery();
 			
-			if(rs.next()) {
-				int pk_user_id = rs.getInt("pk_user_id");
-				System.out.println("connected : " + pk_user_id + ", " + username + ", " + password);
-				retval = pk_user_id;
-			}
+			user = dbCreateUser(rs);
 		}
 		
-		return retval;
+		return user;
 	}
 	
 	public static List<Integer> usersGetPk(Connection conn) throws SQLException {

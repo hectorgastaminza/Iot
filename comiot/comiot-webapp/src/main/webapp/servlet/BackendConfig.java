@@ -9,9 +9,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BackendConfig {
-	static final String BACKEND_URL = "http://localhost:8888/";
-	static final String USER_RECOVERY = BACKEND_URL + "user/recovery";
+	static final String BACKEND_URL = "http://localhost:8888";
+	static final String USER_RECOVERY = BACKEND_URL + "/user/recovery";
 	static final String USER_SIGNUP = BACKEND_URL + "/user/signup";
+	static final String USER_LOGIN = BACKEND_URL + "/user/login";
 	
 	static <T> HttpEntity<String> getHttpEntity(T body) throws JsonProcessingException {
 		ObjectMapper objMap = new ObjectMapper();

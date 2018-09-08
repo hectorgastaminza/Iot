@@ -33,30 +33,28 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 		usersDeviceServer = new HashMap<>();
 	}
 	
-	public User userLogin(String username, String password) {
-		User user = new User(username, "", "");
+	public User userLogin(User user) {
+		User loguedUser = null;
 		
-		int userPk = 0;
 		try {
 			Connection conn = ConnectorMysql.getConnection();
-			userPk = DBConnector.userGetPk(conn, username, password);
+			loguedUser = DBConnector.userGetPk(conn, user.getUsername(), user.getPassword());
 			conn.close();	
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		if (userPk > 0) {
-		    user.setPk(userPk);
-		    
-		    if(addUser(user.getPk())) {
-		    	UserModelLoadThread runLoad = new UserModelLoadThread(usersDeviceServer.get(user.getPk()), user.getPk());
+
+		if (loguedUser != null) {
+		    if(addUser(loguedUser.getPk())) {
+		    	UserModelLoadThread runLoad = new UserModelLoadThread(usersDeviceServer.get(loguedUser.getPk()), loguedUser.getPk());
 		        ExecutorService executor = Executors.newCachedThreadPool();
 		        executor.submit(runLoad);
 		    }
 		}
 		
-		return user;
+		return loguedUser;
 	}
+	
 	
 	public boolean userSignup(User user) {
 		int result = -1;
