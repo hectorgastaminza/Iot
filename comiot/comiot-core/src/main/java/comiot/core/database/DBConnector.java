@@ -445,7 +445,7 @@ public class DBConnector {
 		
 		if((conn != null) && (conn.isValid(0)))
 		{
-			String query = "SELECT * FROM device WHERE pk_user_id=? AND pk_device_id=? AND place_id=?";
+			String query = "SELECT * FROM device WHERE pk_user_id=? AND device_id=? AND place_id=?";
 			PreparedStatement p = conn.prepareStatement(query);
 			p.setInt(1, userPk);
 			p.setInt(2, device.getId());
