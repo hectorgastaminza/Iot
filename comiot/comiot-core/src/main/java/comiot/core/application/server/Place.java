@@ -123,16 +123,26 @@ public class Place extends DBRecord implements Serializable {
 	}
 	
 	@JsonIgnore
-	public boolean updateDevice(Device device) {
+	public boolean removeDeviceByPk(int devicePk) {
 		boolean retval = false;
 		
 		for (Device var : devices) {
-			if(var.getPk() == device.getPk()) {
+			if(var.getPk() == devicePk) {
 				devices.remove(var);
-				devices.add(device);
 				retval = true;
 				break;
 			}
+		}
+		
+		return retval;
+	}
+	
+	@JsonIgnore
+	public boolean updateDevice(Device device) {
+		boolean retval = removeDeviceByPk(device.getPk());
+		
+		if(retval) {
+			devices.add(device);
 		}
 		
 		return retval;

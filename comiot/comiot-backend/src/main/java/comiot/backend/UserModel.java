@@ -245,6 +245,30 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 		return ((result > 0) && retval);
 	}
 	
+	public boolean deviceDeleteByPk(int userPk, int devicePk) {
+		boolean retval = false;
+		int result = -1;
+		
+		if(usersDeviceServer.containsKey(userPk)) {
+			
+			/* Refresh DB */
+			try {
+				Connection conn = ConnectorMysql.getConnection();
+				result = DBConnector.deviceDelete(conn, devicePk);
+				conn.close();				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			if(result > 0) {
+				DeviceServer deviceServer = usersDeviceServer.get(userPk);
+				retval = deviceServer.removeDeviceByPk(userPk, devicePk);
+			}
+		}
+		
+		return ((result > 0) && retval);
+	}
+	
 	public boolean deviceDelete(int userPk, Device device){
 		boolean retval = false;
 		int result = -1;
@@ -371,5 +395,4 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 			}
 		}
 	}
-
 }

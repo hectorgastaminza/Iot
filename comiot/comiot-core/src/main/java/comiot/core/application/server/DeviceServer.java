@@ -117,6 +117,21 @@ public class DeviceServer implements IStringCommandCallback {
 		return retval;
 	}
 	
+	
+	public boolean removeDeviceByPk(int userPk, int devicePk) {
+		boolean retval = false;
+
+		for (Place place : places.values()) {
+			if(place.removeDeviceByPk(devicePk)) {
+				retval = true;
+				break;
+			}
+		}
+		
+		return retval;
+	}
+	
+	
 	public boolean commandRequestSend(DeviceCommandRequest command) {
 		boolean retval = false;
 		

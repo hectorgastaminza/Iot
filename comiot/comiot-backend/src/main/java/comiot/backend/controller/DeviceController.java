@@ -53,9 +53,9 @@ public class DeviceController {
 	
 	@RequestMapping(value = "/device/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> getDeviceDelete(@RequestParam(value="userpk", defaultValue="-1") int userpk,
-			@RequestBody Device device) {
-		System.out.println("Userpk: " + userpk + ". Delete device: " + device.toString());
-		boolean retval = userModel.deviceDelete(userpk, device);
+			@RequestParam(value="devicepk", defaultValue="-1") int devicepk) {
+		System.out.println("Userpk: " + userpk + ". Delete device: " + devicepk);
+		boolean retval = userModel.deviceDeleteByPk(userpk, devicepk);
 		return new ResponseEntity<Boolean>(retval, retval? HttpStatus.OK : HttpStatus.BAD_REQUEST);
 	}
 }

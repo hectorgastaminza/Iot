@@ -91,14 +91,14 @@ UPDATE user SET username = 'b', password = 'b', email = 'b@b.com' where pk_user_
 
 SELECT * FROM user;
 SELECT * FROM connection WHERE pk_user_id = @user_pk;
-#DELETE FROM connection where pk_user_id = @user_pk;
+DELETE FROM device where pk_device_id > 9;
 
 
 SELECT * FROM place WHERE pk_user_id = @user_pk;
 SELECT * FROM device WHERE pk_user_id = @user_pk;
 SELECT * FROM device WHERE pk_user_id = @user_pk AND device_id = 99 AND place_id = 1 AND pk_device_id != 9;
 
-SELECT pk_device_id FROM device WHERE pk_user_id = 1 AND device_id = 95 AND place_id = 1;
+SELECT pk_device_id FROM device WHERE pk_user_id = 1 AND device_id = 99 AND place_id = 1;
 
 SELECT * FROM device WHERE pk_user_id = @user_pk;
 SET @place_id = 8;

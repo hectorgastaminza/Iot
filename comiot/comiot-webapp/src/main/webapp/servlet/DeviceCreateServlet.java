@@ -44,12 +44,12 @@ public class DeviceCreateServlet extends HttpServlet {
 				NameValuePair param = params.get(0);
 
 				if(param.getName().equals("update")){
-					refreshDeviceData(request, Integer.parseInt(param.getValue()));
+					deviceUpdate(request, Integer.parseInt(param.getValue()));
 				}
 				else {
 					if(param.getName().equals("delete"))
 					{
-
+						deviceDelete(request, Integer.parseInt(param.getValue()));
 					}
 				}
 			}
@@ -102,13 +102,15 @@ public class DeviceCreateServlet extends HttpServlet {
 		}
 		else {
 			request.setAttribute("errorMessage", "Error. Invalid data has been entered.");
+			if(update) {
+				request.setAttribute("device", device);
+			}
 		}
 
 		request.getRequestDispatcher("/WEB-INF/views/devicecreate.jsp").forward(request, response);
 	}
 	
-	private void refreshDeviceData(HttpServletRequest request, int devicepk) {
-		/* Checks if the user was not created */
+	private void deviceUpdate(HttpServletRequest request, int devicepk) {
 		User user = (User) request.getSession(false).getAttribute("user");
 		
 		String url = UriComponentsBuilder
@@ -131,9 +133,39 @@ public class DeviceCreateServlet extends HttpServlet {
 		}
 		
 		if((result != null) && (result.getStatusCode() == HttpStatus.OK)) {
-			/* Refresh Places */
 			Device device = result.getBody();
 			request.setAttribute("device", device);
+		}
+	}
+	
+	
+	private void deviceDelete(HttpServletRequest request, int devicepk) {
+		User user = (User) request.getSession(false).getAttribute("user");
+		
+		String url = UriComponentsBuilder
+				.fromUriString(BackendConfig.DEVICE_DELETE)
+				.queryParam("userpk", user.getPk())
+				.queryParam("devicepk", devicepk)
+				.toUriString();
+		
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<Boolean> result = null;
+		try {
+			result = restTemplate.exchange(url,
+			                    HttpMethod.DELETE, 
+			                    null, 
+			                    new ParameterizedTypeReference<Boolean>() {}
+			);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if((result != null) && (result.getStatusCode() == HttpStatus.OK)) {
+			request.setAttribute("successMessage", "The device was deleted.");
+		}
+		else {
+			request.setAttribute("errorMessage", "Error. The device could not be deleted.");
 		}
 	}
 }
