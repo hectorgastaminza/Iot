@@ -18,15 +18,14 @@
 				<div class="card-body border-secondary">
 					<c:choose>
 						<c:when test="${(device.state == 'NONE')}">
-							<h5 class="card-title">DISCONNECTED</h5>
+							<h5 class="card-title text-warning">DISCONNECTED</h5>
 							<p class="card-text"></p>
 						</c:when>
-						<c:when test="${device.value > '0'}">
-							<h5 class="card-title">${device.value}</h5>
-							<p class="card-text">${device.state}</p>
+						<c:when test="${(device.state == 'ON_VALUE')}">
+							<h3 class="card-title text-success">${device.value}</h3>
 						</c:when>
 						<c:otherwise>
-							<h5 class="card-title">${device.state}</h5>
+							<h3 class="card-title text-success">${device.state}</h3>
 							<p class="card-text"></p>
 						</c:otherwise>
 					</c:choose>
