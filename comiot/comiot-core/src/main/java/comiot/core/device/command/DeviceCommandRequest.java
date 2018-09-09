@@ -2,6 +2,9 @@ package comiot.core.device.command;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import comiot.core.device.protocol.ProtocolCommand;
 import comiot.core.device.protocol.ProtocolSegment;
 
@@ -46,6 +49,15 @@ public class DeviceCommandRequest extends DeviceCommand {
 		this.cmd = eDeviceCommands.getFromValue(values[0]);
 		this.value = values[1];
 	}
+	
+	@JsonGetter("cmd")
+	public eDeviceCommands getCmd() {
+		return cmd;
+	}
+	@JsonSetter("cmd")
+	public void setCmd(eDeviceCommands cmd) {
+		this.cmd = cmd;
+	}
 
 	/**
 	 * Gets device command ID
@@ -55,7 +67,7 @@ public class DeviceCommandRequest extends DeviceCommand {
 	{
 		return cmd;
 	}
-
+	
 	/**
 	 * Gets device command value
 	 * @return int
