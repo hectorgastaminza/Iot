@@ -1,6 +1,8 @@
 package comiot.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,12 +18,9 @@ public class CommandController {
 	public UserModel userModel;
 	
 	@RequestMapping("/command/send")
-	public boolean getCommandSend(@RequestParam(value="userpk", defaultValue="-1") int userpk, 
+	public ResponseEntity<Boolean> getCommandSend(@RequestParam(value="userpk", defaultValue="-1") int userpk, 
 			@RequestBody DeviceCommandRequest command) {
-		return userModel.commandRequestSend(userpk, command);
-	}
-	
-	boolean commandSend(int userPk, int deviceId, int placeId, int cmd) {
-		return false;
+		boolean retval =  userModel.commandRequestSend(userpk, command);
+		return new ResponseEntity<Boolean>(retval, retval? HttpStatus.OK : HttpStatus.BAD_REQUEST);
 	}
 }

@@ -359,7 +359,7 @@ public class UserModel implements IDeviceStatusRefreshCallback {
 	public boolean commandRequestSend(int userPk, DeviceCommandRequest command) {
 		boolean retval = false;
 		
-		if(!usersDeviceServer.containsKey(userPk)) {
+		if(usersDeviceServer.containsKey(userPk)) {
 			DeviceServer deviceServer = usersDeviceServer.get(userPk);
 			retval = deviceServer.commandRequestSend(command);
 		}

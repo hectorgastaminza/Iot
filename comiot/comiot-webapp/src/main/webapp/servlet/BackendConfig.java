@@ -21,6 +21,8 @@ public class BackendConfig {
 	static final String DEVICE_DELETE = BACKEND_URL + "/device/delete";
 	static final String CONNECTION_GET = BACKEND_URL + "/connection/get";
 	static final String CONNECTION_UPDATE = BACKEND_URL + "/connection/update";
+	static final String COMMAND_SEND = BACKEND_URL + "/command/send";
+	
 	
 	
 	
@@ -41,6 +43,7 @@ public class BackendConfig {
 	serializerTest(new Device(), objMap, Device.class);
 	serializerTest(new MqttConnectionConfiguration(), objMap, MqttConnectionConfiguration.class);
 	*/
+	@SuppressWarnings("unchecked")
 	static <T> void serializerTest(T var, T classType){
 		ObjectMapper objMap = new ObjectMapper();
 		String auxStr = null;

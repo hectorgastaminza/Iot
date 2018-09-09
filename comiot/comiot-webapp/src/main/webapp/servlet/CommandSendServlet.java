@@ -12,7 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import comiot.core.application.server.User;
+import comiot.core.device.command.DeviceCommandRequest;
 import comiot.core.device.command.eDeviceCommands;
 
 /**
@@ -35,16 +43,16 @@ public class CommandSendServlet extends HttpServlet {
 			if(params != null) {
 				NameValuePair param = params.get(0);
 				
-				int userPk = (int) request.getSession().getAttribute("userpk");
-				
+				User user = (User) request.getSession(false).getAttribute("user");
+
 				if(param.getName().equals("on")){
 					int deviceId = Integer.parseInt(params.get(0).getValue());
-					sendAppCommand(userPk, deviceId, eDeviceCommands.ON);
+					sendAppCommand(user.getPk(), deviceId, eDeviceCommands.ON);
 				}
 				else {
 					if(param.getName().equals("off")){
 						int deviceId = Integer.parseInt(params.get(0).getValue());
-						sendAppCommand(userPk, deviceId, eDeviceCommands.OFF);
+						sendAppCommand(user.getPk(), deviceId, eDeviceCommands.OFF);
 					}
 				}
 			}
@@ -60,8 +68,34 @@ public class CommandSendServlet extends HttpServlet {
 
 	}
 	
-	private void sendAppCommand(int userPk, int deviceId, eDeviceCommands command) {
-
+	private boolean sendAppCommand(int userPk, int deviceId, eDeviceCommands command) {
+		boolean retval = false;
+		
+		String url = UriComponentsBuilder
+				.fromUriString(BackendConfig.COMMAND_SEND)
+				.queryParam("userpk", userPk)
+				.toUriString();
+		
+		DeviceCommandRequest cmdRequest = new DeviceCommandRequest(1, deviceId, command, 0);
+		
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<Boolean> result = null;
+		try {
+			result = restTemplate.exchange(url,
+			                    HttpMethod.POST, 
+			                    BackendConfig.getHttpEntity(cmdRequest), 
+			                    new ParameterizedTypeReference<Boolean>() {}
+			);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if((result != null) && (result.getStatusCode() == HttpStatus.OK)) {
+			retval = result.getBody();
+		}
+		
+		return retval;
 	}
 	
 }
