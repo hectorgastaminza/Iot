@@ -1,6 +1,8 @@
 package comiot.core.device;
 
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import comiot.core.application.server.Place;
 import comiot.core.device.command.DeviceCommandDispatcher;
@@ -10,26 +12,54 @@ public class DeviceControl {
 	
 	public static void console(Device device) {
 		Scanner scanner = new Scanner(System.in);
+    	KeyReadNonBlocking keyReader = new KeyReadNonBlocking(scanner);
+        ExecutorService executor = Executors.newCachedThreadPool();
+
 		int option = -1;
 		int exit = 0;
 		eDeviceCommands command = eDeviceCommands.NONE;
+		eDeviceStates previousState =  device.getState();
 		device.setDebugMessages(true);
-
+		
+		showMenu(exit, command);
+		showDeviceStatus(device);
+		executor.submit(keyReader);
+		
 		while (option != exit) {
-			command = eDeviceCommands.NONE;
-			showDeviceStatus(device);
-			showMenu(exit, command);
-			option = scanner.nextInt();
-
-			if(option != exit)
-			{
-				command = eDeviceCommands.getFromValue(option);
-				if(command != eDeviceCommands.NONE) {
-					int value = enterValue(command);
-					DeviceCommandDispatcher.processCommand(device, command, value);
+			
+			if(device.getState() != previousState) {
+				previousState = device.getState();
+				showDeviceStatus(device);
+			}
+			
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			if(keyReader.isNewKey()) {
+				try {
+					option = Integer.parseInt(keyReader.getKey());
+					
+					if(option != exit)
+					{
+						command = eDeviceCommands.getFromValue(option);
+						if(command != eDeviceCommands.NONE) {
+							int value = enterValue(command, keyReader);
+							DeviceCommandDispatcher.processCommand(device, command, value);
+						}
+						command = eDeviceCommands.NONE;
+						showMenu(exit, command);
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
 				}
 			}
 		}
+		
+		executor.shutdown();
+		scanner.close();
 	}
 
 	private static void showMenu(int exit, eDeviceCommands command) {
@@ -53,13 +83,30 @@ public class DeviceControl {
 		System.out.println("Enter option selected:");
 	}
 
-	static private int enterValue(eDeviceCommands command) {
+	static private int enterValue(eDeviceCommands command, KeyReadNonBlocking keyReader) {
 		int retval = 0;
 
 		if(command == eDeviceCommands.SET_VALUE) {
-			Scanner scanner = new Scanner(System.in);
+			retval = -1;
 			System.out.println("\nPlease enter a value: ");
-			retval = scanner.nextInt();
+			
+			while(retval < 0) {
+				
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				if(keyReader.isNewKey()) {
+					try {
+						retval = Integer.parseInt(keyReader.getKey());
+					}
+					catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
+			}
 		}
 
 		return retval;
