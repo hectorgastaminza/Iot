@@ -93,6 +93,12 @@ public class CommandSendServlet extends HttpServlet {
 		
 		if((result != null) && (result.getStatusCode() == HttpStatus.OK)) {
 			retval = result.getBody();
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return retval;
