@@ -30,7 +30,7 @@
 						</c:otherwise>
 					</c:choose>
 				</div>
-				<p class="card-text">[ Place : ${device.getPlaceID()} | ID :
+				<p class="card-text text-secondary">[ Place : ${device.getPlaceID()} | ID :
 					${device.getId()} ]</p>
 				<div class="card-foot border-secondary">
 					<input id="devicePk" name="devicePk" type="hidden"
