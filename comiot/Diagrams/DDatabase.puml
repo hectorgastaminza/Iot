@@ -1,0 +1,67 @@
+@startuml
+' uncomment the line below if you're using computer with a retina display
+' skinparam dpi 300
+!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
+' we use bold for primary key
+' green color for unique
+' and underscore for not_null
+!define primary_key(x) <b>x</b>
+!define unique(x) <color:green>x</color>
+!define not_null(x) <u>x</u>
+' other tags available:
+' <i></i>
+' <back:COLOR></color>, where color is a color name or html color code
+' (#FFAACC)
+' see: http://plantuml.com/classes.html#More
+' source: https://gist.github.com/QuantumGhost/0955a45383a0b6c0bc24f9654b3cb561
+hide methods
+hide stereotypes
+
+' entities
+
+Table(user, "user") {
+primary_key(pk_user_id) INTEGER
+not_null(unique(username)) VARCHAR
+not_null(password) VARCHAR
+not_null(email) VARCHAR
+}
+
+Table(connection, "connection") {
+primary_key(pk_connection_id) INTEGER
+not_null(pk_user_id) INTEGER
+not_null(host) VARCHAR
+not_null(port) INTEGER
+username VARCHAR
+password VARCHAR
+root_topic VARCHAR
+}
+
+Table(place, "place") {
+primary_key(pk_place_id) INTEGER
+not_null(pk_user_id) INTEGER
+not_null(place_id) INTEGER
+place_name VARCHAR
+place_description VARCHAR
+}
+
+Table(device, "device") {
+primary_key(pk_device_id) INTEGER
+not_null(pk_user_id) INTEGER
+not_null(place_id) INTEGER
+not_null(device_id) INTEGER
+device_name VARCHAR
+device_description VARCHAR
+}
+
+' relationships
+' one-to-one relationship
+user -- connection : "A user only \nhas one connection"
+' one to may relationship
+user --> place : "A user may have\n many places"
+user --> device : "A user may have\n many devices"
+place --> device : "A place may have\n many devices"
+' many to many relationship
+' Add mark if you like
+'user "1" --> "*" user_group : "A user may be \nin many groups"
+'group "1" --> "0..N" user_group : "A group may \ncontain many users"
+@enduml
