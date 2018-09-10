@@ -5,7 +5,7 @@ This project is giving me an opportunity to gain knowledge about The Internet of
 
 The main goal is allowing a user to control or to get information from remote devices. For instance get the temperature in certain place of their home, turn on/off lights, etc. It should include a website/application where users could see a list of their remote devices and its information such as status and data.
 
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DGeneralDescription.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DGeneralDescription.puml)
 
 ### MQTT
 http://mqtt.org/
@@ -17,7 +17,7 @@ https://en.wikipedia.org/wiki/MQTT
 - List of remote devices and its configuration data.
 - Connection information (MQTT server credentials).
 
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DUsesCases.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DUsesCases.puml)
 
 ## Features:
 - Create new users.
@@ -36,32 +36,32 @@ https://en.wikipedia.org/wiki/MQTT
 ## Implementation details
 
 ### Main processes
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DSeqLogin.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DSeqLogin.puml)
 
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DSeqDeviceSendCmd.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DSeqDeviceSendCmd.puml)
 
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DSeqUserSendCmd.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DSeqUserSendCmd.puml)
 
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DSeqMQTTSendCmd.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DSeqMQTTSendCmd.puml)
 
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DSeqDeviceSendCmd.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DSeqDeviceSendCmd.puml)
 
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DSeqUserReceiveCmd.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DSeqUserReceiveCmd.puml)
 
 ### Database
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DDatabase.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DDatabase.puml)
 
 ### BACKEND (UserModel background service)
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DDeviceServer.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DDeviceServer.puml)
 
 ### Device client
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DDeviceClient.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DDeviceClient.puml)
 
 
 
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DEntities.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DEntities.puml)
 
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DProtocol.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DProtocol.puml)
 
 
 
