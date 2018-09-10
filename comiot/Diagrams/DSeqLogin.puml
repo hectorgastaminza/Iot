@@ -1,0 +1,24 @@
+@startuml
+hide footbox
+title Log in to the application
+actor User
+entity Frontend
+entity Backend
+database Database
+entity MQTT_Server
+User -> Frontend: Authentication Request
+Frontend -> Backend: Authentication Request
+activate Backend
+Backend -> Database: Query User table
+Database -> Backend: Query result
+Backend --> Backend: Processing result
+Backend -> Database: Query Place, Device, Connection tables
+Database -> Backend: Query result
+Backend -> MQTT_Server : Authentication Request
+MQTT_Server  -> Backend : Authentication Response
+Backend -> MQTT_Server : Subscribe Request
+MQTT_Server  -> Backend : Subscribe Response
+Backend -> Frontend: Authentication Response
+deactivate Backend
+Frontend -> User: Authentication Request
+@enduml

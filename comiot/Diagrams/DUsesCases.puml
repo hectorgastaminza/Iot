@@ -1,5 +1,4 @@
 @startuml
-
 usecase UC001 as "Log in to
 the application"
 
@@ -31,6 +30,8 @@ usecase UC009 as "Sign up
 in the
 application"
 
+usecase UC010 as "Recovery password"
+
 User -up-> (UC001)
 User -left-> (UC002)
 User -down-> (UC003)
@@ -39,7 +40,7 @@ User -left-> (UC005)
 User -down-> (UC006)
 User -down-> (UC007)
 User -up-> (UC009)
+User -up-> (UC010)
 
 Application -down-> (UC008) : have to
-
 @enduml

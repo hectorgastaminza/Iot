@@ -1,0 +1,7 @@
+@startuml
+hide footbox
+title Device update state / information
+entity Device
+entity MQTT_Server
+Device -> MQTT_Server: send command
+@enduml
