@@ -111,16 +111,16 @@ Typically overwriting some of this methods could be enough.
 But if not, more behaviors could be added to a class device, and new types of commands could be added to eDeviceCommands, also new states could be added to eDeviceStates. In most of the cases, with this changes the most of devices could work with C⊙mI⊙T. See for example comiot-client-raspberry project.
 
 ## REPOSITORY
-### comiot-backend
+### comiot-backend (maven project)
 * Controller: Contains the rest server code. Receives and responses request from frontend which are processed by UserModel. (spring-boot, @RestController, @Autowired, @RequestMapping, @RequestParam, @RequestBody)
 * UserModel: This server runs a thread with the UserModel which implement the logic of the server side. (HashMap, concurrent.ExecutorService)
-### comiot-client-raspberry
+### comiot-client-raspberry (maven project)
 Device application for raspberry pi
 * DeviceRaspberryDS18B20: temperature sensor
 * DeviceRaspberryGpio: general in/out (leds, reles, etc) (pi4j.io.gpio).
-### comiot-client-virtual
+### comiot-client-virtual (maven project)
 Device simulated in order to test the application. Sends a receive commands.
-### comiot-core
+### comiot-core (maven project)
 Implements the main code of the system. It is used for the other projects.
 * application
     * common: implements AppConnection a facade class used by client and server to communicate with a mqtt broker.
@@ -133,5 +133,6 @@ Implements the main code of the system. It is used for the other projects.
 * email: Implements a email sender using javax.mail
 * protocol
     * mqtt: Implements the communication with MQTT brokers using eclipse.paho.client.mqttv3
-
-
+### comiot-webapp (maven project)
+* servlet: implements servlets to communicate with backend
+* WEB-INF: implements user interface. (Bootstrap)
