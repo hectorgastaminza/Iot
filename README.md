@@ -1,6 +1,6 @@
-# ComIT FINAL PROJECT
+# ComIT FINAL PROJECT: C⊙mI⊙T
 
-## Sumary:
+## C⊙mI⊙T : Sumary:
 This project is giving me an opportunity to gain knowledge about The Internet of Things (IoT). The Internet of Things (IoT) is the network of physical devices, vehicles, home appliances, and other items embedded with electronics, software, sensors, actuators, and connectivity which enables these things to connect and exchange data, creating opportunities for more direct integration of the physical world into computer-based systems, resulting in efficiency improvements, economic benefits, and reduced human exertions. (https://en.wikipedia.org/wiki/Internet_of_things) 
 
 The main goal is allowing a user to control or to get information from remote devices. For instance get the temperature in certain place of their home, turn on/off lights, etc. It should include a website/application where users could see a list of their remote devices and its information such as status and data.
@@ -8,16 +8,8 @@ The main goal is allowing a user to control or to get information from remote de
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DGeneralDescription.puml)
 
 ### MQTT
-http://mqtt.org/
-https://en.wikipedia.org/wiki/MQTT
-
-## The information required to store is:
-- List of users, with is login information.
-- List of places/location where a user could have remote devices (house, work, car, living room, etc.)
-- List of remote devices and its configuration data.
-- Connection information (MQTT server credentials).
-
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DUsesCases.puml)
+- http://mqtt.org/
+- https://en.wikipedia.org/wiki/MQTT
 
 ## Features:
 - Create new users.
@@ -32,6 +24,17 @@ https://en.wikipedia.org/wiki/MQTT
 (Not implemented yet)
 - Users can add new places/locations. 
 - Users can edit places.
+
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DUsesCases.puml)
+
+## The information required to store is:
+- List of users, with is login information.
+- List of places/location where a user could have remote devices (house, work, car, living room, etc.)
+- List of remote devices and its configuration data.
+- Connection information (MQTT server credentials).
+
+### Database
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DDatabase.puml)
 
 ## Implementation details
 
@@ -48,48 +51,65 @@ https://en.wikipedia.org/wiki/MQTT
 
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DSeqUserReceiveCmd.puml)
 
-### Database
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DDatabase.puml)
-
 ### BACKEND (UserModel background service)
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DDeviceServer.puml)
 
 ### Device client
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DDeviceClient.puml)
 
-
-
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DEntities.puml)
-
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DProtocol.puml)
-
-
-
-
-
-MQTT: http://mqtt.org/
+## Communication with devices
 
 Devices send and receive commands in order to inform or perform actions.
 
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DProtocol.puml)
+
 Because MQTT uses strings to send and receive messages, in order to avoid the problem with raw data where the number zero interpreted as a string end character by several libraries, this application is going to use to communicate this command definition:
 
-## DEVICE COMMAND
-A command is string compound by an ID and a value [ID + Value]
+## DEVICE COMMANDS
+A command is string compound by segments which have an ID and a value [ID + Value]. Sometimes Value is useless as in a HEADER so it is not included. There are two kind of commands implemented but depends on the requeriments it could be extended.
 
+### REQUEST COMMAND             (User to Device)
+- HEADER            RQ
+- Place ID:         PXX         where X is a number (hexadecimal) from 0 to F.
 - Device ID: 		IXX 		where X is a number (hexadecimal) from 0 to F.
 - Command ID: 	    TXX 		where X is a number (hexadecimal) from 0 to F.
 - Command Value:	VXXXX		where X is a number (hexadecimal) from 0 to F.
 
-Example : [I0AT1BV1B3F] where I0A is the device ID, T1B is the command ID and V1B3F is the command value.
+Example : [RQP01I0AT02V1B3F] where RQ is a request command, P01 is the place, I0A is the device ID, T02 is the command ID and V1B3F is the command value.
 
-List of available commands are defined in enum DeviceCommands.
+#### Request Command List
+List of available commands are defined in enum comiot.core.device.command.eDeviceCommands
+##### * RESET        (0xFF)
+##### * GET_STATUS   (0x01)
+##### * SET_VALUE    (0x02)
+##### * OFF          (0x03)
+##### * ON           (0x04)
+##### * UP           (0x05)
+##### * DOWN         (0x06)
 
-## DEVICE COMMANDS LIST 
-#### * NONE (C00)
-#### * RESET(0xFF)
-#### * GET_STATUS (C01)
-#### * SET_VALUE (C02)
-#### * OFF (C03)
-#### * ON (C04)
-#### * UP (C05)
-#### * DOWN (C06)
+### REFRESH STATE COMMAND       (Device to user)
+- HEADER            RS
+- Place ID:         PXX         where X is a number (hexadecimal) from 0 to F.
+- Device ID: 		IXX 		where X is a number (hexadecimal) from 0 to F.
+- State ID:         SXX         where X is a number (hexadecimal) from 0 to F.
+- Value             VXXXX		where X is a number (hexadecimal) from 0 to F.
+
+#### Device States List
+List of available commands are defined in enum comiot.core.device.eDeviceStates
+##### * DISCONNECTED (0x00)
+##### * OFF          (0x01)
+##### * ON           (0x02)
+##### * ON_VALUE     (0x03)
+
+## ADDING NEW DEVICES
+This project is made to be extended. User / Server side and device side could be connected through the communication protocol. Devices could be implemented without any restriction of programming language.
+
+### Creating a new java device
+It could be easy to implement a new device extending the class comiot.core.device.Device. The communication to or from the User/Server is solved by this class. 
+
+Typically overwriting some of this methods could be enough.
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DClassDevice.puml)
+
+But if not, more behaviors could be added to a class device, and new types of commands could be added to eDeviceCommands, also new states could be added to eDeviceStates. In most of the cases, with this changes the most of devices could work with C⊙mI⊙T. See for example comiot-client-raspberry project.
+
+
