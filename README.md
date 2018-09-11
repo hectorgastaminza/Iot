@@ -25,7 +25,7 @@ The main goal is allowing a user to control or to get information from remote de
 - Users can add new places/locations. 
 - Users can edit places.
 
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DUsesCases.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DUsesCases.puml)
 
 ## The information required to store is:
 - List of users, with is login information.
@@ -34,7 +34,7 @@ The main goal is allowing a user to control or to get information from remote de
 - Connection information (MQTT server credentials).
 
 ### Database
-![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comit/master/FinalProject/Diagrams/DDatabase.puml)
+![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DDatabase.puml)
 
 ## Implementation details
 
@@ -79,13 +79,13 @@ Example : [RQP01I0AT02V1B3F] where RQ is a request command, P01 is the place, I0
 
 #### Request Command List
 List of available commands are defined in enum comiot.core.device.command.eDeviceCommands
-##### * RESET        (0xFF)
-##### * GET_STATUS   (0x01)
-##### * SET_VALUE    (0x02)
-##### * OFF          (0x03)
-##### * ON           (0x04)
-##### * UP           (0x05)
-##### * DOWN         (0x06)
+- RESET        (0xFF)
+- GET_STATUS   (0x01)
+- SET_VALUE    (0x02)
+- OFF          (0x03)
+- ON           (0x04)
+- UP           (0x05)
+- DOWN         (0x06)
 
 ### REFRESH STATE COMMAND       (Device to user)
 - HEADER            RS
@@ -96,10 +96,10 @@ List of available commands are defined in enum comiot.core.device.command.eDevic
 
 #### Device States List
 List of available commands are defined in enum comiot.core.device.eDeviceStates
-##### * DISCONNECTED (0x00)
-##### * OFF          (0x01)
-##### * ON           (0x02)
-##### * ON_VALUE     (0x03)
+- DISCONNECTED (0x00)
+- OFF          (0x01)
+- ON           (0x02)
+- ON_VALUE     (0x03)
 
 ## ADDING NEW DEVICES
 This project is made to be extended. User / Server side and device side could be connected through the communication protocol. Devices could be implemented without any restriction of programming language.
@@ -111,5 +111,29 @@ Typically overwriting some of this methods could be enough.
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DClassDevice.puml)
 
 But if not, more behaviors could be added to a class device, and new types of commands could be added to eDeviceCommands, also new states could be added to eDeviceStates. In most of the cases, with this changes the most of devices could work with C⊙mI⊙T. See for example comiot-client-raspberry project.
+
+## REPOSITORY
+### comiot-backend
+- Controller: Contains the rest server code. Receives and responses request from frontend which are processed by UserModel. (spring-boot, @RestController, @Autowired, @RequestMapping, @RequestParam, @RequestBody)
+- UserModel: This server runs a thread with the UserModel which implement the logic of the server side. (HashMap, concurrent.ExecutorService)
+### comiot-client-raspberry
+Device application for raspberry pi
+- DeviceRaspberryDS18B20: temperature sensor
+- DeviceRaspberryGpio: general in/out (leds, reles, etc) (pi4j.io.gpio).
+### comiot-client-virtual
+Device simulated in order to test the application. Sends a receive commands.
+### comiot-core
+Implements the main code of the system. It is used for the other projects.
+- application
+-- common: implements AppConnection a facade class used by client and server to communicate with a mqtt broker.
+-- client: implements DeviceClient which simplify create command-line application for devices.
+-- server: implements classes required in the server side of the system as User, Place
+- database: Implements the SQL code. It is the interface with the Database. (java.sql)
+- device: Implements the device base class
+-- command: Implements the C⊙mI⊙T command
+-- protocol: Implements low-level classes to compound a command.
+- email: Implements a email sender using javax.mail
+- protocol
+-- mqtt: Implements the communication with MQTT brokers using eclipse.paho.client.mqttv3
 
 
