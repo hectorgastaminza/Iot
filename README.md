@@ -79,7 +79,10 @@ A command is string compound by segments which have an ID and a value [ID + Valu
 Example : [RQP01I0AT02V1B3F] where RQ is a request command, P01 is the place, I0A is the device ID, T02 is the command ID and V1B3F is the command value.
 
 #### Request Command List
-List of available commands are defined in enum [eDeviceCommands](comiot/core/device/src/main/java/command/eDeviceCommands.java)
+List of available commands are defined in enum [eDeviceCommands](comiot/comiot-core/src/main/java/comiot/core/device/command/eDeviceCommands.java)
+
+C:\Users\hecto\OneDrive\Documents\Development\Iot_Final\comiot\comiot-core\src\main\java\comiot\core
+
 * RESET        (0xFF)
 * GET_STATUS   (0x01)
 * SET_VALUE    (0x02)
@@ -96,7 +99,7 @@ List of available commands are defined in enum [eDeviceCommands](comiot/core/dev
 * Value             VXXXX		where X is a number (hexadecimal) from 0 to F.
 
 #### Device States List
-List of available states are defined in enum [eDeviceCommands](comiot/core/src/main/java/device/eDeviceStates.java)
+List of available states are defined in enum [eDeviceCommands](comiot/comiot-core/src/main/java/comiot/core/device/eDeviceStates.java)
 * DISCONNECTED (0x00)
 * OFF          (0x01)
 * ON           (0x02)
@@ -106,12 +109,12 @@ List of available states are defined in enum [eDeviceCommands](comiot/core/src/m
 This project is made to be extended. User / Server side and device side could be connected through the communication protocol. Devices could be implemented without any restriction of programming language.
 
 ### Creating a new java device
-It could be easy to implement a new device extending the class [Device](comiot/core/src/main/java/device/Device.java). The communication to or from the User/Server is solved by this class. 
+It could be easy to implement a new device extending the class [Device](comiot/comiot-core/src/main/java/comiot/core/device/Device.java). The communication to or from the User/Server is solved by this class. 
 
 Typically overwriting some of this methods could be enough.
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DClassDevice.puml)
 
-But if not, more behaviors could be added to a class device, and new types of commands could be added to eDeviceCommands, also new states could be added to eDeviceStates. In most of the cases, with this changes the most of devices could work with C⊙mI⊙T. See for example [comiot-client-raspberry project](comiot/comiot-client-raspberry/src/main/java/client/raspberry/device/DeviceRaspberryGpio.java).
+But if not, more behaviors could be added to a class device, and new types of commands could be added to eDeviceCommands, also new states could be added to eDeviceStates. In most of the cases, with this changes the most of devices could work with C⊙mI⊙T. See for example [comiot-client-raspberry project](comiot/comiot-client-raspberry/src/main/java/comiot/client/raspberry/device/DeviceRaspberryGpio.java).
 
 ## REPOSITORY
 ### comiot-backend (maven project)
