@@ -1,6 +1,6 @@
 # ComIT FINAL PROJECT: C⊙mI⊙T
 
-## C⊙mI⊙T : Sumary:
+## C⊙mI⊙T : Sumary
 This project is giving me an opportunity to gain knowledge about The Internet of Things (IoT). The Internet of Things (IoT) is the network of physical devices, vehicles, home appliances, and other items embedded with electronics, software, sensors, actuators, and connectivity which enables these things to connect and exchange data, creating opportunities for more direct integration of the physical world into computer-based systems, resulting in efficiency improvements, economic benefits, and reduced human exertions. (https://en.wikipedia.org/wiki/Internet_of_things) 
 
 The main goal is allowing a user to control or to get information from remote devices. For instance get the temperature in certain place of their home, turn on/off lights, etc. It should include a website/application where users could see a list of their remote devices and its information such as status and data.
@@ -10,6 +10,7 @@ The main goal is allowing a user to control or to get information from remote de
 ### MQTT
 * http://mqtt.org/
 * https://en.wikipedia.org/wiki/MQTT
+* http://www.dioty.co/ (MQTT broker used for test the system)
 
 ## Features:
 * Create new users.
@@ -31,10 +32,12 @@ The main goal is allowing a user to control or to get information from remote de
 * List of users, with is login information.
 * List of places/location where a user could have remote devices (house, work, car, living room, etc.)
 * List of remote devices and its configuration data.
-* Connection information (MQTT server credentials).
+* Connection information (MQTT broker credentials).
 
 ### Database
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DDatabase.puml)
+
+[Database creation script](comiot/Resources/database_create_script.sql)
 
 ## Implementation details
 
@@ -61,7 +64,7 @@ Devices send and receive commands in order to inform or perform actions.
 
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DProtocol.puml)
 
-Because MQTT uses strings to send and receive messages, in order to avoid the problem with raw data where the number zero interpreted as a string end character by several libraries, this application is going to use to communicate this command definition:
+Because MQTT uses strings to send and receive messages through different topics. Looking for more flexibility, C⊙mI⊙T uses its own protocol through just one main topic in the MQTT broker. It is going to use to communicate this command definition:
 
 ## DEVICE COMMANDS
 A command is string compound by segments which have an ID and a value [ID + Value]. Sometimes Value is useless as in a HEADER so it is not included. There are two kind of commands implemented but depends on the requeriments it could be extended.
@@ -93,7 +96,7 @@ List of available commands are defined in enum comiot.core.device.command.eDevic
 * Value             VXXXX		where X is a number (hexadecimal) from 0 to F.
 
 #### Device States List
-List of available commands are defined in enum comiot.core.device.eDeviceStates
+List of available states are defined in enum comiot.core.device.eDeviceStates
 * DISCONNECTED (0x00)
 * OFF          (0x01)
 * ON           (0x02)
@@ -112,7 +115,7 @@ But if not, more behaviors could be added to a class device, and new types of co
 
 ## REPOSITORY
 ### comiot-backend (maven project)
-* Controller: Contains the rest server code. Receives and responses request from frontend which are processed by UserModel. (spring-boot, @RestController, @Autowired, @RequestMapping, @RequestParam, @RequestBody)
+* Controller: Contains the rest server code. Receives and responses request from frontend which are performed by UserModel. (spring-boot, @RestController, @Autowired, @RequestMapping, @RequestParam, @RequestBody)
 * UserModel: This server runs a thread with the UserModel which implement the logic of the server side. (HashMap, concurrent.ExecutorService)
 ### comiot-client-raspberry (maven project)
 Device application for raspberry pi
@@ -134,5 +137,6 @@ Implements the main code of the system. It is used for the other projects.
 * protocol
     * mqtt: Implements the communication with MQTT brokers using eclipse.paho.client.mqttv3
 ### comiot-webapp (maven project)
-* servlet: implements servlets to communicate with backend
-* WEB-INF: implements user interface. (Bootstrap)
+* servlet: implements servlets to communicate with backend (javax.servlet, apache.http, springframework, RestTemplate, jackson)
+* WEB-INF: implements user interface. (Bootstrap, html, css, javascript)
+

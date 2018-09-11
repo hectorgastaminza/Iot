@@ -2,7 +2,7 @@
 actor User
 component FrontEnd
 component BackEnd
-component MQTT_Server
+component MQTT_Broker
 database DataBase
 cloud Cloud as C1
 cloud Cloud as C2
