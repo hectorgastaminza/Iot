@@ -123,15 +123,15 @@ Device simulated in order to test the application. Sends a receive commands.
 ### comiot-core
 Implements the main code of the system. It is used for the other projects.
 * application
- * common: implements AppConnection a facade class used by client and server to communicate with a mqtt broker.
- * client: implements DeviceClient which simplify create command-line application for devices.
- * server: implements classes required in the server side of the system as User, Place
+    * common: implements AppConnection a facade class used by client and server to communicate with a mqtt broker.
+    * client: implements DeviceClient which simplify create command-line application for devices.
+    * server: implements classes required in the server side of the system as User, Place
 * database: Implements the SQL code. It is the interface with the Database. (java.sql)
 * device: Implements the device base class
- * command: Implements the C⊙mI⊙T command
- * protocol: Implements low-level classes to compound a command.
+    * command: Implements the C⊙mI⊙T command
+    * protocol: Implements low-level classes to compound a command.
 * email: Implements a email sender using javax.mail
 * protocol
- * mqtt: Implements the communication with MQTT brokers using eclipse.paho.client.mqttv3
+    * mqtt: Implements the communication with MQTT brokers using eclipse.paho.client.mqttv3
 
 
