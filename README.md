@@ -80,9 +80,6 @@ Example : [RQP01I0AT02V1B3F] where RQ is a request command, P01 is the place, I0
 
 #### Request Command List
 List of available commands are defined in enum [eDeviceCommands](comiot/comiot-core/src/main/java/comiot/core/device/command/eDeviceCommands.java)
-
-C:\Users\hecto\OneDrive\Documents\Development\Iot_Final\comiot\comiot-core\src\main\java\comiot\core
-
 * RESET        (0xFF)
 * GET_STATUS   (0x01)
 * SET_VALUE    (0x02)
@@ -118,28 +115,27 @@ But if not, more behaviors could be added to a class device, and new types of co
 
 ## REPOSITORY
 ### comiot-backend (maven project)
-* Controller: Contains the rest server code. Receives and responses request from frontend which are performed by UserModel. (spring-boot, @RestController, @Autowired, @RequestMapping, @RequestParam, @RequestBody)
-* UserModel: This server runs a thread with the UserModel which implement the logic of the server side. (HashMap, concurrent.ExecutorService)
+* [Controller](comiot/comiot-backend/src/main/java/comiot/backend/controller/DeviceController.java): Contains the rest server code. Receives and responses request from frontend which are performed by UserModel. (spring-boot, @RestController, @Autowired, @RequestMapping, @RequestParam, @RequestBody)
+* [UserModel](comiot/comiot-backend/src/main/java/comiot/backend/UserModel.java): This server runs a thread with the UserModel which implement the logic of the server side. (HashMap, concurrent.ExecutorService)
 ### comiot-client-raspberry (maven project)
 Device application for raspberry pi
-* DeviceRaspberryDS18B20: temperature sensor
-* DeviceRaspberryGpio: general in/out (leds, reles, etc) (pi4j.io.gpio).
+* [DeviceRaspberryDS18B20](comiot/comiot-client-raspberry/src/main/java/comiot/client/raspberry/device/DeviceRaspberryDS18B20.java): temperature sensor.
+* [DeviceRaspberryGpio](comiot/comiot-client-raspberry/src/main/java/comiot/client/raspberry/device/DeviceRaspberryGpio.java): general in/out (leds, reles, etc) (pi4j.io.gpio).
 ### comiot-client-virtual (maven project)
 Device simulated in order to test the application. Sends a receive commands.
 ### comiot-core (maven project)
 Implements the main code of the system. It is used for the other projects.
 * application
-    * common: implements AppConnection a facade class used by client and server to communicate with a mqtt broker.
-    * client: implements DeviceClient which simplify create command-line application for devices.
-    * server: implements classes required in the server side of the system as User, Place
-* database: Implements the SQL code. It is the interface with the Database. (java.sql)
-* device: Implements the device base class
-    * command: Implements the C⊙mI⊙T command
-    * protocol: Implements low-level classes to compound a command.
-* email: Implements a email sender using javax.mail
+    * common: implements [AppConnection](comiot/comiot-core/src/main/java/comiot/core/application/common/AppConnection.java)  a facade class used by client and server to communicate with a mqtt broker.
+    * client: implements [DeviceClient](comiot/comiot-core/src/main/java/comiot/core/application/client/DeviceClient.java) which simplify create command-line application for devices.
+    * server: implements classes required in the server side of the system as [User](comiot/comiot-core/src/main/java/comiot/core/application/server/User.java), [Place](comiot/comiot-core/src/main/java/comiot/core/application/server/Place.java), and a facade class to simplify the server side control [DeviceServer](comiot/comiot-core/src/main/java/comiot/core/application/server/DeviceServer.java)
+* database: [DBConnector](comiot/comiot-core/src/main/java/comiot/core/database/DBConnector.java) implements the SQL code. It is the interface with the Database. (java.sql)
+* device: Implements the [Device](comiot/comiot-core/src/main/java/comiot/core/device/Device.java) base class
+    * command: Implements the C⊙mI⊙T [DeviceCommand](comiot/comiot-core/src/main/java/comiot/core/device/command/DeviceCommand.java)
+    * protocol: Implements [low-level](comiot/comiot-core/src/main/java/comiot/core/device/protocol/ProtocolSegment.java) classes to compound a command.
+* email: Implements [EmailSender](comiot/comiot-core/src/main/java/comiot/core/email/EmailSender.java) using javax.mail
 * protocol
-    * mqtt: Implements the communication with MQTT brokers using eclipse.paho.client.mqttv3
+    * [mqtt](comiot/comiot-core/src/main/java/comiot/core/protocol/mqtt/MqttConnection.java): Implements the communication with MQTT brokers using eclipse.paho.client.mqttv3
 ### comiot-webapp (maven project)
-* servlet: implements servlets to communicate with backend (javax.servlet, apache.http, springframework, RestTemplate, jackson)
-* WEB-INF: implements user interface. (Bootstrap, html, css, javascript)
-
+* servlet: implements servlets to communicate with backend (javax.servlet, apache.http, springframework, [RestTemplate](comiot/comiot-webapp/src/main/webapp/servlet/HomeServlet.java), jackson)
+* WEB-INF: implements user interface. (Bootstrap, html, css, [javascript](comiot/comiot-webapp/src/main/WEB-INF/views/home.jsp))
