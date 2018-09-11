@@ -138,4 +138,4 @@ Implements the main code of the system. It is used for the other projects.
     * [mqtt](comiot/comiot-core/src/main/java/comiot/core/protocol/mqtt/MqttConnection.java): Implements the communication with MQTT brokers using eclipse.paho.client.mqttv3
 ### comiot-webapp (maven project)
 * servlet: implements servlets to communicate with backend (javax.servlet, apache.http, springframework, [RestTemplate](comiot/comiot-webapp/src/main/webapp/servlet/HomeServlet.java), jackson)
-* WEB-INF: implements user interface. (Bootstrap, html, css, [javascript](comiot/comiot-webapp/src/main/WEB-INF/views/home.jsp))
+* WEB-INF: implements user interface. (Bootstrap, html, css, [javascript](comiot/comiot-webapp/src/main/webapp/WEB-INF/views/home.jsp))
