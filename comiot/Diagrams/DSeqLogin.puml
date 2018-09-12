@@ -11,7 +11,6 @@ Frontend -> Backend: Authentication Request
 activate Backend
 Backend -> Database: Query User table
 Database -> Backend: Query result
-Backend --> Backend: Processing result
 Backend -> Database: Query Place, Device, Connection tables
 Database -> Backend: Query result
 Backend -> MQTT_Broker : Authentication Request
@@ -20,5 +19,5 @@ Backend -> MQTT_Broker : Subscribe Request
 MQTT_Broker  -> Backend : Subscribe Response
 Backend -> Frontend: Authentication Response
 deactivate Backend
-Frontend -> User: Authentication Request
+Frontend -> User: Authentication Response
 @enduml

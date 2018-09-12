@@ -9,8 +9,7 @@ The main goal is allowing a user to control or to get information from remote de
 
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DGeneralDescription.puml)
 
-Users access to the system through the frontend, a web-app. This server communicates with a backend server, which is in charge of the logic of the system, besides it is connected with the database. The system uses a mqtt_broker for the connection between the backend and the devices. The mqtt protocol is broadly used on IOT applications. When a user is logged in, the backend retrieves all the user's information from the database as well as connects to the mqtt_broker in order to listen to messages from the user's devices. In another side of the system, the devices are connected to the mqtt_broker in order to listen to the requests from the user as well as inform changes in their state or values.
-
+Users access to the system through the frontend, a web-app. This server communicates with a backend server, which is in charge of the logic of the system, besides it is connected to the database. The system uses a mqtt_broker for the connection between the backend and the devices. The mqtt protocol is broadly used on IOT applications. When a user is logged in, the backend retrieves all the user's information from the database as well as connects to the mqtt_broker in order to listen to messages from the user's devices. In another side of the system, the devices are connected to the mqtt_broker in order to listen to the requests from the user as well as inform changes in their state or values.
 
 ### MQTT
 * http://mqtt.org/
@@ -57,7 +56,7 @@ Users access to the system through the frontend, a web-app. This server communic
 
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DSeqMQTTSendCmd.puml)
 
-#### User sending information to the server
+#### Device sending information to the server
 
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DSeqDeviceSendCmd.puml)
 
