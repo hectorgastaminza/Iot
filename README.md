@@ -5,7 +5,12 @@ This project is giving me an opportunity to gain knowledge about The Internet of
 
 The main goal is allowing a user to control or to get information from remote devices. For instance get the temperature in certain place of their home, turn on/off lights, etc. It should include a website/application where users could see a list of their remote devices and its information such as status and data.
 
+## Basic description
+
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DGeneralDescription.puml)
+
+Users access to the system through the frontend, a web-app. This server communicates with a backend server, which is in charge of the logic of the system, besides it is connected with the database. The system uses a mqtt_broker for the connection between the backend and the devices. The mqtt protocol is broadly used on IOT applications. When a user is logged in, the backend retrieves all the user's information from the database as well as connects to the mqtt_broker in order to listen to messages from the user's devices. In another side of the system, the devices are connected to the mqtt_broker in order to listen to the requests from the user as well as inform changes in their state or values.
+
 
 ### MQTT
 * http://mqtt.org/
@@ -19,12 +24,12 @@ The main goal is allowing a user to control or to get information from remote de
 * Users can add new remote devices.
 * Users can edit the information of remote devices.
 * Users can delete remote devices.
-* Users can assign remote devices to a place.
 * Users can view all the information of their remote devices.
 * Application have to update the information received from the remote devices.
-(Not implemented yet)
-* Users can add new places/locations. 
-* Users can edit places.
+* (Not implemented yet)
+    * Users can add new places/locations. 
+    * Users can edit places.
+    * Users can assign remote devices to a place.
 
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DUsesCases.puml)
 
