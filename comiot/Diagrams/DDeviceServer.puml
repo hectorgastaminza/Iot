@@ -7,7 +7,7 @@ password
 }
 class Database{
 }
-class EndPoint{
+class RestServer{
 }
 class DeviceServer{
 	SendRequest()

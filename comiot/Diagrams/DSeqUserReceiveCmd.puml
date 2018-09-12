@@ -5,9 +5,9 @@ title User receives a command from a device
 actor User
 entity Frontend
 entity Backend
-entity MQTT_Server
+entity MQTT_Broker
 
-MQTT_Server -> Backend: Send command
+MQTT_Broker -> Backend: Send command
 Backend -> Backend: Processes command
 Backend -> Frontend: Update information Request
 Frontend -> User: Updated information

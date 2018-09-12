@@ -1,8 +1,8 @@
 @startuml
 hide footbox
 title Send a command to a device
-entity MQTT_Server
+entity MQTT_Broker
 entity Device
-MQTT_Server -> Device: command Request
-Device -> MQTT_Server: command Response
+MQTT_Broker -> Device: command Request
+Device -> MQTT_Broker: command Response
 @enduml

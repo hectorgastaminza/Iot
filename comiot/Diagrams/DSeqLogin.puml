@@ -5,7 +5,7 @@ actor User
 entity Frontend
 entity Backend
 database Database
-entity MQTT_Server
+entity MQTT_Broker
 User -> Frontend: Authentication Request
 Frontend -> Backend: Authentication Request
 activate Backend
@@ -14,10 +14,10 @@ Database -> Backend: Query result
 Backend --> Backend: Processing result
 Backend -> Database: Query Place, Device, Connection tables
 Database -> Backend: Query result
-Backend -> MQTT_Server : Authentication Request
-MQTT_Server  -> Backend : Authentication Response
-Backend -> MQTT_Server : Subscribe Request
-MQTT_Server  -> Backend : Subscribe Response
+Backend -> MQTT_Broker : Authentication Request
+MQTT_Broker  -> Backend : Authentication Response
+Backend -> MQTT_Broker : Subscribe Request
+MQTT_Broker  -> Backend : Subscribe Response
 Backend -> Frontend: Authentication Response
 deactivate Backend
 Frontend -> User: Authentication Request

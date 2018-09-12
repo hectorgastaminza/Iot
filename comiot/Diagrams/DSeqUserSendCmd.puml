@@ -4,12 +4,12 @@ title User sends a command to a device
 actor User
 entity Frontend
 entity Backend
-entity MQTT_Server
+entity MQTT_Broker
 User -> Frontend: Send command Request
 Frontend -> Backend: Send command Request
 activate Backend
-Backend -> MQTT_Server : Publish Request
-MQTT_Server  -> Backend : Publish Response
+Backend -> MQTT_Broker : Publish Request
+MQTT_Broker  -> Backend : Publish Response
 Backend -> Frontend: Send command Response
 deactivate Backend
 Frontend -> User: Send command Response

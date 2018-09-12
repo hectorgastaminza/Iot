@@ -2,6 +2,6 @@
 hide footbox
 title Device update state / information
 entity Device
-entity MQTT_Server
-Device -> MQTT_Server: send command
+entity MQTT_Broker
+Device -> MQTT_Broker: send command
 @enduml

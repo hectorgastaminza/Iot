@@ -42,11 +42,17 @@ The main goal is allowing a user to control or to get information from remote de
 ## Implementation details
 
 ### Main processes
+
+#### User login
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DSeqLogin.puml)
+
+#### User sending a command to a device
 
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DSeqUserSendCmd.puml)
 
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DSeqMQTTSendCmd.puml)
+
+#### User sending information to the server
 
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DSeqDeviceSendCmd.puml)
 
@@ -76,31 +82,48 @@ A command is string compound by segments which have an ID and a value [ID + Valu
 * Command ID: 	    TXX 		where X is a number (hexadecimal) from 0 to F.
 * Command Value:	VXXXX		where X is a number (hexadecimal) from 0 to F.
 
+| Segment       | Value  | Description                                   |
+| --------------|:------:|----------------------------------------------:|
+| HEADER        | RQ     |                                               |
+| Place ID      | PXX    | where X is a number (hexadecimal) from 0 to F |
+| Device ID     | IXX 	 | where X is a number (hexadecimal) from 0 to F |
+| Command ID    | TXX    | where X is a number (hexadecimal) from 0 to F |
+| Command Value | VXXXX  | where X is a number (hexadecimal) from 0 to F |
+
 Example : [RQP01I0AT02V1B3F] where RQ is a request command, P01 is the place, I0A is the device ID, T02 is the command ID and V1B3F is the command value.
 
 #### Request Command List
 List of available commands are defined in enum [eDeviceCommands](comiot/comiot-core/src/main/java/comiot/core/device/command/eDeviceCommands.java)
-* RESET        (0xFF)
-* GET_STATUS   (0x01)
-* SET_VALUE    (0x02)
-* OFF          (0x03)
-* ON           (0x04)
-* UP           (0x05)
-* DOWN         (0x06)
+
+| COMMAND     | VALUE  |
+| ------------|:------:|
+| RESET       | 0xFF   |
+| GET_STATUS  | 0x01   |
+| SET_VALUE   | 0x02   |
+| OFF         | 0x03   |
+| ON          | 0x04   |
+| UP          | 0x05   |
+| DOWN        | 0x06   |
 
 ### REFRESH STATE COMMAND       (Device to user)
-* HEADER            RS
-* Place ID:         PXX         where X is a number (hexadecimal) from 0 to F.
-* Device ID: 		IXX 		where X is a number (hexadecimal) from 0 to F.
-* State ID:         SXX         where X is a number (hexadecimal) from 0 to F.
-* Value             VXXXX		where X is a number (hexadecimal) from 0 to F.
+
+| Segment   | Value  | Description                                   |
+| ----------|:------:|----------------------------------------------:|
+| HEADER    | RS     |                                               |
+| Place ID  | PXX    | where X is a number (hexadecimal) from 0 to F |
+| Device ID | IXX 	 | where X is a number (hexadecimal) from 0 to F |
+| State ID  | SXX    | where X is a number (hexadecimal) from 0 to F |
+| Value     | VXXXX  | where X is a number (hexadecimal) from 0 to F |
 
 #### Device States List
 List of available states are defined in enum [eDeviceCommands](comiot/comiot-core/src/main/java/comiot/core/device/eDeviceStates.java)
-* DISCONNECTED (0x00)
-* OFF          (0x01)
-* ON           (0x02)
-* ON_VALUE     (0x03)
+
+| COMMAND      | VALUE  |
+| -------------|:------:|
+| DISCONNECTED | 0x00   |
+| OFF          | 0x01   |
+| ON           | 0x02   |
+| ON_VALUE     | 0x03   |
 
 ## ADDING NEW DEVICES
 This project is made to be extended. User / Server side and device side could be connected through the communication protocol. Devices could be implemented without any restriction of programming language.
@@ -114,15 +137,6 @@ Typically overwriting some of this methods could be enough.
 But if not, more behaviors could be added to a class device, and new types of commands could be added to eDeviceCommands, also new states could be added to eDeviceStates. In most of the cases, with this changes the most of devices could work with C⊙mI⊙T. See for example [comiot-client-raspberry project](comiot/comiot-client-raspberry/src/main/java/comiot/client/raspberry/device/DeviceRaspberryGpio.java).
 
 ## REPOSITORY
-### comiot-backend (maven project)
-* [Controller](comiot/comiot-backend/src/main/java/comiot/backend/controller/DeviceController.java): Contains the rest server code. Receives and responses request from frontend which are performed by UserModel. (spring-boot, @RestController, @Autowired, @RequestMapping, @RequestParam, @RequestBody)
-* [UserModel](comiot/comiot-backend/src/main/java/comiot/backend/UserModel.java): This server runs a thread with the UserModel which implement the logic of the server side. (HashMap, concurrent.ExecutorService)
-### comiot-client-raspberry (maven project)
-Device application for raspberry pi
-* [DeviceRaspberryDS18B20](comiot/comiot-client-raspberry/src/main/java/comiot/client/raspberry/device/DeviceRaspberryDS18B20.java): temperature sensor.
-* [DeviceRaspberryGpio](comiot/comiot-client-raspberry/src/main/java/comiot/client/raspberry/device/DeviceRaspberryGpio.java): general in/out (leds, reles, etc) (pi4j.io.gpio).
-### comiot-client-virtual (maven project)
-Device simulated in order to test the application. Sends a receive commands.
 ### comiot-core (maven project)
 Implements the main code of the system. It is used for the other projects.
 * application
@@ -131,11 +145,20 @@ Implements the main code of the system. It is used for the other projects.
     * server: implements classes required in the server side of the system as [User](comiot/comiot-core/src/main/java/comiot/core/application/server/User.java), [Place](comiot/comiot-core/src/main/java/comiot/core/application/server/Place.java), and a facade class to simplify the server side control [DeviceServer](comiot/comiot-core/src/main/java/comiot/core/application/server/DeviceServer.java)
 * database: [DBConnector](comiot/comiot-core/src/main/java/comiot/core/database/DBConnector.java) implements the SQL code. It is the interface with the Database. (java.sql)
 * device: Implements the [Device](comiot/comiot-core/src/main/java/comiot/core/device/Device.java) base class
-    * command: Implements the C⊙mI⊙T [DeviceCommand](comiot/comiot-core/src/main/java/comiot/core/device/command/DeviceCommand.java)
+    * command: Implements the C⊙mI⊙T [DeviceCommand](comiot/comiot-core/src/main/java/comiot/core/device/command/DeviceCommand.java) and among others [DeviceCommandDispatcher](comiot/comiot-core/src/main/java/comiot/core/device/command/DeviceCommandDispatcher.java)
     * protocol: Implements [low-level](comiot/comiot-core/src/main/java/comiot/core/device/protocol/ProtocolSegment.java) classes to compound a command.
 * email: Implements [EmailSender](comiot/comiot-core/src/main/java/comiot/core/email/EmailSender.java) using javax.mail
 * protocol
     * [mqtt](comiot/comiot-core/src/main/java/comiot/core/protocol/mqtt/MqttConnection.java): Implements the communication with MQTT brokers using eclipse.paho.client.mqttv3
+### comiot-backend (maven project)
+* [Controller](comiot/comiot-backend/src/main/java/comiot/backend/controller/DeviceController.java): Contains the rest server code. Receives and responses request from frontend which are performed by UserModel. (spring-boot, @RestController, @Autowired, @RequestMapping, @RequestParam, @RequestBody)
+* [UserModel](comiot/comiot-backend/src/main/java/comiot/backend/UserModel.java): This server runs a thread with the UserModel which implement the logic of the server side. (HashMap, concurrent.ExecutorService)
 ### comiot-webapp (maven project)
 * servlet: implements servlets to communicate with backend (javax.servlet, apache.http, springframework, [RestTemplate](comiot/comiot-webapp/src/main/webapp/servlet/HomeServlet.java), jackson)
 * WEB-INF: implements user interface. (Bootstrap, html, css, [javascript](comiot/comiot-webapp/src/main/webapp/WEB-INF/views/home.jsp))
+### comiot-client-raspberry (maven project)
+Device application for raspberry pi
+* [DeviceRaspberryDS18B20](comiot/comiot-client-raspberry/src/main/java/comiot/client/raspberry/device/DeviceRaspberryDS18B20.java): temperature sensor.
+* [DeviceRaspberryGpio](comiot/comiot-client-raspberry/src/main/java/comiot/client/raspberry/device/DeviceRaspberryGpio.java): general in/out (leds, reles, etc) (pi4j.io.gpio).
+### comiot-client-virtual (maven project)
+Device simulated in order to test the application. Sends a receive commands.
