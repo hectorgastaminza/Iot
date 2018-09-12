@@ -76,14 +76,9 @@ Because MQTT uses strings to send and receive messages through different topics.
 A command is string compound by segments which have an ID and a value [ID + Value]. Sometimes Value is useless as in a HEADER so it is not included. There are two kind of commands implemented but depends on the requeriments it could be extended.
 
 ### REQUEST COMMAND             (User to Device)
-* HEADER            RQ
-* Place ID:         PXX         where X is a number (hexadecimal) from 0 to F.
-* Device ID: 		IXX 		where X is a number (hexadecimal) from 0 to F.
-* Command ID: 	    TXX 		where X is a number (hexadecimal) from 0 to F.
-* Command Value:	VXXXX		where X is a number (hexadecimal) from 0 to F.
 
 | Segment       | Value  | Description                                   |
-| --------------|:------:|----------------------------------------------:|
+|:-------------:|:------:|:---------------------------------------------:|
 | HEADER        | RQ     |                                               |
 | Place ID      | PXX    | where X is a number (hexadecimal) from 0 to F |
 | Device ID     | IXX 	 | where X is a number (hexadecimal) from 0 to F |
@@ -96,7 +91,7 @@ Example : [RQP01I0AT02V1B3F] where RQ is a request command, P01 is the place, I0
 List of available commands are defined in enum [eDeviceCommands](comiot/comiot-core/src/main/java/comiot/core/device/command/eDeviceCommands.java)
 
 | COMMAND     | VALUE  |
-| ------------|:------:|
+|:-----------:|:------:|
 | RESET       | 0xFF   |
 | GET_STATUS  | 0x01   |
 | SET_VALUE   | 0x02   |
@@ -108,7 +103,7 @@ List of available commands are defined in enum [eDeviceCommands](comiot/comiot-c
 ### REFRESH STATE COMMAND       (Device to user)
 
 | Segment   | Value  | Description                                   |
-| ----------|:------:|----------------------------------------------:|
+|:---------:|:------:|:---------------------------------------------:|
 | HEADER    | RS     |                                               |
 | Place ID  | PXX    | where X is a number (hexadecimal) from 0 to F |
 | Device ID | IXX 	 | where X is a number (hexadecimal) from 0 to F |
@@ -119,7 +114,7 @@ List of available commands are defined in enum [eDeviceCommands](comiot/comiot-c
 List of available states are defined in enum [eDeviceCommands](comiot/comiot-core/src/main/java/comiot/core/device/eDeviceStates.java)
 
 | COMMAND      | VALUE  |
-| -------------|:------:|
+|:------------:|:------:|
 | DISCONNECTED | 0x00   |
 | OFF          | 0x01   |
 | ON           | 0x02   |
@@ -130,11 +125,13 @@ This project is made to be extended. User / Server side and device side could be
 
 ### Creating a new java device
 It could be easy to implement a new device extending the class [Device](comiot/comiot-core/src/main/java/comiot/core/device/Device.java). The communication to or from the User/Server is solved by this class. 
+Typically overwriting some of these methods could be enough.
 
-Typically overwriting some of this methods could be enough.
 ![PUML](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/hectorgastaminza/comiot/master/comiot/Diagrams/DClassDevice.puml)
 
-But if not, more behaviors could be added to a class device, and new types of commands could be added to eDeviceCommands, also new states could be added to eDeviceStates. In most of the cases, with this changes the most of devices could work with C⊙mI⊙T. See for example [comiot-client-raspberry project](comiot/comiot-client-raspberry/src/main/java/comiot/client/raspberry/device/DeviceRaspberryGpio.java).
+Otherwise, more behaviors could be added to a class device, and new types of commands could be added to eDeviceCommands, also new states could be added to eDeviceStates. In most of the cases, with this changes the most of devices could work with C⊙mI⊙T. 
+
+See for example [comiot-client-raspberry project](comiot/comiot-client-raspberry/src/main/java/comiot/client/raspberry/device/DeviceRaspberryGpio.java).
 
 ## REPOSITORY
 ### comiot-core (maven project)

@@ -16,7 +16,7 @@ FrontEnd -right- C2
 C2 -right- BackEnd  
 BackEnd -right- DataBase
 BackEnd -down- C3
-C3 -left- MQTT_Server
-MQTT_Server -left- C4
+C3 -left- MQTT_Broker
+MQTT_Broker -left- C4
 C4 -left- Device
 @enduml

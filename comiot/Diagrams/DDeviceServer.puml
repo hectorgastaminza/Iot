@@ -43,7 +43,7 @@ UserModel o-- User
 User o-- MqttConnectionConfiguration
 AppConnection -- MqttConnectionConfiguration
 UserModel o-- Database
-UserModel -- EndPoint
+UserModel -- RestServer
 User o-- DeviceServer
 DeviceServer o-- AppConnection
 DeviceServer o-- Place
